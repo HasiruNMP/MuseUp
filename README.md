@@ -1,2 +1,2 @@
 # FYP
- Final Year Project [PRC303SL]
+ Final Year Project [PRC303SL] - Professional/Social Network for Musicians
