@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:musicianapp/view/chat.dart';
+import 'package:musicianapp/view/connections.dart';
 import 'package:musicianapp/view/explore.dart';
+import 'package:musicianapp/view/profile.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 
@@ -53,21 +55,35 @@ class _HomeViewState extends State<HomeView> {
   List<Widget> _buildScreens() {
     return [
       const ExploreView(),
-      const ChatView()
+      const ConnectionsView(),
+      const ChatView(),
+      const ProfileView()
     ];
   }
 
   List<PersistentBottomNavBarItem> _navBarsItems() {
     return [
       PersistentBottomNavBarItem(
-        icon: const Icon(CupertinoIcons.home),
-        title: ("Home"),
+        icon: const Icon(CupertinoIcons.search_circle_fill),
+        title: ("Explore"),
         activeColorPrimary: CupertinoColors.activeBlue,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
         icon: const Icon(CupertinoIcons.settings),
-        title: ("Settings"),
+        title: ("Connections"),
+        activeColorPrimary: CupertinoColors.activeBlue,
+        inactiveColorPrimary: CupertinoColors.systemGrey,
+      ),
+      PersistentBottomNavBarItem(
+        icon: const Icon(CupertinoIcons.settings),
+        title: ("Messages"),
+        activeColorPrimary: CupertinoColors.activeBlue,
+        inactiveColorPrimary: CupertinoColors.systemGrey,
+      ),
+      PersistentBottomNavBarItem(
+        icon: const Icon(CupertinoIcons.settings),
+        title: ("Profile"),
         activeColorPrimary: CupertinoColors.activeBlue,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
