@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:flutter/material.dart';
+import 'package:tiktoklikescroller/controller.dart';
+import 'package:video_player/video_player.dart';
+import 'package:tiktoklikescroller/tiktoklikescroller.dart';
 
 class ExploreView extends StatefulWidget {
   const ExploreView({Key? key}) : super(key: key);
@@ -40,41 +43,7 @@ class _UserInformationState extends State<UserInformation> {
   Widget build(BuildContext context) {
     //setLocation();
 
-    return StreamBuilder<QuerySnapshot>(
-      stream: _usersStream,
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (snapshot.hasError) {
-          return const Text('Something went wrong');
-        }
-
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Text("Loading");
-        }
-
-        return ListView(
-          children: snapshot.data!.docs.map((DocumentSnapshot document) {
-            Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-            return Column(
-              children: [
-            ListTile(
-            title: const Text('Name'),
-            subtitle: Text(data['name']),
-            ),
-                TextButton(
-                  style: ButtonStyle(
-                    foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
-                  ),
-                  onPressed: getData,
-                  child: const Text('TextButton'),
-                )
-
-
-              ],
-            );
-          }).toList(),
-        );
-      },
-    );
+    return const VideoApp();
   }
 //7.242016, 80.857134
   void setLocation(){
@@ -101,5 +70,61 @@ class _UserInformationState extends State<UserInformation> {
         print(document.data());
       }
     });
+  }
+}
+
+class VideoApp extends StatefulWidget {
+  const VideoApp({Key? key}) : super(key: key);
+
+  @override
+  _VideoAppState createState() => _VideoAppState();
+}
+
+class _VideoAppState extends State<VideoApp> {
+  late VideoPlayerController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = VideoPlayerController.network('https://firebasestorage.googleapis.com/v0/b/hnmp-museup.appspot.com/o/videos%2F33333.mp4?alt=media&token=8a96a388-dd09-4ada-9646-f9dfba54aa53')
+      ..initialize().then((_) {
+        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+        setState(() {});
+      });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Video Demo',
+      home: Scaffold(
+        body: Center(
+          child: _controller.value.isInitialized
+              ? AspectRatio(
+            aspectRatio: _controller.value.aspectRatio,
+            child: VideoPlayer(_controller),
+          )
+              : Container(),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            setState(() {
+              _controller.value.isPlaying
+                  ? _controller.pause()
+                  : _controller.play();
+            });
+          },
+          child: Icon(
+            _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
   }
 }

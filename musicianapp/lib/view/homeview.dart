@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:musicianapp/view/chat.dart';
-import 'package:musicianapp/view/connections.dart';
-import 'package:musicianapp/view/explore.dart';
-import 'package:musicianapp/view/profile.dart';
+import 'package:musicianapp/view/chatview.dart';
+import 'package:musicianapp/view/connectionsview.dart';
+import 'package:musicianapp/view/exploreview.dart';
+import 'package:musicianapp/view/profileview.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 
@@ -65,25 +65,25 @@ class _HomeViewState extends State<HomeView> {
     return [
       PersistentBottomNavBarItem(
         icon: const Icon(CupertinoIcons.search_circle_fill),
-        title: ("Explore"),
+        //title: ("Explore"),
         activeColorPrimary: CupertinoColors.activeBlue,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: const Icon(CupertinoIcons.settings),
-        title: ("Connections"),
+        icon: const Icon(CupertinoIcons.person_3_fill),
+        //title: ("Connections"),
         activeColorPrimary: CupertinoColors.activeBlue,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: const Icon(CupertinoIcons.settings),
-        title: ("Messages"),
+        icon: const Icon(CupertinoIcons.envelope_fill),
+        //title: ("Messages"),
         activeColorPrimary: CupertinoColors.activeBlue,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: const Icon(CupertinoIcons.settings),
-        title: ("Profile"),
+        icon: const Icon(CupertinoIcons.person_fill),
+        //title: ("Profile"),
         activeColorPrimary: CupertinoColors.activeBlue,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),

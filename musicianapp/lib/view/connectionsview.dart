@@ -10,6 +10,11 @@ class ConnectionsView extends StatefulWidget {
 class _ConnectionsViewState extends State<ConnectionsView> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Connections'),
+      ),
+      body: Container(),
+    );
   }
 }
