@@ -1,0 +1,35 @@
+Column(
+        children: [
+          Expanded(
+            flex: 12,
+            child: Container(
+              color: Colors.deepOrangeAccent,
+              child: Stack(
+                children: [
+                  Container(),
+                  Column(
+                    children: [
+                      Expanded(
+                        flex: 12,
+                        child: Container(),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          color: Colors.green,
+                        ),
+                      ),
+                      Expanded(
+                          flex: 1,
+                          child: Container(
+                            color: Colors.amberAccent,
+                          )
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),

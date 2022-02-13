@@ -48,7 +48,7 @@ class _HomeViewState extends State<HomeView> {
         curve: Curves.ease,
         duration: Duration(milliseconds: 200),
       ),
-      navBarStyle: NavBarStyle.style2, // Choose the nav bar style with this property.
+      navBarStyle: NavBarStyle.style3, // Choose the nav bar style with this property.
     );
   }
 
@@ -64,26 +64,26 @@ class _HomeViewState extends State<HomeView> {
   List<PersistentBottomNavBarItem> _navBarsItems() {
     return [
       PersistentBottomNavBarItem(
-        icon: const Icon(CupertinoIcons.search_circle_fill),
-        //title: ("Explore"),
+        icon: const Icon(CupertinoIcons.globe),
+        title: ("Explore"),
         activeColorPrimary: CupertinoColors.activeBlue,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: const Icon(CupertinoIcons.person_3_fill),
-        //title: ("Connections"),
+        icon: const Icon(CupertinoIcons.person_2_fill),
+        title: ("Connections"),
         activeColorPrimary: CupertinoColors.activeBlue,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
         icon: const Icon(CupertinoIcons.envelope_fill),
-        //title: ("Messages"),
+        title: ("Messages"),
         activeColorPrimary: CupertinoColors.activeBlue,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
         icon: const Icon(CupertinoIcons.person_fill),
-        //title: ("Profile"),
+        title: ("Profile"),
         activeColorPrimary: CupertinoColors.activeBlue,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),

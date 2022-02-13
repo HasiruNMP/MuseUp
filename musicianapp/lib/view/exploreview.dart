@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:flutter/material.dart';
 import 'package:tiktoklikescroller/controller.dart';
@@ -17,12 +18,125 @@ class _ExploreViewState extends State<ExploreView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Explore'),
+        title: const Text('Explore',
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+        ),
+        elevation: 0.2,
+        backgroundColor: Colors.white,
+        actions: const [
+          Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Icon(
+              Icons.filter_alt,
+              color: Colors.black,
+            ),
+          )
+        ],
       ),
-      body: const UserInformation(),
+      body: SafeArea(
+        child: Container(
+          color: Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(15, 15, 15, 25),
+            child: Container(
+              decoration: const BoxDecoration(
+                color: Colors.green,
+                borderRadius: BorderRadius.all(Radius.circular(12))
+              ),
+              child: Stack(
+                children: [
+                  const VideoApp(),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: const [
+                                Text(
+                                  '   Anne Blake',
+                                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.white),
+                                ),
+                                Text(
+                                  '   Florida, USA',
+                                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.white),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(2.0),
+                            child: Row(
+                              children: const [
+                                Text(
+                                  '   Guitarist | Pop, Rock, Jazz',
+                                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          IconButton(onPressed: (){}, icon: const Icon(Icons.navigate_before,color: Colors.white,)),
+                          IconButton(onPressed: (){}, icon: const Icon(Icons.navigate_next,color: Colors.white,))
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () { },
+                            child: const Text('Connect +'),
+
+                          ),
+                          ElevatedButton(
+                            onPressed: () { },
+                            child: const Text('Connect +'),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 class UserInformation extends StatefulWidget {
   const UserInformation({Key? key}) : super(key: key);
@@ -95,30 +209,14 @@ class _VideoAppState extends State<VideoApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Video Demo',
-      home: Scaffold(
-        body: Center(
-          child: _controller.value.isInitialized
-              ? AspectRatio(
-            aspectRatio: _controller.value.aspectRatio,
-            child: VideoPlayer(_controller),
-          )
-              : Container(),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            setState(() {
-              _controller.value.isPlaying
-                  ? _controller.pause()
-                  : _controller.play();
-            });
-          },
-          child: Icon(
-            _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
-          ),
-        ),
-      ),
+    //_controller.play();
+    return Center(
+      child: _controller.value.isInitialized
+          ? AspectRatio(
+        aspectRatio: _controller.value.aspectRatio,
+        child: VideoPlayer(_controller),
+      )
+          : Container(),
     );
   }
 
@@ -126,5 +224,47 @@ class _VideoAppState extends State<VideoApp> {
   void dispose() {
     super.dispose();
     _controller.dispose();
+  }
+}
+
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  Widget build(BuildContext context) {
+    final List<Color> colors = <Color>[Colors.red, Colors.blue, Colors.green];
+
+    return MaterialApp(
+      home: Scaffold(
+        body: TikTokStyleFullPageScroller(
+          contentSize: colors.length,
+          //swipeThreshold: 0.2,
+          // ^ the fraction of the screen needed to scroll
+          swipeVelocityThreshold: 2000,
+          // ^ the velocity threshold for smaller scrolls
+          animationDuration: const Duration(milliseconds: 300),
+          // ^ how long the animation will take
+          //onScrollEvent: _handleCallbackEvent,
+          // ^ registering our own function to listen to page changes
+          builder: (BuildContext context, int index) {
+            return Container(
+              color: colors[index],
+              child: Text(
+                '$index',
+                style: const TextStyle(fontSize: 48, color: Colors.white),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  void _handleCallbackEvent(ScrollEventType type) {
+    print("Scroll callback received with data: {type: $type, and index:");
   }
 }
