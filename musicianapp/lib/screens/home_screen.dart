@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:musicianapp/view/chatview.dart';
-import 'package:musicianapp/view/connectionsview.dart';
+import 'package:musicianapp/screens/chat_screen.dart';
+import 'package:musicianapp/screens/connections_screen.dart';
 import 'package:musicianapp/view/exploreview.dart';
-import 'package:musicianapp/view/profileview.dart';
+import 'package:musicianapp/screens/profile_screen.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+
+import 'explore_screen.dart';
 
 
 class HomeView extends StatefulWidget {
@@ -54,9 +56,9 @@ class _HomeViewState extends State<HomeView> {
 
   List<Widget> _buildScreens() {
     return [
-      const ExploreView(),
+      const ExploreScreen(),
       const ConnectionsView(),
-      const ChatView(),
+      const ChatListView(),
       const ProfileView()
     ];
   }
