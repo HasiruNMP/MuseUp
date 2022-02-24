@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:musicianapp/screens/chat_screen.dart';
 import 'package:musicianapp/screens/connections_screen.dart';
-import 'package:musicianapp/view/exploreview.dart';
 import 'package:musicianapp/screens/profile_screen.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
@@ -58,7 +57,7 @@ class _HomeViewState extends State<HomeView> {
     return [
       const ExploreScreen(),
       const ConnectionsView(),
-      const ChatListView(),
+      const ChatScreen(),
       const ProfileView()
     ];
   }
