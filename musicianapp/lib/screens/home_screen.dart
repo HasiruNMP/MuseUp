@@ -58,7 +58,7 @@ class _HomeViewState extends State<HomeView> {
       const ExploreScreen(),
       const ConnectionsView(),
       const ChatScreen(),
-      const ProfileView()
+      const ProfileScreen()
     ];
   }
 
