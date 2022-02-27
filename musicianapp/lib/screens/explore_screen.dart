@@ -1,7 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:musicianapp/models/explore_model.dart';
 import 'package:musicianapp/screens/setprofile_screen.dart';
+import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
+
+List<String> videoList=[];
 
 class ExploreScreen extends StatefulWidget {
   const ExploreScreen({ Key? key }) : super(key: key);
@@ -11,6 +16,7 @@ class ExploreScreen extends StatefulWidget {
 }
 
 class _ExploreScreenState extends State<ExploreScreen> {
+
   @override
   Widget build(BuildContext context) {
 
@@ -25,16 +31,19 @@ class _ExploreScreenState extends State<ExploreScreen> {
         ],
       ),
       body: SafeArea(
-        child: PageView(
-          controller: controller,
-          scrollDirection: Axis.vertical,
-          allowImplicitScrolling: true,
-          children: [
-            VideoApp('https://firebasestorage.googleapis.com/v0/b/hnmp-museup.appspot.com/o/videos%2F11111.mp4?alt=media&token=77c0d7fa-b744-4f1d-872c-7df35169221c'),
-            VideoApp('https://firebasestorage.googleapis.com/v0/b/hnmp-museup.appspot.com/o/videos%2F22222.mp4?alt=media&token=02794153-a1fb-48c1-bc89-353759ea5fb9'),
-            VideoApp('https://firebasestorage.googleapis.com/v0/b/hnmp-museup.appspot.com/o/videos%2F33333.mp4?alt=media&token=8a96a388-dd09-4ada-9646-f9dfba54aa53'),
-          ],
-        )
+        child: Consumer<Explorer>(
+          builder: (context, explorerModel, child) {
+            return PageView(
+              controller: controller,
+              scrollDirection: Axis.vertical,
+              allowImplicitScrolling: true,
+              children: List<Widget>.generate(explorerModel.videoList.length, (int index) {
+                return VideoApp(explorerModel.videoList[index]);
+              },
+              ).toList(),
+            );
+          },
+        ),
       ),
     );
   }
@@ -49,6 +58,10 @@ class _ExploreScreenState extends State<ExploreScreen> {
         return FilterView();
       },
     );
+  }
+
+  void updateSearch(){
+    setState(() {});
   }
 }
 
@@ -175,7 +188,18 @@ class _FilterViewState extends State<FilterView> {
           ),
         ),
         Center(
-          child: ElevatedButton(onPressed: (){}, child: Text('SEARCH'),),
+          child: Consumer<Explorer>(
+            builder: (context, explorerModel, child) {
+              return ElevatedButton(
+                onPressed: (){
+                  explorerModel.searchUsersByMusic();
+                  Navigator.pop(context);
+                  //videoList = explorerModel.videoList;
+                },
+                child: const Text('SEARCH'),
+              );
+            }
+          ),
         ),
 
       ],
@@ -265,9 +289,7 @@ class _MyThreeOptionsState extends State<MyThreeOptions> {
   @override
   Widget build(BuildContext context) {
     return Wrap(
-      children: List<Widget>.generate(
-        3,
-            (int index) {
+      children: List<Widget>.generate(3, (int index) {
           return ChoiceChip(
             label: Text('Item $index'),
             selected: _value == index,
