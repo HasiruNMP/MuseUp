@@ -14,7 +14,9 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   
-  final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance.collection('conversations').doc('anneblake@gmail.com-emmamclean@gmail.com').collection('messages').snapshots();
+  final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance.collection('conversations').doc('anneblake@gmail.com-emmamclean@gmail.com').collection('messages').orderBy('time', descending: false).snapshots();
+  final messageTEC = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -41,10 +43,35 @@ class _ChatScreenState extends State<ChatScreen> {
 
                     return ListView(
                       children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                        Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-                        return ListTile(
-                          subtitle: Text(data['sender']),
-                          title: Text(data['text']),
+                        Map<String, dynamic> messageData = document.data()! as Map<String, dynamic>;
+                        return Container(
+                          alignment: messageData['sender'] == 'anneblake@gmail.com' ? Alignment.centerRight : Alignment.centerLeft,
+                          child: Padding(
+                            padding: const EdgeInsets.all(1.0),
+                            child: Container(
+                              //alignment: Alignment.centerRight,
+                              height: 36,
+                              decoration: BoxDecoration(
+                                color: Colors.teal,
+                                borderRadius: BorderRadius.all(Radius.circular(8),),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      messageData['text'],
+                                      //textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 17,
+                                      ),
+                                    ),
+                                    //Text(messageData['time'].toString(),),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
                         );
                       }).toList(),
                     );
@@ -63,13 +90,15 @@ class _ChatScreenState extends State<ChatScreen> {
                     IconButton(onPressed: (){}, icon: Icon(Icons.add_circle),),
                     Container(
                       width: 270,
-                      child: TextField (decoration: InputDecoration(
+                      child: TextField (
+                        controller: messageTEC,
+                        decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: 'type message here'
                         ),
                       ),
                     ),
-                    IconButton(onPressed: (){}, icon: Icon(Icons.send),),
+                    IconButton(onPressed: uploadMessage, icon: Icon(Icons.send),),
                   ],
                 ),
               ),
@@ -79,4 +108,16 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
     );
   }
+
+  Future<void> uploadMessage() {
+    return FirebaseFirestore.instance.collection('conversations').doc('anneblake@gmail.com-emmamclean@gmail.com').collection('messages').add({
+      'order': 0,
+      'text': messageTEC.text,
+      'sender': 'anneblake@gmail.com',
+      'time': FieldValue.serverTimestamp(),
+    })
+    .then((value) => print("Message Added"))
+    .catchError((error) => print("Failed to send message: $error"));
+  }
+
 }
