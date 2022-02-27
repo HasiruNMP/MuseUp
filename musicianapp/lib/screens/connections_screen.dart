@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
+import 'package:musicianapp/screens/profile_screen.dart';
 
 class ConnectionsView extends StatefulWidget {
   const ConnectionsView({Key? key}) : super(key: key);
@@ -29,9 +30,25 @@ class _ConnectionsViewState extends State<ConnectionsView> {
             return ListView(
               children: snapshot.data!.docs.map((DocumentSnapshot document) {
                 Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-                return ListTile(
-                  title: Text(data['name']),
-                  subtitle: Text(data['userEmail']),
+                return Container(
+                  child: OutlinedButton(
+                    onPressed: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ProfileScreen(data['userEmail'])),
+                      );
+                      print(data['userEmail']);
+                    },
+                    child: Row(
+                      children: [
+                        CircleAvatar(radius: 20,backgroundColor: Colors.green,),
+                        Text(
+                          data['name'],
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ],
+                    ),
+                  ),
                 );
               }).toList(),
             );

@@ -5,6 +5,7 @@ import 'package:musicianapp/screens/connections_screen.dart';
 import 'package:musicianapp/screens/conversations_screen.dart';
 import 'package:musicianapp/screens/explore_screen.dart';
 import 'package:musicianapp/screens/profile_screen.dart';
+import 'package:musicianapp/screens/user_screen.dart';
 
 class NavigationScreen extends StatefulWidget {
   const NavigationScreen({Key? key}) : super(key: key);
@@ -21,7 +22,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
     ExploreScreen(),
     ConnectionsView(),
     ConversationsScreen(),
-    ProfileScreen()
+    UserScreen(),
   ];
 
   void _onItemTapped(int index) {

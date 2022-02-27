@@ -4,6 +4,7 @@ import 'package:musicianapp/screens/chat_screen.dart';
 import 'package:musicianapp/screens/connections_screen.dart';
 import 'package:musicianapp/screens/conversations_screen.dart';
 import 'package:musicianapp/screens/profile_screen.dart';
+import 'package:musicianapp/screens/user_screen.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 import 'explore_screen.dart';
@@ -59,7 +60,7 @@ class _HomeViewState extends State<HomeView> {
       const ExploreScreen(),
       const ConnectionsView(),
       const ConversationsScreen(),
-      const ProfileScreen()
+      const UserScreen()
     ];
   }
 
