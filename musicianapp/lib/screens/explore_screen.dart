@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:musicianapp/models/explore_model.dart';
+import 'package:musicianapp/screens/profile_screen.dart';
 import 'package:musicianapp/screens/setprofile_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
@@ -253,19 +254,76 @@ class _VideoAppState extends State<VideoApp> {
         // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
         setState(() {});
       });
+    _controller.pause();
   }
 
   @override
   Widget build(BuildContext context) {
     //_controller.play();
-    return Center(
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        child: AspectRatio(
-          aspectRatio: _controller.value.aspectRatio,
-          child: _controller.value.isInitialized ? VideoPlayer(_controller) : const CircularProgressIndicator(),
+    return Stack(
+      children: [
+        SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: AspectRatio(
+            aspectRatio: _controller.value.aspectRatio,
+            child: _controller.value.isInitialized ? VideoPlayer(_controller) : const Center(child: Text('Loading'),),
+          ),
         ),
+        Padding(
+          padding: const EdgeInsets.all(14.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Text('User Name, Location',
+                  style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),
+                  )
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                    onPressed: _controller.value.isPlaying ? (){
+                      setState(() {
+                        _controller.pause();
+                      });
+                    } : (){
+                      setState(() {
+                        _controller.play();
+                      });
+                      },
+                    icon: _controller.value.isPlaying ? Icon(Icons.pause_outlined,size: 60,) : Icon(Icons.play_arrow_outlined,size: 60,),
+                    color: Colors.white,
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(onPressed: (){showProfileView();}, icon: Icon(Icons.account_circle_rounded),iconSize: 30,color: Colors.white,),
+                ],
+              )
+
+
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
+  void showProfileView(){
+    showModalBottomSheet(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
       ),
+      backgroundColor: Colors.white,
+      context: context,
+      builder: (BuildContext context) {
+        return ProfileScreen('');
+      },
     );
   }
 
@@ -274,33 +332,6 @@ class _VideoAppState extends State<VideoApp> {
     super.dispose();
     _controller.dispose();
   }
-}
 
-class MyThreeOptions extends StatefulWidget {
-  const MyThreeOptions({Key? key}) : super(key: key);
 
-  @override
-  State<MyThreeOptions> createState() => _MyThreeOptionsState();
-}
-
-class _MyThreeOptionsState extends State<MyThreeOptions> {
-  int? _value = 1;
-
-  @override
-  Widget build(BuildContext context) {
-    return Wrap(
-      children: List<Widget>.generate(3, (int index) {
-          return ChoiceChip(
-            label: Text('Item $index'),
-            selected: _value == index,
-            onSelected: (bool selected) {
-              setState(() {
-                _value = selected ? index : null;
-              });
-            },
-          );
-        },
-      ).toList(),
-    );
-  }
 }
