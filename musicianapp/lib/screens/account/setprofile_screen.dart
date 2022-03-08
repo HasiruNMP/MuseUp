@@ -12,30 +12,33 @@ class _SetProfileScreenState extends State<SetProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Enter Your Details'),
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: ListView(
             children: [
-              MUText1("What's your name?"),
+              //MUText1("What's your name?"),
               const TextField (
                 decoration: InputDecoration(
                   labelText: 'Name',
                 ),
               ),
-              MUText1("What's your birthday?"),
+              //MUText1("What's your birthday?"),
               const TextField (
                 decoration: InputDecoration(
                   labelText: 'Name',
                 ),
               ),
-              MUText1("Main Role"),
+              //MUText1("Main Role"),
               const TextField (
                 decoration: InputDecoration(
                   labelText: 'Name',
                 ),
               ),
-              MUText1("Instruments"),
+              //MUText1("Instruments"),
               const TextField (
                 decoration: InputDecoration(
                   labelText: 'Name',

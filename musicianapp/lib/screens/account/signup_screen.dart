@@ -22,7 +22,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
             CommonTextField(label: 'Email Address'),
             CommonTextField(label: 'Password'),
             CommonTextField(label: 'Retype Password'),
-            CommonButton(label: 'SIGN UP', function: (){})
+            CommonButton(label: 'SIGN UP WITH EMAIL', function: (){}),
+            CommonButton(label: 'SIGN UP WITH GOOGLE', function: (){})
           ],
         ),
       ),

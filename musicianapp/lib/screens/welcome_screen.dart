@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:musicianapp/screens/account/setprofile_screen.dart';
 import 'package:musicianapp/screens/home_screen.dart';
-import 'package:musicianapp/screens/login_screen.dart';
-import 'package:musicianapp/screens/signup_screen.dart';
+import 'package:musicianapp/screens/account/signin_screen.dart';
+import 'package:musicianapp/screens/account/signup_screen.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
@@ -21,21 +22,39 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             children: [
               ElevatedButton(
                 onPressed: (){
-                  SignUpScreen();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const SignUpScreen()),
+                  );
                 },
                 child: const Text('SINGUP'),
               ),
               ElevatedButton(
                 onPressed: (){
-                  LoginScreen();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const SignInScreen()),
+                  );
                 },
                 child: const Text('LOGIN'),
               ),
               ElevatedButton(
                 onPressed: (){
-                  HomeView();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const HomeView()),
+                  );
                 },
                 child: const Text('HOME'),
+              ),
+              ElevatedButton(
+                onPressed: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const SetProfileScreen()),
+                  );
+                },
+                child: const Text('SET PROFILE'),
               ),
             ],
           )

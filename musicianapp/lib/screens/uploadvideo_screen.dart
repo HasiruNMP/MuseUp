@@ -1,7 +1,34 @@
+import 'dart:io';
+import 'dart:typed_data';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/services.dart';
+import 'package:path/path.dart';
+
+class FirebaseApi {
+  static UploadTask? uploadFile(String destination, File file) {
+    try {
+      final ref = FirebaseStorage.instance.ref(destination);
+
+      return ref.putFile(file);
+    } on FirebaseException catch (e) {
+      return null;
+    }
+  }
+
+  static UploadTask? uploadBytes(String destination, Uint8List data) {
+    try {
+      final ref = FirebaseStorage.instance.ref(destination);
+
+      return ref.putData(data);
+    } on FirebaseException catch (e) {
+      return null;
+    }
+  }
+}
 
 class UploadVideoScreen extends StatefulWidget {
   const UploadVideoScreen({Key? key}) : super(key: key);
@@ -11,6 +38,11 @@ class UploadVideoScreen extends StatefulWidget {
 }
 
 class _UploadVideoScreenState extends State<UploadVideoScreen> {
+
+  UploadTask? task;
+  File? file;
+  String vPath = 'null';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,8 +63,14 @@ class _UploadVideoScreenState extends State<UploadVideoScreen> {
                 decoration: BoxDecoration(
                     border: Border.all(color: Colors.blueAccent)
                 ),
+                child: vPath=='null' ? Center(child: Text('Select a video'),) : Container(),
               ),
-              ElevatedButton(onPressed: (){}, child: Text('select video'),),
+              ElevatedButton(
+                onPressed: (){
+                  selectFile();
+                },
+                child: Text('select video'),
+              ),
               ElevatedButton(onPressed: (){}, child: Text('UPLOAD'),)
             ],
           ),
@@ -40,74 +78,33 @@ class _UploadVideoScreenState extends State<UploadVideoScreen> {
       ),
     );
   }
-}
-
-class VideoApp extends StatefulWidget {
-  String link;
-  VideoApp(this.link, {Key? key}) : super(key: key);
-
-  @override
-  _VideoAppState createState() => _VideoAppState();
-}
-
-class _VideoAppState extends State<VideoApp> {
-  late VideoPlayerController _controller,
-  UploadTask? task;
-  File? file;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = VideoPlayerController.network(widget.link)
-      ..initialize().then((_) {
-        setState(() {});
-      });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    //_controller.play();
-    return Stack(
-      children: [
-        SizedBox(
-          width: MediaQuery.of(context).size.width,
-          child: AspectRatio(
-            aspectRatio: _controller.value.aspectRatio,
-            child: _controller.value.isInitialized ? VideoPlayer(_controller) : const Center(child: Text('Loading'),),
-          ),
-        ),
-        Center(
-          child: IconButton(
-            onPressed: _controller.value.isPlaying ? (){
-              setState(() {
-                _controller.pause();
-              });
-            } : (){
-              setState(() {
-                _controller.play();
-              });
-            },
-            icon: _controller.value.isPlaying ? Icon(Icons.pause_outlined,size: 60,) : Icon(Icons.play_arrow_outlined,size: 60,),
-            color: Colors.white,
-          ),
-        )
-      ],
-    );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _controller.dispose();
-  }
-
   Future selectFile() async {
     final result = await FilePicker.platform.pickFiles(allowMultiple: false);
 
     if (result == null) return;
-    final path = result.files.single.path!;
+    vPath = result.files.single.path!;
 
-    setState(() => file = File(path));
+    setState(() => file = File(vPath));
+
   }
 
+  Future uploadFile() async {
+    if (file == null) return;
+
+    final fileName = basename(file!.path);
+    final destination = 'files/$fileName';
+
+    task = FirebaseApi.uploadFile(destination, file!);
+    setState(() {});
+
+    if (task == null) return;
+
+    final snapshot = await task!.whenComplete(() {});
+    final urlDownload = await snapshot.ref.getDownloadURL();
+
+    print('Download-Link: $urlDownload');
+  }
 }
+
+
+

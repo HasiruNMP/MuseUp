@@ -5,10 +5,11 @@ import 'package:musicianapp/screens/chat_screen.dart';
 import 'package:musicianapp/screens/explore_screen.dart';
 import 'package:musicianapp/screens/home_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:musicianapp/screens/login_screen.dart';
+import 'package:musicianapp/screens/account/signin_screen.dart';
 import 'package:musicianapp/screens/navigation_screen.dart';
-import 'package:musicianapp/screens/setprofile_screen.dart';
-import 'package:musicianapp/screens/signup_screen.dart';
+import 'package:musicianapp/screens/reportuser_screen.dart';
+import 'package:musicianapp/screens/account/setprofile_screen.dart';
+import 'package:musicianapp/screens/account/signup_screen.dart';
 import 'package:musicianapp/screens/welcome_screen.dart';
 import 'package:provider/provider.dart';
 import 'services/firebase_options.dart';
@@ -41,9 +42,12 @@ class MuseUpApp extends StatelessWidget {
             scaffoldBackgroundColor: const Color(0xFFEFEFEF)
         ),
         //home: const HomeView(),
-        initialRoute: '/',
+        initialRoute: 'test',
         routes: {
+          'test': (context) => const WelcomeScreen(),
+
           '/': (context) => const NavigationScreen(),
+          'setProfile': (context) => const SetProfileScreen(),
           'chat': (context) => const ChatScreen(),
         },
       ),

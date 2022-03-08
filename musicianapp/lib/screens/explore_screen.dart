@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:musicianapp/models/explore_model.dart';
 import 'package:musicianapp/screens/profile_screen.dart';
-import 'package:musicianapp/screens/setprofile_screen.dart';
+import 'package:musicianapp/screens/account/setprofile_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 

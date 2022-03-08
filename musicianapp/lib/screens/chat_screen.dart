@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cupertino_icons/cupertino_icons.dart';
-import 'package:musicianapp/screens/login_screen.dart';
+import 'package:musicianapp/screens/account/signin_screen.dart';
 
 class ChatScreen extends StatefulWidget {
 
@@ -98,7 +98,11 @@ class _ChatScreenState extends State<ChatScreen> {
                         ),
                       ),
                     ),
-                    IconButton(onPressed: uploadMessage, icon: Icon(Icons.send),),
+                    IconButton(
+                      onPressed: (){
+                        uploadMessage();
+                        messageTEC.clear();
+                    }, icon: Icon(Icons.send),),
                   ],
                 ),
               ),

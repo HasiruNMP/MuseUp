@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
-import 'package:musicianapp/services/authentication.dart';
+import 'package:musicianapp/services/auth_service.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class SignInScreen extends StatefulWidget {
+  const SignInScreen({Key? key}) : super(key: key);
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _SignInScreenState createState() => _SignInScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text('Sign In'),
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(12.0),
@@ -24,13 +26,17 @@ class _LoginScreenState extends State<LoginScreen> {
               CommonTextField(),
               Text('PASSWORD'),
               CommonTextField(),
-              Center(
-                child: ElevatedButton(
-                  onPressed: (){
-                    signInWithEmail('hasirunmp@gmail.com', '123qwe');
-                  },
-                  child: Text('LOGIN'),
-                ),
+              ElevatedButton(
+                onPressed: (){
+                  //signInWithEmail('hasirunmp@gmail.com', '123qwe');
+                },
+                child: Text('Sign in with Email'),
+              ),
+              ElevatedButton(
+                onPressed: (){
+                  //signInWithEmail('hasirunmp@gmail.com', '123qwe');
+                },
+                child: Text('Sign In with Google'),
               )
             ],
           ),
