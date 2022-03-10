@@ -1,34 +1,23 @@
 import 'package:flutter/material.dart';
 
-class CommonTextField extends StatelessWidget {
+class MUTextField1 extends StatelessWidget {
+  const MUTextField1({
+    Key? key,
+    required this.controller,
+    required this.label
+  }) : super(key: key);
 
-  String label;
-  CommonTextField({Key? key, required this.label,}) : super(key: key);
+  final TextEditingController controller;
+  final String label;
 
   @override
   Widget build(BuildContext context) {
-    return TextField (
+    return TextField(
+      controller: controller,
       decoration: InputDecoration(
-          labelText: label,
+        border: OutlineInputBorder(),
+        labelText: label,
       ),
-    );
-  }
-}
-
-class CommonButton extends StatelessWidget {
-
-  String label;
-  Function function;
-
-  CommonButton({Key? key, required this.label, required this.function}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: (){
-        function;
-      },
-      child: Text(label),
     );
   }
 }

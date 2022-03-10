@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:musicianapp/screens/uploadvideo_screen.dart';
+import 'package:musicianapp/screens/account/uploadvideo_screen.dart';
+import 'package:musicianapp/services/auth_service.dart';
 
 class UserScreen extends StatefulWidget {
   const UserScreen({Key? key}) : super(key: key);
@@ -27,6 +28,12 @@ class _UserScreenState extends State<UserScreen> {
                 );
               },
               child: Text('ADD VIDEO'),
+            ),
+            ElevatedButton(
+              onPressed: (){
+                AuthService().signOut();
+              },
+              child: Text('Logout'),
             ),
           ],
         ),

@@ -1,24 +1,25 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:musicianapp/screens/chat_screen.dart';
+import 'package:geoflutterfire/geoflutterfire.dart';
+import 'package:musicianapp/screens/explore/profile_screen.dart';
 
-class ConversationsScreen extends StatefulWidget {
-  const ConversationsScreen({Key? key}) : super(key: key);
+class ConnectionsView extends StatefulWidget {
+  const ConnectionsView({Key? key}) : super(key: key);
 
   @override
-  _ConversationsScreenState createState() => _ConversationsScreenState();
+  _ConnectionsViewState createState() => _ConnectionsViewState();
 }
 
-class _ConversationsScreenState extends State<ConversationsScreen> {
+class _ConnectionsViewState extends State<ConnectionsView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Messages'),
+        title: Text('Connections'),
       ),
       body: SafeArea(
         child: StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance.collection('conversations').snapshots(),
+          stream: FirebaseFirestore.instance.collection('users').doc('hasirunmp@gmail.com').collection('connections').snapshots(),
           builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasError) {
               return Text('Something went wrong');
@@ -34,19 +35,16 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
                     onPressed: (){
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const ChatScreen(),),
+                        MaterialPageRoute(builder: (context) => ProfileScreen(data['userEmail'])),
                       );
+                      print(data['userEmail']);
                     },
                     child: Row(
-                      //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        CircleAvatar(radius: 25,backgroundColor: Colors.teal,),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(data['participant2'],style: TextStyle(fontSize: 18),),
-                            //Text(data['participant1']),
-                          ],
+                        CircleAvatar(radius: 20,backgroundColor: Colors.green,),
+                        Text(
+                          data['name'],
+                          style: TextStyle(fontSize: 18),
                         ),
                       ],
                     ),

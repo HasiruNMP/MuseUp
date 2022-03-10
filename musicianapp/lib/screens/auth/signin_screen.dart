@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:musicianapp/services/auth_service.dart';
+import 'package:musicianapp/common/common_widgets.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
@@ -10,6 +12,10 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
+
+  final _tecEmail = TextEditingController();
+  final _tecPW = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,13 +28,12 @@ class _SignInScreenState extends State<SignInScreen> {
           child: ListView(
             children: [
               SizedBox(height: MediaQuery.of(context).size.height/4,),
-              Text('EMAIL'),
-              CommonTextField(),
-              Text('PASSWORD'),
-              CommonTextField(),
+              MUTextField1(controller: _tecEmail,label: 'Email',),
+              MUTextField1(controller: _tecPW,label: 'Password',),
               ElevatedButton(
                 onPressed: (){
-                  //signInWithEmail('hasirunmp@gmail.com', '123qwe');
+                  AuthService().signInWithEmail(_tecEmail.text,_tecPW.text);
+                  Navigator.of(context).popUntil(ModalRoute.withName("/"));
                 },
                 child: Text('Sign in with Email'),
               ),
@@ -46,29 +51,5 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 }
 
-class CommonTextField extends StatelessWidget {
-  const CommonTextField({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      maxLength: 20,
-      decoration: const InputDecoration(
-        //icon: Icon(Icons.favorite),
-        labelStyle: TextStyle(
-          color: Color(0xFF6200EE),
-        ),
-        /*suffixIcon: Icon(
-          Icons.check_circle,
-        ),*/
-        enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Color(0xFF6200EE)),
-        ),
-      ),
-    );
-  }
-}
 
 

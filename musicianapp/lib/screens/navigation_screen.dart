@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter/material.dart';
-import 'package:musicianapp/screens/connections_screen.dart';
-import 'package:musicianapp/screens/conversations_screen.dart';
-import 'package:musicianapp/screens/explore_screen.dart';
-import 'package:musicianapp/screens/profile_screen.dart';
+import 'package:musicianapp/screens/connections/connections_screen.dart';
+import 'package:musicianapp/screens/connections/conversations_screen.dart';
+import 'package:musicianapp/screens/explore/explore_screen.dart';
+import 'package:musicianapp/screens/explore/profile_screen.dart';
 import 'package:musicianapp/screens/account/user_screen.dart';
 
 class NavigationScreen extends StatefulWidget {
