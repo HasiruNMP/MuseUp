@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:musicianapp/screens/account/setprofile_screen.dart';
+import 'package:musicianapp/screens/account/uploadphoto_screen.dart';
+import 'package:musicianapp/screens/account/user_screen.dart';
 import 'package:musicianapp/screens/auth/signin_screen.dart';
 import 'package:musicianapp/screens/auth/signup_screen.dart';
+import 'package:musicianapp/screens/explore/profile_screen.dart';
 import 'package:musicianapp/screens/navigation_screen.dart';
+import 'package:musicianapp/services/auth_service.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
@@ -55,6 +59,24 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   );
                 },
                 child: const Text('SET PROFILE'),
+              ),
+              ElevatedButton(
+                onPressed: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const UserScreen()),
+                  );
+                },
+                child: const Text('USER'),
+              ),
+              ElevatedButton(
+                onPressed: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const UploadPhotoScreen()),
+                  );
+                },
+                child: const Text('Photo upload'),
               ),
             ],
           )

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musicianapp/screens/account/setprofile_screen.dart';
 import 'package:musicianapp/screens/navigation_screen.dart';
 import 'package:musicianapp/screens/welcome_screen.dart';
 import 'package:musicianapp/services/auth_service.dart';
@@ -20,11 +21,19 @@ class _MainStateManagerState extends State<MainStateManager> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<String?>(
+    return StreamBuilder<CurrentUser>(
       stream: AuthService().onAuthStateChanged,
       builder: (context, snapshot) {
         if(snapshot.connectionState == ConnectionState.active){
-          return (snapshot.data != null)? NavigationScreen() : WelcomeScreen();
+          final currentUser = snapshot.data;
+          if ((currentUser != null)) {
+            return Provider<CurrentUser>.value(
+              value: currentUser,
+              child: SetProfileScreen()
+            );
+          } else {
+            return WelcomeScreen();
+          }
         }
         return Container(
           child: Center(

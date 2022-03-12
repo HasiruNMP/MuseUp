@@ -1,6 +1,7 @@
 //import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:musicianapp/models/explore_model.dart';
+import 'package:musicianapp/screens/account/setlocation_screen.dart';
 import 'package:musicianapp/screens/connections/chat_screen.dart';
 import 'package:musicianapp/screens/explore/explore_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -39,7 +40,7 @@ class MuseUpApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'MuseUp',
         theme: buildThemeData(),
-        initialRoute: '/',
+        initialRoute: 'test2',
         routes: routes(),
       ),
     );
@@ -47,7 +48,8 @@ class MuseUpApp extends StatelessWidget {
 
   Map<String, WidgetBuilder> routes() {
     return {
-        'test': (context) => const WelcomeScreen(),
+        'test': (context) => const SetLocationScreen(),
+        'test2': (context) => const WelcomeScreen(),
 
         '/': (context) => const MainStateManager(),
         'setProfile': (context) => const SetProfileScreen(),

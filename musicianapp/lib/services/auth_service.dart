@@ -3,14 +3,18 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 
+class CurrentUser {
+  String userID;
+  CurrentUser(this.userID);
+}
+
 class AuthService with ChangeNotifier {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  late User user;
-  String userID = 'No User';
+  //String userID = 'No User';
   int authState = 0;
 
-  Stream<String?> get onAuthStateChanged => _auth.authStateChanges().map((User? user) => user?.uid);
+  Stream<CurrentUser> get onAuthStateChanged => _auth.authStateChanges().map((User? user) => CurrentUser(user!.uid));
 
   void listenToAuthStateChanges(){
     _auth.authStateChanges().listen((user) {
