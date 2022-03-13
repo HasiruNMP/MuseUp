@@ -2,16 +2,22 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:musicianapp/common/common_widgets.dart';
+import 'package:musicianapp/common/globals.dart';
+import 'package:musicianapp/models/profile_model.dart';
 import 'package:musicianapp/screens/account/setlocation_screen.dart';
 import 'package:musicianapp/screens/account/uploadphoto_screen.dart';
 import 'package:musicianapp/screens/account/uploadvideo_screen.dart';
 import 'package:musicianapp/services/auth_service.dart';
 import 'package:provider/provider.dart';
+import 'package:musicianapp/models/user_model.dart';
 
-CollectionReference users = FirebaseFirestore.instance.collection('users');
+
 
 class SetProfileScreen extends StatefulWidget {
-  const SetProfileScreen({Key? key}) : super(key: key);
+
+  String userID;
+
+  SetProfileScreen(this.userID, {Key? key}) : super(key: key);
 
   @override
   _SetProfileScreenState createState() => _SetProfileScreenState();
@@ -82,7 +88,7 @@ class _SetProfileScreenState extends State<SetProfileScreen> {
                   onPressed: (){
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const EnterRoleInfo()),
+                      MaterialPageRoute(builder: (context) => EnterRoleInfo(widget.userID)),
                     );
                   },
                   child: Text('NEXT'),
@@ -114,8 +120,7 @@ class _SetProfileScreenState extends State<SetProfileScreen> {
   }
 
   Future<void> addUser() {
-    final user = Provider.of<CurrentUser>(context,listen:false);
-    return users.doc(user.userID).set({
+    return Globals.users.doc(widget.userID).set({
       'full_name': "Mary Jane",
       'age': 18
     }).then((value) => print("User Added")).catchError((error) => print("Failed to add user: $error"));
@@ -123,7 +128,8 @@ class _SetProfileScreenState extends State<SetProfileScreen> {
 }
 
 class EnterRoleInfo extends StatefulWidget {
-  const EnterRoleInfo({Key? key}) : super(key: key);
+  String userID;
+  EnterRoleInfo(this.userID, {Key? key}) : super(key: key);
 
   @override
   State<EnterRoleInfo> createState() => _EnterRoleInfoState();
@@ -227,6 +233,14 @@ class _EnterRoleInfoState extends State<EnterRoleInfo> {
                     );
                   },
                   child: Text('NEXT'),
+                ),
+              ),
+              Center(
+                child: ElevatedButton(
+                  onPressed: (){
+                    Profile().addRoleInfo();
+                  },
+                  child: Text('SEND'),
                 ),
               ),
             ],

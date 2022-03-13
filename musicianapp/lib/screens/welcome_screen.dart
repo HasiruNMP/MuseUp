@@ -55,15 +55,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 onPressed: (){
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const SetProfileScreen()),
-                  );
-                },
-                child: const Text('SET PROFILE'),
-              ),
-              ElevatedButton(
-                onPressed: (){
-                  Navigator.push(
-                    context,
                     MaterialPageRoute(builder: (context) => const UserScreen()),
                   );
                 },

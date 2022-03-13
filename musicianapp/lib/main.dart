@@ -35,12 +35,13 @@ class MuseUpApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => Explorer()),
         ChangeNotifierProvider(create: (context) => AuthService()),
+        //Provider(create: (context) => CurrentUser()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'MuseUp',
         theme: buildThemeData(),
-        initialRoute: 'test2',
+        initialRoute: '/',
         routes: routes(),
       ),
     );
@@ -52,7 +53,6 @@ class MuseUpApp extends StatelessWidget {
         'test2': (context) => const WelcomeScreen(),
 
         '/': (context) => const MainStateManager(),
-        'setProfile': (context) => const SetProfileScreen(),
         'chat': (context) => const ChatScreen(),
       };
   }
