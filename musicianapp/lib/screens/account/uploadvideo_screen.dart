@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/services.dart';
+import 'package:musicianapp/models/profile_model.dart';
 import 'package:musicianapp/screens/videoplayer_screen.dart';
 import 'package:path/path.dart';
 import 'package:video_compress/video_compress.dart';
@@ -85,7 +86,10 @@ class _UploadVideoScreenState extends State<UploadVideoScreen> {
               ElevatedButton(onPressed: (){
                 compressVideo();
               }, child: Text('UPLOAD'),),
-              ElevatedButton(onPressed: (){}, child: Text('Finish Setup'),),
+              ElevatedButton(onPressed: (){
+                Profile().setProfileState(1);
+                Navigator.of(context).popUntil(ModalRoute.withName('/'));
+              }, child: Text('Finish Setup'),),
             ],
           ),
         ),

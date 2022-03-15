@@ -27,36 +27,19 @@ class _MainStateManagerState extends State<MainStateManager> {
   Widget build(BuildContext context) {
     final authService = Provider.of<AuthService>(context,listen: false);
     return StreamBuilder<CurrentUser>(
+
       stream: authService.onAuthStateChanged,
       builder: (context, snapshot) {
         if(snapshot.connectionState == ConnectionState.active){
+
           final currentUser = snapshot.data;
+
           if ((currentUser != null)) {
             Globals.userID = currentUser.userID;
             return Provider<CurrentUser>.value(
                 value: currentUser,
-                child: SetProfileScreen(currentUser.userID)
+                child: ProfileStateManager(currentUser.userID),
             );
-
-            /*FirebaseFirestore.instance.collection('users').doc(currentUser.userID).get().then((DocumentSnapshot documentSnapshot) {
-              if (documentSnapshot.exists) {
-                final data = documentSnapshot.get('profileState');
-                print('Document data: ${data}');
-                if(data==0){
-                  return Provider<CurrentUser>.value(
-                      value: currentUser,
-                      child: SetProfileScreen()
-                  );
-                }else{
-                  return Provider<CurrentUser>.value(
-                      value: currentUser,
-                      child: NavigationScreen()
-                  );
-                }
-              }else{
-                return const ErrorScreen();
-              }
-            });*/
 
           } else {
             return SignInScreen();
@@ -73,6 +56,66 @@ class _MainStateManagerState extends State<MainStateManager> {
     );
   }
 }
+
+class ProfileStateManager extends StatefulWidget {
+  final String userID;
+  ProfileStateManager(this.userID);
+
+  @override
+  State<ProfileStateManager> createState() => _ProfileStateManagerState();
+}
+
+class _ProfileStateManagerState extends State<ProfileStateManager> {
+  @override
+  Widget build(BuildContext context) {
+
+    return StreamBuilder<DocumentSnapshot>(
+      stream: Globals.usersRef.doc(widget.userID).snapshots(),
+      builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+
+        if (snapshot.hasError) {
+          return Text("Something went wrong");
+        }
+
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return LoadingScreen();
+        }
+
+        if (snapshot.hasData && !snapshot.data!.exists) {
+          return Text("Document does not exist");
+        }
+
+        Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
+        if(data['profileState'] == 1){
+          return NavigationScreen();
+        }else{
+          return SetProfileScreen(widget.userID);
+        }
+      },
+    );
+  }
+}
+
+class LoadingScreen extends StatefulWidget {
+  const LoadingScreen({Key? key}) : super(key: key);
+
+  @override
+  State<LoadingScreen> createState() => _LoadingScreenState();
+}
+
+class _LoadingScreenState extends State<LoadingScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: Container(
+          child: Center(
+            child: Text('LOADING...'),
+        ),
+      ),
+    );
+  }
+}
+
 
 class ErrorScreen extends StatelessWidget {
   const ErrorScreen({Key? key}) : super(key: key);

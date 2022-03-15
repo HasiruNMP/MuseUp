@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:musicianapp/models/profile_model.dart';
 import 'package:musicianapp/screens/account/uploadphoto_screen.dart';
 import 'package:musicianapp/screens/account/uploadvideo_screen.dart';
 
@@ -19,14 +21,17 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
   String selectedLocationName = 'Getting Current Location';
   late LatLng currentLocation;
 
+
   @override
   void initState() {
-    _determinePosition();
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    //_determinePosition();
+    getCurrentLocation();
     return Scaffold(
       appBar: AppBar(
         title: Text('Select Your Location'),
@@ -52,18 +57,29 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
                 child: Text('NEXT'),
               ),
             ),
+            Center(
+              child: ElevatedButton(
+                onPressed: (){
+                  Profile().addLocation(currentLocation);
+                },
+                child: Text('Send'),
+              ),
+            ),
           ],
         ),
       ),
     );
   }
   Future<void> getCurrentLocation() async {
-    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    //print('QPQPQPQPQPQ');
+    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
     List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
+    currentLocation = LatLng(position.latitude, position.longitude);
     setState(() {
       selectedLocationName = placemarks[0].country! + " " + placemarks[0].subAdministrativeArea!;
     });
   }
+
   Future<Position> _determinePosition() async {
     bool serviceEnabled;
     LocationPermission permission;
@@ -98,7 +114,6 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
 
     // When we reach here, permissions are granted and we can
     // continue accessing the position of the device.
-    getCurrentLocation();
     return await Geolocator.getCurrentPosition();
   }
 }

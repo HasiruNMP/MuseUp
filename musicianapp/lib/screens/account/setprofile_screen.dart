@@ -1,16 +1,33 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:musicianapp/common/common_widgets.dart';
 import 'package:musicianapp/common/globals.dart';
 import 'package:musicianapp/models/profile_model.dart';
 import 'package:musicianapp/screens/account/setlocation_screen.dart';
-import 'package:musicianapp/screens/account/uploadphoto_screen.dart';
-import 'package:musicianapp/screens/account/uploadvideo_screen.dart';
-import 'package:musicianapp/services/auth_service.dart';
-import 'package:provider/provider.dart';
-import 'package:musicianapp/models/user_model.dart';
 
+class GetStartedScreen extends StatefulWidget {
+
+  String userID;
+  int profileState;
+
+  GetStartedScreen(this.userID,this.profileState, {Key? key}) : super(key: key);
+
+  @override
+  State<GetStartedScreen> createState() => _GetStartedScreenState();
+}
+
+class _GetStartedScreenState extends State<GetStartedScreen> {
+  @override
+  Widget build(BuildContext context) {
+
+    switch(widget.profileState){
+      case 0: {return SetProfileScreen(widget.userID);}
+      case 1: {return EnterRoleInfo(widget.userID);}
+      case 2: {return EnterBio();}
+    }
+    return Container();
+  }
+}
 
 
 class SetProfileScreen extends StatefulWidget {
@@ -26,16 +43,15 @@ class SetProfileScreen extends StatefulWidget {
 class _SetProfileScreenState extends State<SetProfileScreen> {
 
   final tecName = TextEditingController();
-  final tecBio = TextEditingController();
-  List genderList = ['Male','Female','Other',];
-  String gender = 'NotSelected';
-  DateTime selectedDate = DateTime.now();
+  String selectedGender = 'NotSelected';
+  DateTime selectedDOB = DateTime.now();
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Enter Your Details'),
+        title: const Text('Enter Your Details'),
       ),
       body: SafeArea(
         child: Padding(
@@ -43,7 +59,7 @@ class _SetProfileScreenState extends State<SetProfileScreen> {
           child: ListView(
             children: [
               MUTextField1(controller: tecName, label: 'Name'),
-              Text(
+              const Text(
                 'What is your gender?',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
@@ -51,20 +67,20 @@ class _SetProfileScreenState extends State<SetProfileScreen> {
                 ),
               ),
               Wrap(
-                children: List<Widget>.generate(genderList.length, (int index) {
+                children: List<Widget>.generate(Profile.genderList.length, (int index) {
                   return ChoiceChip(
-                    label: Text(genderList[index]),
-                    selected: gender == genderList[index],
+                    label: Text(Profile.genderList[index]),
+                    selected: selectedGender == Profile.genderList[index],
                     onSelected: (bool selected) {
                       setState(() {
-                        gender = selected ? genderList[index] : null;
+                        selectedGender = selected ? Profile.genderList[index] : null;
                       });
                     },
                   );
                 },
                 ).toList(),
               ),
-              Text(
+              const Text(
                 'What is your date of birth?',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
@@ -74,13 +90,13 @@ class _SetProfileScreenState extends State<SetProfileScreen> {
               Row(
                 children: [
                   Text(
-                    '${selectedDate.day}.${selectedDate.month}.${selectedDate.year}',
-                    style: TextStyle(
+                    '${selectedDOB.day}.${selectedDOB.month}.${selectedDOB.year}',
+                    style: const TextStyle(
                       fontSize: 17,
                     ),
                     //textAlign: TextAlign.center,
                   ),
-                  OutlinedButton(onPressed: (){_selectDate(context);}, child: Text('Select Date'),),
+                  OutlinedButton(onPressed: (){_selectDate(context);}, child: const Text('Select Date'),),
                 ],
               ),
               Center(
@@ -91,13 +107,15 @@ class _SetProfileScreenState extends State<SetProfileScreen> {
                       MaterialPageRoute(builder: (context) => EnterRoleInfo(widget.userID)),
                     );
                   },
-                  child: Text('NEXT'),
+                  child: const Text('NEXT'),
                 ),
               ),
               Center(
                 child: ElevatedButton(
-                  onPressed: addUser,
-                  child: Text('send'),
+                  onPressed: (){
+                    Profile().addUser(tecName.text,selectedDOB,selectedGender);
+                  },
+                  child: const Text('send'),
                 ),
               ),
             ],
@@ -109,21 +127,15 @@ class _SetProfileScreenState extends State<SetProfileScreen> {
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
-        initialDate: selectedDate,
-        firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2101));
-    if (picked != null && picked != selectedDate) {
+        initialDate: selectedDOB,
+        firstDate: DateTime(1900),
+        lastDate: DateTime.now(),
+    );
+    if (picked != null && picked != selectedDOB) {
       setState(() {
-        selectedDate = picked;
+        selectedDOB = picked;
       });
     }
-  }
-
-  Future<void> addUser() {
-    return Globals.users.doc(widget.userID).set({
-      'full_name': "Mary Jane",
-      'age': 18
-    }).then((value) => print("User Added")).catchError((error) => print("Failed to add user: $error"));
   }
 }
 
@@ -138,24 +150,22 @@ class EnterRoleInfo extends StatefulWidget {
 class _EnterRoleInfoState extends State<EnterRoleInfo> {
 
   String mainRole = 'Vocalist';
-  String instrument = 'Guitar';
-  List roleList = ['Composer','Instrumentalist','Vocalist', 'Producer'];
-  List genreList = ['Any Genre','Pop','Classical','Rock', 'Jazz'];
-  List selectedGenres = [];
-  List instrumentList = ['Guitar','Piano','Drums', 'Violin','Harp','Cello','Trumpet','Viola','Bass Guitar','Percussion','Flute'];
+  String selectedInstrument = 'Guitar';
+  List<String> selectedGenres = [];
+  List<bool> selectedRole = [false, false, false, false];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Enter Your Details'),
+        title: const Text('Enter Your Details'),
       ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: ListView(
             children: [
-              Text(
+              const Text(
                 'What is your main role?',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
@@ -163,20 +173,22 @@ class _EnterRoleInfoState extends State<EnterRoleInfo> {
                 ),
               ),
               Wrap(
-                children: List<Widget>.generate(roleList.length, (int index) {
+                children: List<Widget>.generate(Profile.roleList.length, (int index) {
                   return ChoiceChip(
-                    label: Text(roleList[index]),
-                    selected: mainRole == roleList[index],
+                    label: Text(Profile.roleList[index]),
+                    selected: mainRole == Profile.roleList[index],
                     onSelected: (bool selected) {
                       setState(() {
-                        mainRole = selected ? roleList[index] : null;
+                        mainRole = selected ? Profile.roleList[index] : null;
+                        selectedRole = [false, false, false, false];
+                        selectedRole[index] = true;
                       });
                     },
                   );
                 },
                 ).toList(),
               ),
-              Text(
+              const Text(
                 'What instrument do you play?',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
@@ -184,14 +196,14 @@ class _EnterRoleInfoState extends State<EnterRoleInfo> {
                 ),
               ),
               Container(
-                child: mainRole != 'Instrumentalist'? Center(child: Text('Not Applicable'),) : Wrap(
-                  children: List<Widget>.generate(instrumentList.length, (int index) {
+                child: mainRole != 'Instrumentalist'? const Center(child: Text('Not Applicable'),) : Wrap(
+                  children: List<Widget>.generate(Profile.instrumentList.length, (int index) {
                     return ChoiceChip(
-                      label: Text(instrumentList[index]),
-                      selected: instrument == instrumentList[index],
+                      label: Text(Profile.instrumentList[index]),
+                      selected: selectedInstrument == Profile.instrumentList[index],
                       onSelected: (bool selected) {
                         setState(() {
-                          instrument = selected ? instrumentList[index] : null;
+                          selectedInstrument = selected ? Profile.instrumentList[index] : null;
                         });
                       },
                     );
@@ -199,7 +211,7 @@ class _EnterRoleInfoState extends State<EnterRoleInfo> {
                   ).toList(),
                 ),
               ),
-              Text(
+              const Text(
                 'What are your music genres?',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
@@ -207,16 +219,16 @@ class _EnterRoleInfoState extends State<EnterRoleInfo> {
                 ),
               ),
               Wrap(
-                children: List<Widget>.generate(genreList.length, (int index) {
+                children: List<Widget>.generate(Profile.genreList.length, (int index) {
                   return FilterChip(
-                    label: Text(genreList[index]),
-                    selected: selectedGenres.contains(genreList[index]),
+                    label: Text(Profile.genreList[index]),
+                    selected: selectedGenres.contains(Profile.genreList[index]),
                     onSelected: (bool selected) {
                       setState(() {
                         if(selected){
-                          selectedGenres.add(genreList[index]);
+                          selectedGenres.add(Profile.genreList[index]);
                         }else{
-                          selectedGenres.remove(genreList[index]);
+                          selectedGenres.remove(Profile.genreList[index]);
                         }
                       });
                     },
@@ -232,15 +244,15 @@ class _EnterRoleInfoState extends State<EnterRoleInfo> {
                       MaterialPageRoute(builder: (context) => const EnterBio()),
                     );
                   },
-                  child: Text('NEXT'),
+                  child: const Text('NEXT'),
                 ),
               ),
               Center(
                 child: ElevatedButton(
                   onPressed: (){
-                    Profile().addRoleInfo();
+                    Profile().addRoleInfo(selectedRole,selectedInstrument,selectedGenres);
                   },
-                  child: Text('SEND'),
+                  child: const Text('SEND'),
                 ),
               ),
             ],
@@ -259,11 +271,14 @@ class EnterBio extends StatefulWidget {
 }
 
 class _EnterBioState extends State<EnterBio> {
+
+  final tecBio = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Enter Bio'),
+        title: const Text('Enter Bio'),
       ),
       body: SafeArea(
         child: Padding(
@@ -271,10 +286,11 @@ class _EnterBioState extends State<EnterBio> {
           child: ListView(
             children: [
               TextField(
+                controller: tecBio,
                 keyboardType: TextInputType.multiline,
                 maxLines: 15,
                 textAlign: TextAlign.justify,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Bio',
                 ),
@@ -287,7 +303,15 @@ class _EnterBioState extends State<EnterBio> {
                       MaterialPageRoute(builder: (context) => const SetLocationScreen()),
                     );
                   },
-                  child: Text('NEXT'),
+                  child: const Text('NEXT'),
+                ),
+              ),
+              Center(
+                child: ElevatedButton(
+                  onPressed: (){
+                    Profile().addBio(tecBio.text);
+                  },
+                  child: const Text('NEXT'),
                 ),
               ),
             ],
