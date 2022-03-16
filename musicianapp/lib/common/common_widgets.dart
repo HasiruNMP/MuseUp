@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 final ButtonStyle flatButtonStyle1 = TextButton.styleFrom(
-  primary: Colors.black87,
+  primary: Colors.white,
   backgroundColor: Colors.indigo,
   minimumSize: Size(88, 36),
   padding: EdgeInsets.symmetric(horizontal: 16.0),

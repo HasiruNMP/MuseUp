@@ -108,16 +108,11 @@ class _UploadVideoScreenState extends State<UploadVideoScreen> {
 
   Future selectFile() async {
     final result = await FilePicker.platform.pickFiles(allowMultiple: false);
-
     if (result == null) return;
     vPath = result.files.single.path!;
-
     setState(() {
       file = File(vPath);
-
     });
-
-
   }
 
   Future uploadFile() async {
@@ -143,6 +138,7 @@ class _UploadVideoScreenState extends State<UploadVideoScreen> {
       final ref = await firebase_storage.FirebaseStorage.instance.ref('uploads/${basename(file.path)}').putFile(file);
       final url = await ref.ref.getDownloadURL();
       print(url);
+      Profile().addVideoLink(url);
     } on FirebaseException catch (e) {
       // e.g, e.code == 'canceled'
     }

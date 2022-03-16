@@ -4,9 +4,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:musicianapp/models/explore_model.dart';
 import 'package:musicianapp/screens/account/setlocation_screen.dart';
 import 'package:musicianapp/screens/connections/chat_screen.dart';
+import 'package:musicianapp/screens/connections/connections_screen.dart';
 import 'package:musicianapp/screens/explore/explore_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:musicianapp/screens/auth/signin_screen.dart';
+import 'package:musicianapp/screens/explore/profile_screen.dart';
 import 'package:musicianapp/screens/mainstatemanager.dart';
 import 'package:musicianapp/screens/navigation_screen.dart';
 import 'package:musicianapp/screens/explore/reportuser_screen.dart';
@@ -15,6 +17,7 @@ import 'package:musicianapp/screens/auth/signup_screen.dart';
 import 'package:musicianapp/screens/welcome_screen.dart';
 import 'package:musicianapp/services/auth_service.dart';
 import 'package:provider/provider.dart';
+import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'services/firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -50,7 +53,7 @@ class MuseUpApp extends StatelessWidget {
 
   Map<String, WidgetBuilder> routes() {
     return {
-        'test': (context) => const SetLocationScreen(),
+        'test': (context) => SetProfileScreen(''),
         'test2': (context) => const WelcomeScreen(),
         '/': (context) => const MainStateManager(),
         'chat': (context) => const ChatScreen(),
@@ -59,15 +62,19 @@ class MuseUpApp extends StatelessWidget {
 
   ThemeData buildThemeData() {
     return ThemeData(
-      primarySwatch: Colors.teal,
-      scaffoldBackgroundColor: Colors.white,
+      primarySwatch: Colors.indigo,
+      scaffoldBackgroundColor: Color(0xFFFFFCF2),
       appBarTheme: const AppBarTheme(
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
         elevation: 0.0,
       ),
+      bottomAppBarTheme: BottomAppBarTheme(
+        elevation: 0.0,
+        color: Colors.white,
+      ),
+      bottomAppBarColor: Colors.white,
     );
   }
 }
-
 

@@ -26,7 +26,6 @@ class _ExploreScreenState extends State<ExploreScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Explore'),
-        elevation: 1,
         actions: [
           IconButton(onPressed: (){showFilterView();}, icon: const Icon(CupertinoIcons.bars),)
         ],
@@ -263,28 +262,18 @@ class _VideoAppState extends State<VideoApp> {
     return Stack(
       children: [
         SizedBox(
-          width: MediaQuery.of(context).size.width,
-          child: AspectRatio(
-            aspectRatio: _controller.value.aspectRatio,
-            child: _controller.value.isInitialized ? VideoPlayer(_controller) : const Center(child: Text('Loading'),),
-          ),
+          //width: MediaQuery.of(context).size.width,
+          child: _controller.value.isInitialized ? VideoPlayer(_controller) : const Center(child: Text('Loading'),),
         ),
         Padding(
           padding: const EdgeInsets.all(14.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Row(
-                children: [
-                  Text('User Name, Location',
-                  style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),
-                  )
-                ],
-              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  IconButton(
+                  ElevatedButton(
                     onPressed: _controller.value.isPlaying ? (){
                       setState(() {
                         _controller.pause();
@@ -293,25 +282,38 @@ class _VideoAppState extends State<VideoApp> {
                       setState(() {
                         _controller.play();
                       });
-                      },
-                    icon: _controller.value.isPlaying ? Icon(Icons.pause_outlined,size: 60,) : Icon(Icons.play_arrow_outlined,size: 60,),
-                    color: Colors.white,
+                    },
+                    child: _controller.value.isPlaying ? Icon(Icons.pause,color: Colors.white,) : Icon(Icons.play_arrow,color: Colors.white,),
+                    style: ElevatedButton.styleFrom(
+                      shape: CircleBorder(),
+                      padding: EdgeInsets.all(12),
+                      primary: Color(0xFF303952), // <-- Button color
+                      onPrimary: Color(0xFF40407a), // <-- Splash color
+                    ),
                   ),
+                  ElevatedButton(
+                    onPressed: () {
+                      showProfileView();
+                    },
+                    child: Icon(Icons.person,color: Colors.white,),
+                    style: ElevatedButton.styleFrom(
+                      shape: CircleBorder(),
+                      padding: EdgeInsets.all(12),
+                      primary: Color(0xFF303952), // <-- Button color
+                      onPrimary: Color(0xFF40407a), // <-- Splash color
+                    ),
+                  )
                 ],
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  IconButton(onPressed: (){showProfileView();}, icon: Icon(Icons.account_circle_rounded),iconSize: 30,color: Colors.white,),
-                ],
-              )
-
-
             ],
           ),
         )
       ],
     );
+  }
+
+  void play(){
+
   }
 
   void showProfileView(){
@@ -334,4 +336,32 @@ class _VideoAppState extends State<VideoApp> {
   }
 
 
+}
+
+class CircleButton extends StatelessWidget {
+
+  Function function;
+  Icon icon;
+
+  CircleButton({
+    required this.function,
+    required this.icon,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        function;
+      },
+      child: icon,
+      style: ElevatedButton.styleFrom(
+        shape: CircleBorder(),
+        padding: EdgeInsets.all(20),
+        primary: Colors.blue, // <-- Button color
+        onPrimary: Colors.red, // <-- Splash color
+      ),
+    );
+  }
 }

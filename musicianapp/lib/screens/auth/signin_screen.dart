@@ -30,6 +30,9 @@ class _SignInScreenState extends State<SignInScreen> {
           padding: const EdgeInsets.all(12.0),
           child: ListView(
             children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height/7,
+              ),
               Text(
                 'Sign In',
                 textAlign: TextAlign.center,

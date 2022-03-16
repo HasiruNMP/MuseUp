@@ -50,5 +50,11 @@ class Profile {
     }).then((value) => print("User Added")).catchError((error) => print("Failed to add user: $error"));
   }
 
+  Future<void> addVideoLink(String url) {
+    return Globals.usersRef.doc(Globals.userID).update({
+      'videoLink': url,
+    }).then((value) => print("User Added")).catchError((error) => print("Failed to add user: $error"));
+  }
+
 
 }

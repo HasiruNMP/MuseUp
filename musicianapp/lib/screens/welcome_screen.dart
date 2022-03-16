@@ -78,27 +78,32 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               child: Padding(
                 padding: const EdgeInsets.all(40.0),
                 child: Container(
-                  child: ListView(
+                  child: Column(
                     children: [
-                      TextButton(
-                        style: flatButtonStyle1,
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => const SignInScreen()),
-                          );
-                        },
-                        child: Text('LOGIN'),
+                      Container(
+                        width: double.infinity,
+                        child: TextButton(
+                          style: flatButtonStyle1,
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => const SignInScreen()),
+                            );
+                          },
+                          child: Text('LOGIN'),
+                        ),
                       ),
-                      TextButton(
-                        style: flatButtonStyle1,
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => const SignUpScreen()),
-                          );
-                        },
-                        child: Text('CREATE ACCOUNT'),
+                      Container(
+                        width: double.infinity,
+                        child: TextButton(
+                          style: flatButtonStyle1,
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => const SignUpScreen()),
+                            );
+                          },
+                          child: Text('CREATE ACCOUNT'),                      ),
                       ),
                     ],
                   ),
