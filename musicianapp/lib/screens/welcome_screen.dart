@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:musicianapp/common/common_widgets.dart';
 import 'package:musicianapp/screens/account/setprofile_screen.dart';
 import 'package:musicianapp/screens/account/uploadphoto_screen.dart';
 import 'package:musicianapp/screens/account/user_screen.dart';
@@ -19,60 +21,93 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(
-        children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                onPressed: (){
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const SignUpScreen()),
-                  );
-                },
-                child: const Text('SINGUP'),
+      body: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+              flex: 2,
+              child: Container()
+            ),
+            Expanded(
+              flex: 1,
+              child: Text(
+                'MuseUp',
+                style: GoogleFonts.lato(
+                  textStyle: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
-              ElevatedButton(
-                onPressed: (){
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const SignInScreen()),
-                  );
-                },
-                child: const Text('LOGIN'),
+            ),
+            Expanded(
+              flex: 5,
+              child: Container(
+                child: Image.asset('assets/img/welcome-image.png'),
               ),
-              ElevatedButton(
-                onPressed: (){
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const NavigationScreen()),
-                  );
-                },
-                child: const Text('HOME'),
+            ),
+            Expanded(
+              flex: 1,
+              child: Container(
+                child: Column(
+                  children: [
+                    Text(
+                      'Create Music Together',
+                      style: GoogleFonts.lato(
+                        textStyle: TextStyle(
+                          fontSize: 26,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    Text(
+                      'Join Our Community',
+                      style: GoogleFonts.lato(
+                        textStyle: TextStyle(
+                          fontSize: 17,
+                          //fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              ElevatedButton(
-                onPressed: (){
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const UserScreen()),
-                  );
-                },
-                child: const Text('USER'),
+            ),
+            Expanded(
+              flex: 4,
+              child: Padding(
+                padding: const EdgeInsets.all(40.0),
+                child: Container(
+                  child: ListView(
+                    children: [
+                      TextButton(
+                        style: flatButtonStyle1,
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const SignInScreen()),
+                          );
+                        },
+                        child: Text('LOGIN'),
+                      ),
+                      TextButton(
+                        style: flatButtonStyle1,
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const SignUpScreen()),
+                          );
+                        },
+                        child: Text('CREATE ACCOUNT'),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-              ElevatedButton(
-                onPressed: (){
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const UploadPhotoScreen()),
-                  );
-                },
-                child: const Text('Photo upload'),
-              ),
-            ],
-          )
-        ],
-      ),
+            ),
+          ],
+        ),
+      )
     );
   }
 }

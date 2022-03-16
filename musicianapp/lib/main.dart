@@ -1,5 +1,6 @@
 //import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:musicianapp/models/explore_model.dart';
 import 'package:musicianapp/screens/account/setlocation_screen.dart';
 import 'package:musicianapp/screens/connections/chat_screen.dart';
@@ -51,7 +52,6 @@ class MuseUpApp extends StatelessWidget {
     return {
         'test': (context) => const SetLocationScreen(),
         'test2': (context) => const WelcomeScreen(),
-
         '/': (context) => const MainStateManager(),
         'chat': (context) => const ChatScreen(),
       };
@@ -59,9 +59,14 @@ class MuseUpApp extends StatelessWidget {
 
   ThemeData buildThemeData() {
     return ThemeData(
-          primarySwatch: Colors.deepPurple,
-          scaffoldBackgroundColor: const Color(0xFFEFEFEF)
-      );
+      primarySwatch: Colors.teal,
+      scaffoldBackgroundColor: Colors.white,
+      appBarTheme: const AppBarTheme(
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+        elevation: 0.0,
+      ),
+    );
   }
 }
 

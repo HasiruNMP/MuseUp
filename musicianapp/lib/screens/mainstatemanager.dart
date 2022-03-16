@@ -42,7 +42,7 @@ class _MainStateManagerState extends State<MainStateManager> {
             );
 
           } else {
-            return SignInScreen();
+            return WelcomeScreen();
           }
         }
         return Scaffold(

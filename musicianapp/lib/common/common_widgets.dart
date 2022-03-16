@@ -1,6 +1,18 @@
 import 'package:flutter/material.dart';
 
+final ButtonStyle flatButtonStyle1 = TextButton.styleFrom(
+  primary: Colors.black87,
+  backgroundColor: Colors.indigo,
+  minimumSize: Size(88, 36),
+  padding: EdgeInsets.symmetric(horizontal: 16.0),
+
+  shape: const RoundedRectangleBorder(
+    borderRadius: BorderRadius.all(Radius.circular(5.0)),
+  ),
+);
+
 class MUTextField1 extends StatelessWidget {
+
   const MUTextField1({
     Key? key,
     required this.controller,
