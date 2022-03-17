@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:musicianapp/common/common_widgets.dart';
 
 class ProfileScreen extends StatefulWidget {
 
@@ -15,10 +16,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Map<String, dynamic> profileData = {};
   CollectionReference users = FirebaseFirestore.instance.collection('users');
+  String bio = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('My Profile'),
+        actions: [
+          IconButton(
+            onPressed: (){},
+            icon: Icon(Icons.settings),),
+        ],
+      ),
       body: SafeArea(
         child: FutureBuilder<DocumentSnapshot>(
           future: users.doc('anneblake@gmail.com').get(),
@@ -42,59 +52,147 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 padding: const EdgeInsets.all(8.0),
                 child: ListView(
                   children: [
-                    CircleAvatar(
-                      radius: 80,
-                      backgroundImage: NetworkImage(data['imageLink'],),
+                    Container(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8.0),
+                        child: Container(
+                          color: Colors.deepPurple.shade50,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  child: Image.network(data['imageLink'],height: 150.0, width: 150.0,),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        data['name'],
+                                        style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),
+                                      ),
+                                      SizedBox(height: 18,),
+                                      Text(
+                                        '${age.round().toString()} Y',
+                                        style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),
+                                      ),
+                                      SizedBox(height: 18,),
+                                      Text(
+                                        'Dublin, Ireland',
+                                        style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
-                    SizedBox(height: 10,),
-                    Text(
-                      data['name'],
-                      style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.center,
+                    Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Divider(),
                     ),
-                    SizedBox(height: 10,),
-                    Text(
-                      '${age.round().toString()} Y',
-                      style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.center,
+                    Container(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8.0),
+                        child: Container(
+                          color: Colors.deepPurple.shade50,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 5.0,horizontal: 8.0),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                                    child: TextButton(
+                                      onPressed: (){},
+                                      child: Text('CONNECT'),
+                                      style: flatButtonStyle1,
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                                    child: TextButton(
+                                      onPressed: (){},
+                                      child: Text('MESSAGE'),
+                                      style: flatButtonStyle1,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
-                    SizedBox(height: 10,),
-                    Text(
-                      'Dublin, Ireland',
-                      style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.center,
+                    Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Divider(),
                     ),
-                    Text('BIO'),
-                    Text(
-                      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit',
-                      style: TextStyle(fontSize: 15,),
+                    Container(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8.0),
+                        child: Container(
+                          color: Colors.deepPurple.shade50,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('BIO',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
+                                    SizedBox(
+                                      width: 350,
+                                      child: Text(bio, style: TextStyle(fontSize: 15,),overflow: TextOverflow.fade),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
-                    SizedBox(height: 10,),
-                    Text('ROLE'),
-                    Text(
-                      'Instrumentalist',
-                      style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),
+                    Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Divider(),
                     ),
-                    SizedBox(height: 10,),
-                    Text('INSTRUMENT'),
-                    Text(
-                      'Guitar',
-                      style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: 10,),
-                    Text('GENRES'),
-                    Text(
-                      'Pop, Acoustic, Rock, Jazz',
-                      style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: 10,),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ElevatedButton(onPressed: (){}, child: Text('CONNECT'),),
-                        SizedBox(width: 10,),
-                        ElevatedButton(onPressed: (){}, child: Text('MESSAGE'),),
-                      ],
+                    Container(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8.0),
+                        child: Container(
+                          color: Colors.deepPurple.shade50,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('ROLE',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
+                                    Text('Instrumentalist', style: TextStyle(fontSize: 15,),),
+                                    SizedBox(height: 8,),
+                                    Text('INSTRUMENT',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
+                                    Text('Guitar', style: TextStyle(fontSize: 15,),),
+                                    SizedBox(height: 8,),
+                                    Text('GENRES',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
+                                    Text('Pop, Acoustic, Rock, Jazz', style: TextStyle(fontSize: 15,),),
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),

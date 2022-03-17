@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+Color lightPurple = Colors.deepPurple.shade50;
+Color darkPurple = Color(0xFF40407a);
+
 final ButtonStyle flatButtonStyle1 = TextButton.styleFrom(
   primary: Colors.white,
   backgroundColor: Colors.indigo,
@@ -8,6 +11,15 @@ final ButtonStyle flatButtonStyle1 = TextButton.styleFrom(
 
   shape: const RoundedRectangleBorder(
     borderRadius: BorderRadius.all(Radius.circular(5.0)),
+  ),
+);
+
+final ButtonStyle flatButtonStyleDoc1 = ButtonStyle(
+  backgroundColor: MaterialStateProperty.all(Colors.deepPurple.shade50),
+  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+    RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+    ),
   ),
 );
 

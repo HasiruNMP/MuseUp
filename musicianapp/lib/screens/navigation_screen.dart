@@ -21,9 +21,10 @@ class _NavigationScreenState extends State<NavigationScreen> {
   List<Widget> pages = [
     ExploreScreen(),
     ConnectionsView(),
-    ConnectionsView(),
+    ConversationsScreen(),
     ProfileScreen(''),
   ];
+  Color _selectedColor = Color(0xFF2f3542);
 
   @override
   Widget build(BuildContext context) {
@@ -35,30 +36,30 @@ class _NavigationScreenState extends State<NavigationScreen> {
         items: [
           /// Home
           SalomonBottomBarItem(
-            icon: Icon(Icons.home),
-            title: Text("Home"),
-            selectedColor: Colors.purple,
+            icon: Icon(Icons.search),
+            title: Text("Explore"),
+            selectedColor: _selectedColor,
           ),
 
           /// Likes
           SalomonBottomBarItem(
-            icon: Icon(Icons.favorite_border),
-            title: Text("Likes"),
-            selectedColor: Colors.pink,
+            icon: Icon(Icons.people),
+            title: Text("Connections"),
+            selectedColor: _selectedColor,
           ),
 
           /// Search
           SalomonBottomBarItem(
-            icon: Icon(Icons.search),
-            title: Text("Search"),
-            selectedColor: Colors.orange,
+            icon: Icon(Icons.message_rounded),
+            title: Text("Messages"),
+            selectedColor: _selectedColor,
           ),
 
           /// Profile
           SalomonBottomBarItem(
             icon: Icon(Icons.person),
             title: Text("Profile"),
-            selectedColor: Colors.teal,
+            selectedColor: _selectedColor,
           ),
         ],
       ),

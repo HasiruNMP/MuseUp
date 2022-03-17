@@ -2,11 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cupertino_icons/cupertino_icons.dart';
+import 'package:musicianapp/common/common_widgets.dart';
 import 'package:musicianapp/screens/auth/signin_screen.dart';
 
 class ChatScreen extends StatefulWidget {
 
-  const ChatScreen({Key? key}) : super(key: key);
+  String connectionUID;
+  String imageURL;
+  String connectionName;
+
+  ChatScreen(this.connectionUID,this.connectionName,this.imageURL);
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
@@ -16,13 +21,28 @@ class _ChatScreenState extends State<ChatScreen> {
   
   final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance.collection('conversations').doc('anneblake@gmail.com-emmamclean@gmail.com').collection('messages').orderBy('time', descending: false).snapshots();
   final messageTEC = TextEditingController();
-
+  late bool isSenderMe;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('anneblake@gmail.com'),
+        title: Row(
+          children: [
+            CircleAvatar(
+              radius: 16,
+              backgroundColor: Colors.green,
+              backgroundImage: NetworkImage(widget.imageURL),
+            ),
+            SizedBox(width: 8,),
+            Text(widget.connectionName),
+          ],
+        ),
+        actions: [
+          IconButton(
+            onPressed: (){},
+            icon: Icon(Icons.more_vert),),
+        ],
       ),
       body: SafeArea(
         child: Column(
@@ -44,30 +64,35 @@ class _ChatScreenState extends State<ChatScreen> {
                     return ListView(
                       children: snapshot.data!.docs.map((DocumentSnapshot document) {
                         Map<String, dynamic> messageData = document.data()! as Map<String, dynamic>;
-                        return Container(
-                          alignment: messageData['sender'] == 'anneblake@gmail.com' ? Alignment.centerRight : Alignment.centerLeft,
-                          child: Padding(
-                            padding: const EdgeInsets.all(1.0),
-                            child: Container(
-                              //alignment: Alignment.centerRight,
-                              height: 36,
-                              decoration: BoxDecoration(
-                                color: Colors.teal,
-                                borderRadius: BorderRadius.all(Radius.circular(8),),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      messageData['text'],
-                                      //textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontSize: 17,
+                        messageData['sender'] == 'anneblake@gmail.com' ? isSenderMe = true : isSenderMe = false;
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                          child: Container(
+                            alignment: isSenderMe? Alignment.centerRight : Alignment.centerLeft,
+                            child: Padding(
+                              padding: const EdgeInsets.all(1.0),
+                              child: Container(
+                                //alignment: Alignment.centerRight,
+                                height: 36,
+                                decoration: BoxDecoration(
+                                  color: isSenderMe? lightPurple : darkPurple,
+                                  borderRadius: BorderRadius.all(Radius.circular(15),),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        messageData['text'],
+                                        //textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: isSenderMe? Colors.black : Colors.white,
+                                        ),
                                       ),
-                                    ),
-                                    //Text(messageData['time'].toString(),),
-                                  ],
+                                      //Text(messageData['time'].toString(),),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
@@ -82,7 +107,7 @@ class _ChatScreenState extends State<ChatScreen> {
             Expanded(
               flex: 1,
               child: Container(
-                color: Colors.grey,
+                //color: Colors.grey,
                 height: 50,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -94,15 +119,19 @@ class _ChatScreenState extends State<ChatScreen> {
                         controller: messageTEC,
                         decoration: InputDecoration(
                         border: InputBorder.none,
-                        hintText: 'type message here'
+                        hintText: 'Type message here'
                         ),
                       ),
                     ),
                     IconButton(
                       onPressed: (){
-                        uploadMessage();
-                        messageTEC.clear();
-                    }, icon: Icon(Icons.send),),
+                        if(messageTEC.text.isNotEmpty){
+                          uploadMessage();
+                          messageTEC.clear();
+                        }
+                      },
+                      icon: Icon(Icons.send),
+                    ),
                   ],
                 ),
               ),

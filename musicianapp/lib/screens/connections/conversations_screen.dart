@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:musicianapp/common/common_widgets.dart';
 import 'package:musicianapp/screens/connections/chat_screen.dart';
 
 class ConversationsScreen extends StatefulWidget {
@@ -15,10 +16,15 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Messages'),
+        actions: [
+          IconButton(
+            onPressed: (){},
+            icon: Icon(Icons.search),),
+        ],
       ),
       body: SafeArea(
         child: StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance.collection('conversations').snapshots(),
+          stream: FirebaseFirestore.instance.collection('users').doc('hasirunmp@gmail.com').collection('connections').snapshots(),
           builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasError) {
               return Text('Something went wrong');
@@ -28,29 +34,60 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
             }
             return ListView(
               children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-                return Container(
-                  child: OutlinedButton(
-                    onPressed: (){
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const ChatScreen(),),
-                      );
-                    },
-                    child: Row(
-                      //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        CircleAvatar(radius: 25,backgroundColor: Colors.teal,),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(data['participant2'],style: TextStyle(fontSize: 18),),
-                            //Text(data['participant1']),
-                          ],
+                Map<String, dynamic> connectionData = document.data()! as Map<String, dynamic>;
+                return FutureBuilder<DocumentSnapshot>(
+                  future: FirebaseFirestore.instance.collection('users').doc(connectionData['userEmail']).get(),
+                  builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+
+                    if (snapshot.hasError) {
+                      return Text("Something went wrong");
+                    }
+
+                    if (snapshot.hasData && !snapshot.data!.exists) {
+                      return Text("Document does not exist");
+                    }
+
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      Map<String, dynamic> userData = snapshot.data!.data() as Map<String, dynamic>;
+
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 3),
+                        child: Container(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: TextButton(
+                              style: flatButtonStyleDoc1,
+                              onPressed: (){
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => ChatScreen(document.id,userData['name'],userData['imageLink']),),);
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 3),
+                                child: Row(
+                                  children: [
+                                    CircleAvatar(
+                                      radius: 20,
+                                      backgroundColor: Colors.green,
+                                      backgroundImage: NetworkImage(userData['imageLink']),
+                                    ),
+                                    SizedBox(width: 5,),
+                                    Text(
+                                      userData['name'],
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        color: Colors.black87,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
-                      ],
-                    ),
-                  ),
+                      );
+                    }
+
+                    return Text("loading");
+                  },
                 );
               }).toList(),
             );

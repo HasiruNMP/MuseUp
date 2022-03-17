@@ -56,14 +56,13 @@ class MuseUpApp extends StatelessWidget {
         'test': (context) => SetProfileScreen(''),
         'test2': (context) => const WelcomeScreen(),
         '/': (context) => const MainStateManager(),
-        'chat': (context) => const ChatScreen(),
       };
   }
 
   ThemeData buildThemeData() {
     return ThemeData(
       primarySwatch: Colors.indigo,
-      scaffoldBackgroundColor: Color(0xFFFFFCF2),
+      scaffoldBackgroundColor: Colors.white,
       appBarTheme: const AppBarTheme(
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,

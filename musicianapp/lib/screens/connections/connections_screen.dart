@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
+import 'package:musicianapp/common/common_widgets.dart';
 import 'package:musicianapp/screens/explore/profile_screen.dart';
 
 class ConnectionsView extends StatefulWidget {
@@ -16,6 +17,11 @@ class _ConnectionsViewState extends State<ConnectionsView> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Connections'),
+        actions: [
+          IconButton(
+            onPressed: (){},
+            icon: Icon(Icons.search),),
+        ],
       ),
       body: SafeArea(
         child: StreamBuilder<QuerySnapshot>(
@@ -29,26 +35,63 @@ class _ConnectionsViewState extends State<ConnectionsView> {
             }
             return ListView(
               children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-                return Container(
-                  child: OutlinedButton(
-                    onPressed: (){
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => ProfileScreen(data['userEmail'])),
-                      );
-                      print(data['userEmail']);
-                    },
-                    child: Row(
-                      children: [
-                        CircleAvatar(radius: 20,backgroundColor: Colors.green,),
-                        Text(
-                          data['name'],
-                          style: TextStyle(fontSize: 18),
+                Map<String, dynamic> connectionData = document.data()! as Map<String, dynamic>;
+                return FutureBuilder<DocumentSnapshot>(
+                  future: FirebaseFirestore.instance.collection('users').doc(connectionData['userEmail']).get(),
+                  builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+
+                    if (snapshot.hasError) {
+                      return Text("Something went wrong");
+                    }
+
+                    if (snapshot.hasData && !snapshot.data!.exists) {
+                      return Text("Document does not exist");
+                    }
+
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      Map<String, dynamic> userData = snapshot.data!.data() as Map<String, dynamic>;
+
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 3),
+                        child: Container(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: TextButton(
+                              style: flatButtonStyleDoc1,
+                              onPressed: (){
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => ProfileScreen('')),
+                                );
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 3),
+                                child: Row(
+                                  children: [
+                                    CircleAvatar(
+                                      radius: 20,
+                                      backgroundColor: Colors.green,
+                                      backgroundImage: NetworkImage(userData['imageLink']),
+                                    ),
+                                    SizedBox(width: 5,),
+                                    Text(
+                                      userData['name'],
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        color: Colors.black87,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
-                      ],
-                    ),
-                  ),
+                      );
+                    }
+
+                    return Text("loading");
+                  },
                 );
               }).toList(),
             );

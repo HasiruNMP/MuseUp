@@ -48,9 +48,10 @@ class _ExploreScreenState extends State<ExploreScreen> {
     );
   }
   void showFilterView(){
-    showModalBottomSheet(
+    showModalBottomSheet<dynamic>(
+      //isScrollControlled: true,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
+        borderRadius: BorderRadius.only(topLeft: Radius.circular(15.0),topRight: Radius.circular(15.0),),
       ),
       backgroundColor: Colors.white,
       context: context,
@@ -78,113 +79,147 @@ class _FilterViewState extends State<FilterView> {
 
   filterType _type = filterType.byRole;
   List roleList = ['Any Role','Composer','Instrumentalist','Vocalist', 'Producer'];
-  List genreList = ['Any Genre','Pop','Classical','Rock', 'Jazz'];
+  List<String> genreList = ['Any Genre','Pop','Classical','Rock', 'Jazz'];
   List instrumentList = ['Any Instrument','Guitar','Piano','Drums', 'Violin','Harp','Cello','Trumpet','Viola','Bass Guitar','Percussion','Flute'];
-  String? roleChoice;
-  String? genreChoice;
-  String? instrumentChoice;
+  String roleChoice = 'Any Role';
+  String genreChoice = 'Any Genre';
+  String instrumentChoice = 'Any Instrument';
   double distance = 50;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text('Filter Settings'),
-            IconButton(onPressed: (){Navigator.pop(context);}, icon: const Icon(Icons.close),),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Row(
-              children: [
-                Radio<filterType>(
-                  value: filterType.byRole,
-                  groupValue: _type,
-                  onChanged: (filterType? value) {
-                    setState(() {
-                      _type = value!;
-                    });
-                  },
-                ),
-                Text('By Role'),
-              ],
-            ),
-            Row(
-              children: [
-                Radio<filterType>(
-                  value: filterType.byDistance,
-                  groupValue: _type,
-                  onChanged: (filterType? value) {
-                    setState(() {
-                      _type = value!;
-                    });
-                  },
-                ),
-                Text('By Distance'),
-              ],
-            ),
-          ],
-        ),
-        Expanded(
-          child: _type == filterType.byRole ? filterContentRole() : filterContentDistance(),
-        ),
+    return Container(
+      height: 1000,
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 5.0,horizontal: 12),
+                child: const Text('Filter',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
+              ),
+              IconButton(onPressed: (){Navigator.pop(context);}, icon: const Icon(Icons.close),),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Row(
+                children: [
+                  Radio<filterType>(
+                    value: filterType.byRole,
+                    groupValue: _type,
+                    onChanged: (filterType? value) {
+                      setState(() {
+                        _type = value!;
+                      });
+                    },
+                  ),
+                  Text('By Role'),
+                ],
+              ),
+              Row(
+                children: [
+                  Radio<filterType>(
+                    value: filterType.byDistance,
+                    groupValue: _type,
+                    onChanged: (filterType? value) {
+                      setState(() {
+                        _type = value!;
+                      });
+                    },
+                  ),
+                  Text('By Distance'),
+                ],
+              ),
+            ],
+          ),
+          Expanded(
+            child: _type == filterType.byRole ? filterContentRole() : filterContentDistance(),
+          ),
 
-      ],
+        ],
+      ),
     );
   }
   Widget filterContentRole(){
     return ListView(
       children: [
-        Text('ROLE'),
-        Wrap(
-          children: List<Widget>.generate(roleList.length, (int index) {
-            return ChoiceChip(
-              label: Text(roleList[index]),
-              selected: roleChoice == roleList[index],
-              onSelected: (bool selected) {
-                setState(() {
-                  roleChoice = selected ? roleList[index] : null;
-                });
-              },
-            );
-          },
-          ).toList(),
-        ),
-        Text('GENRE'),
-        Wrap(
-          children: List<Widget>.generate(genreList.length, (int index) {
-            return ChoiceChip(
-              label: Text(genreList[index]),
-              selected: genreChoice == genreList[index],
-              onSelected: (bool selected) {
-                setState(() {
-                  genreChoice = selected ? genreList[index] : null;
-                });
-              },
-            );
-          },
-          ).toList(),
-        ),
-        Text('INSTRUMENT'),
-        Container(
-          child: roleChoice != 'Instrumentalist' ? Center(child: Text('Not Applicable'),) :
-          Wrap(
-            children: List<Widget>.generate(instrumentList.length, (int index) {
-              return ChoiceChip(
-                label: Text(instrumentList[index]),
-                selected: instrumentChoice == instrumentList[index],
-                onSelected: (bool selected) {
-                  setState(() {
-                    instrumentChoice = selected ? instrumentList[index] : null;
-                  });
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text('ROLE'),
+              Wrap(
+                spacing: 4,
+                children: List<Widget>.generate(roleList.length, (int index) {
+                  return ChoiceChip(
+                    label: Text(roleList[index]),
+                    selected: roleChoice == roleList[index],
+                    onSelected: (bool selected) {
+                      setState(() {
+                        roleChoice = selected ? roleList[index] : null;
+                      });
+                    },
+                  );
                 },
-              );
-            },
-            ).toList(),
+                ).toList(),
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('GENRE'),
+              Wrap(
+                spacing: 4,
+                children: List<Widget>.generate(genreList.length, (int index) {
+                  return ChoiceChip(
+                    label: Text(genreList[index]),
+                    selected: genreChoice == genreList[index],
+                    onSelected: (bool selected) {
+                      setState(() {
+                        genreChoice = (selected ? genreList[index] : null)!;
+                      });
+                    },
+                  );
+                },
+                ).toList(),
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('INSTRUMENT'),
+              Container(
+                child: roleChoice != 'Instrumentalist' ? Center(child: Text('Not Applicable'),) :
+                Wrap(
+                  spacing: 4,
+                  children: List<Widget>.generate(instrumentList.length, (int index) {
+                    return ChoiceChip(
+                      label: Text(instrumentList[index]),
+                      selected: instrumentChoice == instrumentList[index],
+                      onSelected: (bool selected) {
+                        setState(() {
+                          instrumentChoice = selected ? instrumentList[index] : null;
+                        });
+                      },
+                    );
+                  },
+                  ).toList(),
+                ),
+              ),
+            ],
           ),
         ),
         Center(
@@ -192,7 +227,7 @@ class _FilterViewState extends State<FilterView> {
             builder: (context, explorerModel, child) {
               return ElevatedButton(
                 onPressed: (){
-                  explorerModel.searchUsersByMusic();
+                  explorerModel.searchUsersByMusic(roleChoice,instrumentChoice,genreList);
                   Navigator.pop(context);
                   //videoList = explorerModel.videoList;
                 },
@@ -225,7 +260,18 @@ class _FilterViewState extends State<FilterView> {
         ),
         SizedBox(height: 20,),
         Center(
-          child: ElevatedButton(onPressed: (){}, child: Text('SEARCH'),),
+          child: Consumer<Explorer>(
+              builder: (context, explorerModel, child) {
+                return ElevatedButton(
+                  onPressed: (){
+                    explorerModel.searchUsersByDistance(distance.roundToDouble());
+                    Navigator.pop(context);
+                    //videoList = explorerModel.videoList;
+                  },
+                  child: const Text('SEARCH'),
+                );
+              }
+          ),
         ),
       ],
     );
