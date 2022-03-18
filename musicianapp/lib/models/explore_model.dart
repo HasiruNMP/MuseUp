@@ -13,9 +13,6 @@ class Explorer with ChangeNotifier{
    print('ZZZZZZZZZZZZZZZZZMMMMMMMMMMMMMMMMMAAAAAAAAAAAAAAAA');
     videoList.clear();
     FirebaseFirestore.instance.collection('users')
-        .where('role', isEqualTo: role)
-        .where('instrument', isEqualTo: instrument)
-        .where('genres', arrayContainsAny: genres)
         .get()
         .then((QuerySnapshot querySnapshot) {
           for (var doc in querySnapshot.docs) {
