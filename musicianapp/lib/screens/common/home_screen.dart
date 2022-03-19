@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:musicianapp/models/explore_model.dart';
+import 'package:musicianapp/screens/connections/notifications_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:badges/badges.dart';
 
@@ -23,12 +24,19 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text('MuseUp'),
         centerTitle: true,
         leading: IconButton(
-            icon: FaIcon(FontAwesomeIcons.userCircle),
+            icon: CircleAvatar(
+              backgroundImage: NetworkImage('https://firebasestorage.googleapis.com/v0/b/hnmp-museup.appspot.com/o/users%2Femmamclean%40gmail.com%2Fimages%2Fpexels-pavel-danilyuk-7802607%20(1).jpg?alt=media&token=07fc13be-3990-4db2-9c24-2bb030aa43c3'),
+            ),
             onPressed: () { print("Pressed"); }
         ),
         actions: [
           IconButton(
-            onPressed: (){},
+            onPressed: (){
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => NotificationsScreen()),
+              );
+            },
             icon: Badge(
               badgeContent: Text(
                 '2',
@@ -40,100 +48,106 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      body: ListView(
-        children: [
-          Container(
-            alignment: Alignment.centerLeft,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Discover',
-                style: GoogleFonts.lato(
-                  textStyle: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
-          ),
-          Container(
-            height: 210,
-            child: NearbyListView(),
-          ),
-          Container(
-            alignment: Alignment.centerLeft,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Highlighted',
-                style: GoogleFonts.lato(
-                  textStyle: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
-          ),
-          Container(
-            height: 210,
-            child: NearbyListView(),
-          ),
-          Divider(),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(8.0),
-              child: Container(
-                height: 60,
-                color: Colors.deepPurple.shade50,
-                child: TextButton(
-                  onPressed: (){},
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      //SizedBox(width: 10,),
-                      Text(
-                        'Explore Musicians',
-                        style: GoogleFonts.lato(
-                          textStyle: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Colors.black87),
-                        ),
-                      ),
-                      SizedBox(width: 10,),
-                      FaIcon(FontAwesomeIcons.search,color: Colors.black87,size: 16,),
-                      //FaIcon(FontAwesomeIcons.angleRight,color: Colors.black45,),
-                    ],
+      body: RefreshIndicator(
+        onRefresh: refresh,
+        child: ListView(
+          children: [
+            Container(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'Discover',
+                  style: GoogleFonts.lato(
+                    textStyle: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(8.0),
-              child: Container(
-                height: 60,
-                color: Colors.deepPurple.shade50,
-                child: TextButton(
-                  onPressed: (){},
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      //SizedBox(width: 10,),
-                      Text(
-                        'Connections',
-                        style: GoogleFonts.lato(
-                          textStyle: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Colors.black87),
-                        ),
-                      ),
-                      SizedBox(width: 10,),
-                      FaIcon(FontAwesomeIcons.users,color: Colors.black87,size: 16,),
-                      //FaIcon(FontAwesomeIcons.angleRight,color: Colors.black45,),
-                    ],
+            Container(
+              height: 210,
+              child: NearbyListView(),
+            ),
+            Container(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'Highlighted',
+                  style: GoogleFonts.lato(
+                    textStyle: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+            Container(
+              height: 210,
+              child: NearbyListView(),
+            ),
+            Divider(),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8.0),
+                child: Container(
+                  height: 60,
+                  color: Colors.deepPurple.shade50,
+                  child: TextButton(
+                    onPressed: (){},
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        //SizedBox(width: 10,),
+                        Text(
+                          'Explore Musicians',
+                          style: GoogleFonts.lato(
+                            textStyle: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Colors.black87),
+                          ),
+                        ),
+                        SizedBox(width: 10,),
+                        FaIcon(FontAwesomeIcons.search,color: Colors.black87,size: 16,),
+                        //FaIcon(FontAwesomeIcons.angleRight,color: Colors.black45,),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8.0),
+                child: Container(
+                  height: 60,
+                  color: Colors.deepPurple.shade50,
+                  child: TextButton(
+                    onPressed: (){},
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        //SizedBox(width: 10,),
+                        Text(
+                          'Connections',
+                          style: GoogleFonts.lato(
+                            textStyle: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Colors.black87),
+                          ),
+                        ),
+                        SizedBox(width: 10,),
+                        FaIcon(FontAwesomeIcons.users,color: Colors.black87,size: 16,),
+                        //FaIcon(FontAwesomeIcons.angleRight,color: Colors.black45,),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
+  }
+  Future<void> refresh() async {
+    return Future.delayed(Duration(seconds: 1));
   }
 }
 
