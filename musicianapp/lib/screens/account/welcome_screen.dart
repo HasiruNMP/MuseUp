@@ -7,7 +7,7 @@ import 'package:musicianapp/screens/account/user_screen.dart';
 import 'package:musicianapp/screens/auth/signin_screen.dart';
 import 'package:musicianapp/screens/auth/signup_screen.dart';
 import 'package:musicianapp/screens/explore/profile_screen.dart';
-import 'package:musicianapp/screens/navigation_screen.dart';
+import 'package:musicianapp/screens/common/navigation_screen.dart';
 import 'package:musicianapp/services/auth_service.dart';
 
 class WelcomeScreen extends StatefulWidget {

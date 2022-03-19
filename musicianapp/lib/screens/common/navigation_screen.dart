@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter/material.dart';
+import 'package:musicianapp/screens/common/home_screen.dart';
 import 'package:musicianapp/screens/connections/connections_screen.dart';
 import 'package:musicianapp/screens/connections/conversations_screen.dart';
 import 'package:musicianapp/screens/explore/explore_screen.dart';
@@ -19,7 +20,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
 
   var _currentIndex = 0;
   List<Widget> pages = [
-    ExploreScreen(),
+    HomeScreen(),
     ConnectionsView(),
     ConversationsScreen(),
     ProfileScreen(''),
@@ -36,15 +37,15 @@ class _NavigationScreenState extends State<NavigationScreen> {
         items: [
           /// Home
           SalomonBottomBarItem(
-            icon: Icon(Icons.search),
-            title: Text("Explore"),
+            icon: Icon(Icons.home_filled),
+            title: Text("Home"),
             selectedColor: _selectedColor,
           ),
 
           /// Likes
           SalomonBottomBarItem(
-            icon: Icon(Icons.people),
-            title: Text("Connections"),
+            icon: Icon(Icons.search),
+            title: Text("Explore"),
             selectedColor: _selectedColor,
           ),
 

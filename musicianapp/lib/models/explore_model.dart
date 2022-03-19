@@ -8,6 +8,7 @@ class Explorer with ChangeNotifier{
   List<String> filterSettings = [];
   final geo = Geoflutterfire();
   List<String> videoList = [];
+  List<String> nearbyList = [];
 
  void searchUsersByMusic(String role, String instrument, List<String> genres) {
    print('ZZZZZZZZZZZZZZZZZMMMMMMMMMMMMMMMMMAAAAAAAAAAAAAAAA');
@@ -33,6 +34,20 @@ class Explorer with ChangeNotifier{
       for (var document in documentList) {
         print(document['videoLink']);
         videoList.add(document['videoLink']);
+      }
+      notifyListeners();
+    });
+  }
+
+  void getNearbyList(double radius){
+    GeoFirePoint center = geo.point(latitude: 7.242016, longitude: 80.857134);
+    String field = 'location';
+    var collectionReference = FirebaseFirestore.instance.collection('users');
+    Stream<List<DocumentSnapshot>> stream = geo.collection(collectionRef: collectionReference).within(center: center, radius: radius, field: field);
+    stream.listen((List<DocumentSnapshot> documentList) {
+      for (var document in documentList) {
+        print(document.id);
+        nearbyList.add(document.id);
       }
       notifyListeners();
     });

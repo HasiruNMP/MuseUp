@@ -4,8 +4,8 @@ import 'package:musicianapp/common/globals.dart';
 import 'package:musicianapp/models/user_model.dart';
 import 'package:musicianapp/screens/account/setprofile_screen.dart';
 import 'package:musicianapp/screens/auth/signin_screen.dart';
-import 'package:musicianapp/screens/navigation_screen.dart';
-import 'package:musicianapp/screens/welcome_screen.dart';
+import 'package:musicianapp/screens/common/navigation_screen.dart';
+import 'package:musicianapp/screens/account/welcome_screen.dart';
 import 'package:musicianapp/services/auth_service.dart';
 import 'package:provider/provider.dart';
 

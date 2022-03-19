@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:musicianapp/common/common_widgets.dart';
 import 'package:musicianapp/screens/explore/profile_screen.dart';
@@ -11,9 +12,13 @@ class ConnectionsView extends StatefulWidget {
   _ConnectionsViewState createState() => _ConnectionsViewState();
 }
 
-class _ConnectionsViewState extends State<ConnectionsView> {
+class _ConnectionsViewState extends State<ConnectionsView> with AutomaticKeepAliveClientMixin<ConnectionsView>{
+  @override
+  bool get wantKeepAlive => true;
+
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('Connections'),
@@ -68,18 +73,32 @@ class _ConnectionsViewState extends State<ConnectionsView> {
                                 padding: const EdgeInsets.symmetric(vertical: 3),
                                 child: Row(
                                   children: [
-                                    CircleAvatar(
-                                      radius: 20,
-                                      backgroundColor: Colors.green,
-                                      backgroundImage: NetworkImage(userData['imageLink']),
-                                    ),
-                                    SizedBox(width: 5,),
-                                    Text(
-                                      userData['name'],
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        color: Colors.black87,
+                                    Expanded(
+                                      child: Row(
+                                        children: [
+                                          CircleAvatar(
+                                            radius: 22,
+                                            backgroundColor: Colors.green,
+                                            backgroundImage: NetworkImage(userData['imageLink']),
+                                          ),
+                                          SizedBox(width: 7,),
+                                          Text(
+                                            userData['name'],
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              color: Colors.black87,
+                                            ),
+                                          ),
+                                        ],
                                       ),
+                                    ),
+                                    IconButton(
+                                      onPressed: (){},
+                                      icon: FaIcon(FontAwesomeIcons.solidUser,color: Colors.black87,size: 20,),
+                                    ),
+                                    IconButton(
+                                      onPressed: (){},
+                                      icon: FaIcon(FontAwesomeIcons.solidEnvelope,color: Colors.black87,size: 20,),
                                     ),
                                   ],
                                 ),

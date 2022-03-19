@@ -7,7 +7,7 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/services.dart';
 import 'package:musicianapp/models/profile_model.dart';
-import 'package:musicianapp/screens/videoplayer_screen.dart';
+import 'package:musicianapp/screens/explore/videoplayer_screen.dart';
 import 'package:path/path.dart';
 import 'package:video_compress/video_compress.dart';
 

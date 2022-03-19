@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:musicianapp/common/common_widgets.dart';
 import 'package:musicianapp/screens/connections/chat_screen.dart';
+import 'package:musicianapp/screens/connections/connections_screen.dart';
 
 class ConversationsScreen extends StatefulWidget {
   const ConversationsScreen({Key? key}) : super(key: key);
@@ -14,6 +16,15 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const ConnectionsView()),
+          );
+        },
+        child: FaIcon(FontAwesomeIcons.plus,color: Colors.black87,size: 16,),
+      ),
       appBar: AppBar(
         title: Text('Messages'),
         actions: [
