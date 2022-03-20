@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:musicianapp/models/explore_model.dart';
 import 'package:musicianapp/screens/explore/profile_screen.dart';
 import 'package:musicianapp/screens/account/setprofile_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
+import 'package:flutter/services.dart';
 
 List<String> videoList=[];
 
@@ -21,28 +23,72 @@ class _ExploreScreenState extends State<ExploreScreen> {
   @override
   Widget build(BuildContext context) {
 
+    //SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+    //SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+
     final PageController controller = PageController();
 
     return Scaffold(
-      appBar: AppBar(
+      /*appBar: AppBar(
         title: const Text('Explore'),
         actions: [
           IconButton(onPressed: (){showFilterView();}, icon: const Icon(CupertinoIcons.bars),)
         ],
-      ),
+      ),*/
       body: SafeArea(
-        child: Consumer<Explorer>(
-          builder: (context, explorerModel, child) {
-            return PageView(
-              controller: controller,
-              scrollDirection: Axis.vertical,
-              allowImplicitScrolling: true,
-              children: List<Widget>.generate(explorerModel.videoList.length, (int index) {
-                return VideoApp(explorerModel.videoList[index]);
-              },
-              ).toList(),
-            );
-          },
+        child: Container(
+          color: Colors.black87,
+          child: Stack(
+            children: [
+              Consumer<Explorer>(
+                builder: (context, explorerModel, child) {
+                  return PageView(
+                    controller: controller,
+                    scrollDirection: Axis.vertical,
+                    allowImplicitScrolling: true,
+                    children: List<Widget>.generate(explorerModel.videoList.length, (int index) {
+                      return VideoApp(explorerModel.videoList[index]);
+                    },
+                    ).toList(),
+                  );
+                },
+              ),
+              Container(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Icon(Icons.close_rounded,color: Colors.white),
+                        style: ElevatedButton.styleFrom(
+                          shape: CircleBorder(),
+                          padding: EdgeInsets.all(12),
+                          primary: Color(0xFF303952), // <-- Button color
+                          onPrimary: Color(0xFF40407a), // <-- Splash color
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          showFilterView();
+                        },
+                        child: FaIcon(FontAwesomeIcons.slidersH,color: Colors.white,size: 20,),
+                        style: ElevatedButton.styleFrom(
+                          shape: CircleBorder(),
+                          padding: EdgeInsets.all(12),
+                          primary: Color(0xFF303952), // <-- Button color
+                          onPrimary: Color(0xFF40407a), // <-- Splash color
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -62,7 +108,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
   }
 
   void updateSearch(){
-    setState(() {});
+    setState((){});
   }
 }
 
@@ -307,9 +353,14 @@ class _VideoAppState extends State<VideoApp> {
     //_controller.play();
     return Stack(
       children: [
-        SizedBox(
-          //width: MediaQuery.of(context).size.width,
-          child: _controller.value.isInitialized ? VideoPlayer(_controller) : const Center(child: Text('Loading'),),
+        Container(
+          alignment: Alignment.center,
+          child: _controller.value.isInitialized ?
+          AspectRatio(
+            aspectRatio: _controller.value.aspectRatio,
+            child: VideoPlayer(_controller),
+          ) :
+          const Center(child: Text('Loading'),),
         ),
         Padding(
           padding: const EdgeInsets.all(14.0),
@@ -348,7 +399,7 @@ class _VideoAppState extends State<VideoApp> {
                       primary: Color(0xFF303952), // <-- Button color
                       onPrimary: Color(0xFF40407a), // <-- Splash color
                     ),
-                  )
+                  ),
                 ],
               ),
             ],

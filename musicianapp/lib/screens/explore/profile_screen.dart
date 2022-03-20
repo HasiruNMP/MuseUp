@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:musicianapp/common/common_widgets.dart';
+import 'package:musicianapp/screens/settings/settings.dart';
 
 class ProfileScreen extends StatefulWidget {
 
@@ -25,7 +26,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
         title: Text('My Profile'),
         actions: [
           IconButton(
-            onPressed: (){},
+            onPressed: (){
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const SettingsScreen()),
+              );
+            },
             icon: Icon(Icons.settings),),
         ],
       ),

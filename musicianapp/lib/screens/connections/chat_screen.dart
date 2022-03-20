@@ -126,7 +126,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     IconButton(
                       onPressed: (){
                         if(messageTEC.text.isNotEmpty){
-                          uploadMessage();
+                          uploadMessage(messageTEC.text);
                           messageTEC.clear();
                         }
                       },
@@ -142,15 +142,25 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  Future<void> uploadMessage() {
+  Future<void> uploadMessage(String text) {
     return FirebaseFirestore.instance.collection('conversations').doc('anneblake@gmail.com-emmamclean@gmail.com').collection('messages').add({
       'order': 0,
-      'text': messageTEC.text,
+      'text': text,
       'sender': 'anneblake@gmail.com',
       'time': FieldValue.serverTimestamp(),
     })
-    .then((value) => print("Message Added"))
+    .then((value) {
+      print("Message Added");
+      updateLastMessage(text);
+    })
     .catchError((error) => print("Failed to send message: $error"));
+  }
+
+  Future<void> updateLastMessage(String text) {
+    return FirebaseFirestore.instance.collection('conversations').doc('anneblake@gmail.com-emmamclean@gmail.com').update({
+      'lastMessage': text,
+      'lastMessageTime': FieldValue.serverTimestamp(),
+    }).then((value) => print("Message Added")).catchError((error) => print("Failed to send message: $error"));
   }
 
 }

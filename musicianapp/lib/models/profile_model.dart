@@ -13,9 +13,10 @@ class Profile {
   DateTime selectedDate = DateTime.now();
 
 
-  Future<void> addUser(String name, DateTime dob, String gender) {
+  Future<void> addUser(String fName, String lName, DateTime dob, String gender) {
     return Globals.usersRef.doc(Globals.userID).update({
-      'name': name,
+      'fName': fName,
+      'lName': lName,
       'dob': dob,
       'gender': gender,
     }).then((value) => print("User Added")).catchError((error) => print("Failed to add user: $error"));

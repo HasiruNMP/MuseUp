@@ -7,6 +7,7 @@ import 'package:musicianapp/screens/account/uploadvideo_screen.dart';
 import 'package:image_crop/image_crop.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:http/http.dart';
 
 class UploadPhotoScreen extends StatefulWidget {
   const UploadPhotoScreen({Key? key}) : super(key: key);
@@ -86,6 +87,7 @@ class _UploadPhotoScreenState extends State<UploadPhotoScreen> {
       // e.g, e.code == 'canceled'
     }
   }
+
 }
 
 class CropImageScreen extends StatefulWidget {

@@ -4,6 +4,7 @@ import 'package:musicianapp/common/common_widgets.dart';
 import 'package:musicianapp/common/globals.dart';
 import 'package:musicianapp/models/profile_model.dart';
 import 'package:musicianapp/screens/account/setlocation_screen.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class GetStartedScreen extends StatefulWidget {
 
@@ -20,11 +21,11 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
   @override
   Widget build(BuildContext context) {
 
-    switch(widget.profileState){
+    /*switch(widget.profileState){
       case 0: {return SetProfileScreen(widget.userID);}
       case 1: {return EnterRoleInfo(widget.userID);}
       case 2: {return EnterBio();}
-    }
+    }*/
     return Container();
   }
 }
@@ -42,7 +43,8 @@ class SetProfileScreen extends StatefulWidget {
 
 class _SetProfileScreenState extends State<SetProfileScreen> {
 
-  final tecName = TextEditingController();
+  final tecFirstName = TextEditingController();
+  final tecLastName = TextEditingController();
   String selectedGender = 'NotSelected';
   DateTime selectedDOB = DateTime.now();
 
@@ -55,69 +57,84 @@ class _SetProfileScreenState extends State<SetProfileScreen> {
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: ListView(
+          padding: const EdgeInsets.all(15.0),
+          child: Column(
             children: [
-              MUTextField1(controller: tecName, label: 'Name'),
-              const Text(
-                'What is your gender?',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 17,
-                ),
-              ),
-              Wrap(
-                children: List<Widget>.generate(Profile.genderList.length, (int index) {
-                  return ChoiceChip(
-                    label: Text(Profile.genderList[index]),
-                    selected: selectedGender == Profile.genderList[index],
-                    onSelected: (bool selected) {
-                      setState(() {
-                        selectedGender = selected ? Profile.genderList[index] : null;
-                      });
-                    },
-                  );
-                },
-                ).toList(),
-              ),
-              const Text(
-                'What is your date of birth?',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 17,
+              Expanded(
+                child: ListView(
+                  children: [
+                    const Text(
+                      'Your Name',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17,
+                      ),
+                    ),
+                    MUTextField1(controller: tecFirstName, label: 'First Name'),
+                    SizedBox(height: 5,),
+                    MUTextField1(controller: tecLastName, label: 'Last Name'),
+                    SizedBox(height: 25,),
+                    const Text(
+                      'Gender',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17,
+                      ),
+                    ),
+                    Wrap(
+                      children: List<Widget>.generate(Profile.genderList.length, (int index) {
+                        return ChoiceChip(
+                          label: Text(Profile.genderList[index]),
+                          selected: selectedGender == Profile.genderList[index],
+                          onSelected: (bool selected) {
+                            setState(() {
+                              selectedGender = selected ? Profile.genderList[index] : null;
+                            });
+                          },
+                        );
+                      },
+                      ).toList(),
+                    ),
+                    SizedBox(height: 25,),
+                    const Text(
+                      'Date of Birth',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17,
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          '${selectedDOB.day}.${selectedDOB.month}.${selectedDOB.year}',
+                          style: const TextStyle(
+                            fontSize: 17,
+                          ),
+                          //textAlign: TextAlign.center,
+                        ),
+                        TextButton(onPressed: (){_selectDate(context);}, child: const Text('Select Date'),),
+                      ],
+                    ),
+                  ],
                 ),
               ),
               Row(
                 children: [
-                  Text(
-                    '${selectedDOB.day}.${selectedDOB.month}.${selectedDOB.year}',
-                    style: const TextStyle(
-                      fontSize: 17,
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: (){
+                        Profile().addUser(tecFirstName.text,tecLastName.text,selectedDOB,selectedGender);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => EnterRoleInfo(widget.userID)),
+                        );
+                      },
+                      child: Text('CONTINUE')
                     ),
-                    //textAlign: TextAlign.center,
                   ),
-                  OutlinedButton(onPressed: (){_selectDate(context);}, child: const Text('Select Date'),),
                 ],
               ),
-              Center(
-                child: ElevatedButton(
-                  onPressed: (){
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => EnterRoleInfo(widget.userID)),
-                    );
-                  },
-                  child: const Text('NEXT'),
-                ),
-              ),
-              Center(
-                child: ElevatedButton(
-                  onPressed: (){
-                    Profile().addUser(tecName.text,selectedDOB,selectedGender);
-                  },
-                  child: const Text('send'),
-                ),
-              ),
+
             ],
           ),
         ),

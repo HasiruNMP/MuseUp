@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:musicianapp/models/explore_model.dart';
 import 'package:musicianapp/screens/connections/notifications_screen.dart';
+import 'package:musicianapp/screens/explore/explore_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:badges/badges.dart';
 
@@ -93,7 +94,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 60,
                   color: Colors.deepPurple.shade50,
                   child: TextButton(
-                    onPressed: (){},
+                    onPressed: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ExploreScreen()),
+                      );
+                    },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

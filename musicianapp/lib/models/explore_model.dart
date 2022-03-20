@@ -26,6 +26,7 @@ class Explorer with ChangeNotifier{
   }
 
   void searchUsersByDistance(double radius){
+    videoList.clear();
     GeoFirePoint center = geo.point(latitude: 7.242016, longitude: 80.857134);
     String field = 'location';
     var collectionReference = FirebaseFirestore.instance.collection('users');
