@@ -5,6 +5,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:musicianapp/common/common_widgets.dart';
+import 'package:musicianapp/models/profile_model.dart';
+import 'package:musicianapp/services/auth_service.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -64,7 +66,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               padding: const EdgeInsets.all(8.0),
               child: TextButton(
                 onPressed: (){
-                  registerWithEmail();
+                  AuthService().registerWithEmail(tecEmail.text,tecPW.text);
                 },
                 child: const Text('SIGN UP'),
                 style: flatButtonStyle1,
@@ -131,22 +133,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  void registerWithEmail() async{
-    try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: tecEmail.text,
-          password: tecPW.text,
-      );
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
-      } else if (e.code == 'email-already-in-use') {
-        print('The screens.account already exists for that email.');
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
+
+
+
 
 
 

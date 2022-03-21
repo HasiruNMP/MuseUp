@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -13,7 +14,14 @@ class Profile {
   DateTime selectedDate = DateTime.now();
 
 
-  Future<void> addUser(String fName, String lName, DateTime dob, String gender) {
+  Future<void> createUser(UserCredential userCredential) {
+    return Globals.usersRef.doc(userCredential.user!.uid).set({
+      'email': userCredential.user!.email,
+      'profileState':0
+    }).then((value) => print("User Added")).catchError((error) => print("Failed to add user: $error"));
+  }
+
+  Future<void> addPersonalInfo(String fName, String lName, DateTime dob, String gender) {
     return Globals.usersRef.doc(Globals.userID).update({
       'fName': fName,
       'lName': lName,
@@ -22,13 +30,14 @@ class Profile {
     }).then((value) => print("User Added")).catchError((error) => print("Failed to add user: $error"));
   }
 
-  Future<void> addRoleInfo(List<bool> mainRole, String instrument, List<String> genres) {
+  Future<void> addRoleInfo(String selectedRole, List<bool> mainRole, String instrument, List<String> genres) {
     return Globals.usersRef.doc(Globals.userID).update({
       'isInstrumentalist': mainRole[0],
       'isVocalist': mainRole[1],
       'isComposer': mainRole[2],
       'isProducer': mainRole[3],
       'genres': genres,
+      'role': selectedRole,
     }).then((value) => print("User Added")).catchError((error) => print("Failed to add user: $error"));
   }
 
@@ -38,10 +47,12 @@ class Profile {
     }).then((value) => print("User Added")).catchError((error) => print("Failed to add user: $error"));
   }
 
-  Future<void> addLocation(LatLng location) {
+  Future<void> addLocation(LatLng location,String country,String city) {
     GeoFirePoint geoFirePoint = Geoflutterfire().point(latitude: location.latitude, longitude: location.longitude);
     return Globals.usersRef.doc(Globals.userID).update({
       'location': geoFirePoint.data,
+      'country': country,
+      'city': city,
     }).then((value) => print("User Added")).catchError((error) => print("Failed to add user: $error"));
   }
 
@@ -51,9 +62,15 @@ class Profile {
     }).then((value) => print("User Added")).catchError((error) => print("Failed to add user: $error"));
   }
 
-  Future<void> addVideoLink(String url) {
+  Future<void> addVideoURL(String url) {
     return Globals.usersRef.doc(Globals.userID).update({
-      'videoLink': url,
+      'videoURL': url,
+    }).then((value) => print("User Added")).catchError((error) => print("Failed to add user: $error"));
+  }
+
+  Future<void> addImageURL(String url) {
+    return Globals.usersRef.doc(Globals.userID).update({
+      'imageURL': url,
     }).then((value) => print("User Added")).catchError((error) => print("Failed to add user: $error"));
   }
 

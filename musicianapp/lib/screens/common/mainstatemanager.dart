@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:musicianapp/common/globals.dart';
+import 'package:musicianapp/models/profile_model.dart';
 import 'package:musicianapp/models/user_model.dart';
 import 'package:musicianapp/screens/account/setprofile_screen.dart';
-import 'package:musicianapp/screens/auth/signin_screen.dart';
+import 'package:musicianapp/screens/account/signin_screen.dart';
 import 'package:musicianapp/screens/common/navigation_screen.dart';
 import 'package:musicianapp/screens/account/welcome_screen.dart';
 import 'package:musicianapp/services/auth_service.dart';
@@ -82,7 +84,7 @@ class _ProfileStateManagerState extends State<ProfileStateManager> {
         }
 
         if (snapshot.hasData && !snapshot.data!.exists) {
-          return Text("Document does not exist");
+          return LoadingScreen();
         }
 
         Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
@@ -109,7 +111,10 @@ class _LoadingScreenState extends State<LoadingScreen> {
     return Scaffold(
         body: Container(
           child: Center(
-            child: Text('LOADING...'),
+            child: SpinKitSpinningLines(
+              color: Colors.deepPurple.shade500,
+              size: 120.0,
+            ),
         ),
       ),
     );

@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:musicianapp/models/explore_model.dart';
 import 'package:musicianapp/screens/connections/notifications_screen.dart';
 import 'package:musicianapp/screens/explore/explore_screen.dart';
+import 'package:musicianapp/screens/explore/profile_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:badges/badges.dart';
 
@@ -197,22 +198,36 @@ class _NearbyListViewState extends State<NearbyListView> {
                 child: Container(
                   color: Colors.deepPurple.shade50,
                   width: 150,
-                  child: Column(
-                    children: [
-                      Image.network(data['imageLink']),
-                      Text(
-                        data['name'],
-                        style: GoogleFonts.lato(
-                          textStyle: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),
+                  child: InkWell(
+                    onTap: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ProfileScreen(document.id),),
+                      );
+                    },
+                    child: Column(
+                      children: [
+                        AspectRatio(
+                          aspectRatio: 1,
+                          child: FittedBox(
+                            fit: BoxFit.fill,
+                            child: Image.network(data['imageURL']),
+                          ),
                         ),
-                      ),
-                      Text(
-                        data['role'],
-                        style: GoogleFonts.lato(
-                          textStyle: TextStyle(fontSize: 14,fontWeight: FontWeight.w400),
+                        Text(
+                          '${data['fName']} ${data['lName']}',
+                          style: GoogleFonts.lato(
+                            textStyle: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),
+                          ),
                         ),
-                      ),
-                    ],
+                        Text(
+                          data['role'],
+                          style: GoogleFonts.lato(
+                            textStyle: TextStyle(fontSize: 14,fontWeight: FontWeight.w400),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

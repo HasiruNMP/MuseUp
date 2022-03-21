@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geocoding/geocoding.dart';
@@ -18,20 +19,21 @@ class SetLocationScreen extends StatefulWidget {
 class _SetLocationScreenState extends State<SetLocationScreen> {
 
   late double selectedLocation;
-  String selectedLocationName = 'Getting Current Location';
+  String selectedLocationName = '-';
+  String country = '';
+  String city = '';
   late LatLng currentLocation;
-
+  final tecCountry = TextEditingController();
+  final tecCity = TextEditingController();
 
   @override
   void initState() {
-
+    getCurrentLocation();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    //_determinePosition();
-    getCurrentLocation();
     return Scaffold(
       appBar: AppBar(
         title: Text('Select Your Location'),
@@ -39,30 +41,82 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            //Expanded(child: MapSample()),
-            Container(
-              child: Center(
-                child: Text(selectedLocationName),
+            Expanded(
+              child: ListView(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('Determining Your Location',textAlign: TextAlign.center,),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Container(
+                      child: SpinKitRipple(
+                        color: Colors.black38,
+                        size: 100.0,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Center(
+                        child: Text(selectedLocationName),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      controller: tecCountry,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter some text';
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Country',
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      controller: tecCity,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter some text';
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'City/District',
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-            ElevatedButton(onPressed: (){}, child: Text('Select This Location'),),
-            Center(
-              child: ElevatedButton(
-                onPressed: (){
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const UploadPhotoScreen()),
-                  );
-                },
-                child: Text('NEXT'),
-              ),
-            ),
-            Center(
-              child: ElevatedButton(
-                onPressed: (){
-                  Profile().addLocation(currentLocation);
-                },
-                child: Text('Send'),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: (){
+                        Profile().addLocation(currentLocation,tecCountry.text,tecCity.text);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const UploadPhotoScreen()),
+                        );
+                      },
+                      child: Text('CONTINUE'),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
@@ -71,12 +125,13 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
     );
   }
   Future<void> getCurrentLocation() async {
-    //print('QPQPQPQPQPQ');
-    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
+    Position position = await _determinePosition();
     List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
     currentLocation = LatLng(position.latitude, position.longitude);
     setState(() {
       selectedLocationName = placemarks[0].country! + " " + placemarks[0].subAdministrativeArea!;
+      tecCountry.text = placemarks[0].country!;
+      tecCity.text = placemarks[0].subAdministrativeArea!;
     });
   }
 

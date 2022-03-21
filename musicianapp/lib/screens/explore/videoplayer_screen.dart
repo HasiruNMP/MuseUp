@@ -4,15 +4,15 @@ import 'dart:io';
 import 'dart:typed_data';
 
 
-class VideoApp extends StatefulWidget {
+class VideoView extends StatefulWidget {
   File file;
-  VideoApp(this.file, {Key? key}) : super(key: key);
+  VideoView(this.file, {Key? key}) : super(key: key);
 
   @override
-  _VideoAppState createState() => _VideoAppState();
+  _VideoViewState createState() => _VideoViewState();
 }
 
-class _VideoAppState extends State<VideoApp> {
+class _VideoViewState extends State<VideoView> {
   late VideoPlayerController _controller;
 
   @override
@@ -31,8 +31,7 @@ class _VideoAppState extends State<VideoApp> {
     //_controller.play();
     return Stack(
       children: [
-        SizedBox(
-          width: MediaQuery.of(context).size.width,
+        Center(
           child: AspectRatio(
             aspectRatio: _controller.value.aspectRatio,
             child: _controller.value.isInitialized ? VideoPlayer(_controller) : const Center(child: Text('Loading'),),

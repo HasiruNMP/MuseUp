@@ -6,10 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/services.dart';
+import 'package:musicianapp/common/globals.dart';
 import 'package:musicianapp/models/profile_model.dart';
 import 'package:musicianapp/screens/explore/videoplayer_screen.dart';
 import 'package:path/path.dart';
 import 'package:video_compress/video_compress.dart';
+import 'package:path/path.dart' as p;
 
 class FirebaseApi {
   static UploadTask? uploadFile(String destination, File file) {
@@ -62,36 +64,62 @@ class _UploadVideoScreenState extends State<UploadVideoScreen> {
         title: Text('Add Video'),
       ),
       body: SafeArea(
-        child: Container(
-          width: double.infinity,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text('Upload your best video that showcases your main role\n\n\n'),
-              Container(
-                width: 180,
-                height: 320,
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.blueAccent)
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Container(
+                child: vPath=='null' ? Center(child: Text('Upload your best video!'),) : VideoView(file),
+              ),
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: ElevatedButton(
+                      onPressed: (){
+                        selectFile();
+                      },
+                      child: Text('Select Video'),
+                    ),
+                  ),
                 ),
-                child: vPath=='null' ? Center(child: Text('Select a video'),) : VideoApp(file),
-              ),
-              ElevatedButton(
-                onPressed: (){
-                  selectFile();
-                },
-                child: Text('select video'),
-              ),
-              ElevatedButton(onPressed: (){
-                compressVideo();
-              }, child: Text('UPLOAD'),),
-              ElevatedButton(onPressed: (){
-                Profile().setProfileState(1);
-                Navigator.of(context).popUntil(ModalRoute.withName('/'));
-              }, child: Text('Finish Setup'),),
-            ],
-          ),
+              ],
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: ElevatedButton(
+                      onPressed: (){
+                        uploadVideo(file.path);
+                      },
+                      child: Text('Upload'),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8,),
+                    child: ElevatedButton(
+                      onPressed: (){
+
+                        Navigator.of(context).popUntil(ModalRoute.withName('/'));
+                      },
+                      child: Text('Finish Setup'),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
@@ -103,7 +131,7 @@ class _UploadVideoScreenState extends State<UploadVideoScreen> {
       quality: VideoQuality.LowQuality,
       deleteOrigin: false, // It's false by default
     );
-    uploadFile2(mediaInfo!.path);
+    uploadVideo(mediaInfo!.path);
   }
 
   Future selectFile() async {
@@ -116,6 +144,7 @@ class _UploadVideoScreenState extends State<UploadVideoScreen> {
   }
 
   Future uploadFile() async {
+
     if (file == null) return;
 
     final fileName = basename(file.path);
@@ -131,14 +160,15 @@ class _UploadVideoScreenState extends State<UploadVideoScreen> {
 
     print('Download-Link: $urlDownload');
   }
-  Future<void> uploadFile2(String? filePath) async {
+  Future<void> uploadVideo(String? filePath) async {
     File file = File(filePath!);
-
+    final extension = p.extension(filePath);
     try {
-      final ref = await firebase_storage.FirebaseStorage.instance.ref('uploads/${basename(file.path)}').putFile(file);
+      final ref = await firebase_storage.FirebaseStorage.instance.ref('users/${Globals.userID}/videos/${Globals.userID}${DateTime.now()}.$extension').putFile(file);
       final url = await ref.ref.getDownloadURL();
       print(url);
-      Profile().addVideoLink(url);
+      Profile().setProfileState(1);
+      Profile().addVideoURL(url);
     } on FirebaseException catch (e) {
       // e.g, e.code == 'canceled'
     }

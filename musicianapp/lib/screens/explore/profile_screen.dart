@@ -37,7 +37,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       body: SafeArea(
         child: FutureBuilder<DocumentSnapshot>(
-          future: users.doc('anneblake@gmail.com').get(),
+          future: users.doc(widget.userID).get(),
           builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
 
             if (snapshot.hasError) {
@@ -62,34 +62,59 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(8.0),
                         child: Container(
-                          color: Colors.deepPurple.shade50,
+                          //color: Colors.deepPurple.shade50,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Row(
+                            child: Column(
                               children: [
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(8.0),
-                                  child: Image.network(data['imageLink'],height: 150.0, width: 150.0,),
+                                  child: Container(
+                                    color: Colors.deepPurple,
+                                    width: MediaQuery.of(context).size.width/2.2,
+                                    child: AspectRatio(
+                                      aspectRatio: 1,
+                                      child: FittedBox(
+                                        fit: BoxFit.fill,
+                                        child: Image.network(data['imageURL'],),
+                                      ),
+                                    ),
+                                  ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
-                                      Text(
-                                        data['name'],
-                                        style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),
+                                      Padding(
+                                        padding: const EdgeInsets.all(2.0),
+                                        child: Text(
+                                          '${data['fName']} ${data['lName']}',
+                                          style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),
+                                        ),
                                       ),
-                                      SizedBox(height: 18,),
-                                      Text(
-                                        '${age.round().toString()} Y',
-                                        style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),
+                                      //SizedBox(height: 18,),
+                                      Padding(
+                                        padding: const EdgeInsets.all(2.0),
+                                        child: Text(
+                                          '${age.round().toString()} Y',
+                                          style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),
+                                        ),
                                       ),
-                                      SizedBox(height: 18,),
-                                      Text(
-                                        'Dublin, Ireland',
-                                        style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),
+                                      //SizedBox(height: 18,),
+                                      Padding(
+                                        padding: const EdgeInsets.all(2.0),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Icon(Icons.location_on,size: 20,),
+                                            Text(
+                                              '${data['city']}, ${data['country']}',
+                                              style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -185,13 +210,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text('ROLE',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
-                                    Text('Instrumentalist', style: TextStyle(fontSize: 15,),),
+                                    Text(data['role'], style: TextStyle(fontSize: 15,),),
                                     SizedBox(height: 8,),
                                     Text('INSTRUMENT',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
-                                    Text('Guitar', style: TextStyle(fontSize: 15,),),
+                                    Text(data['instrument'], style: TextStyle(fontSize: 15,),),
                                     SizedBox(height: 8,),
                                     Text('GENRES',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
-                                    Text('Pop, Acoustic, Rock, Jazz', style: TextStyle(fontSize: 15,),),
+                                    Text(data['genres'].toString(), style: TextStyle(fontSize: 15,),),
                                   ],
                                 )
                               ],

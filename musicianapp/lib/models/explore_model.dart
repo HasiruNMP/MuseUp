@@ -17,8 +17,8 @@ class Explorer with ChangeNotifier{
         .get()
         .then((QuerySnapshot querySnapshot) {
           for (var doc in querySnapshot.docs) {
-            videoList.add(doc['videoLink']);
-            print(doc["name"]);
+            videoList.add(doc['videoURL']);
+            print(doc["fName"]);
           }
           notifyListeners();
         }

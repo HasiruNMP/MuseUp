@@ -1,13 +1,17 @@
 import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:musicianapp/common/globals.dart';
+import 'package:musicianapp/models/profile_model.dart';
 import 'package:musicianapp/screens/account/uploadvideo_screen.dart';
 import 'package:image_crop/image_crop.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:http/http.dart';
+import 'package:path/path.dart' as p;
 
 class UploadPhotoScreen extends StatefulWidget {
   const UploadPhotoScreen({Key? key}) : super(key: key);
@@ -31,20 +35,43 @@ class _UploadPhotoScreenState extends State<UploadPhotoScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            Container(child: imageSelected? Image.file(file) : Center(child: Text('Select an Image'),),),
-            ElevatedButton(onPressed: selectFile, child: Text('Select image'),),
-            ElevatedButton(onPressed: (){}, child: Text('CROP'),),
-            ElevatedButton(onPressed: (){
-              uploadFile2(file.path);
-            }, child: Text('UPLOAD'),),
-            ElevatedButton(
-              onPressed: (){
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const UploadVideoScreen()),
-                );
-              },
-              child: Text('NEXT'),
+            Expanded(child: ListView(
+              children: [
+                AspectRatio(
+                  aspectRatio: 1,
+                  child: Container(
+                    color: Colors.deepPurple.shade50.withOpacity(0.5),
+                    child: imageSelected? Image.file(file) : Center(child: FaIcon(FontAwesomeIcons.image),),
+                  ),
+                ),
+                Row(
+                  children: [
+                    Expanded(child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ElevatedButton(onPressed: selectFile, child: Text('Select image'),),
+                    )),
+                  ],
+                ),
+              ],
+            )),
+            Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ElevatedButton(
+                      onPressed: (){
+                        uploadImage(file.path);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const UploadVideoScreen()),
+                        );
+                      },
+                      child: Text('NEXT'),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
@@ -70,19 +97,20 @@ class _UploadPhotoScreenState extends State<UploadPhotoScreen> {
       quality: 88,
       rotate: 180,
     );
-
     print(file.lengthSync());
     print(result!.lengthSync());
 
     return result;
   }
 
-  Future<void> uploadFile2(String? filePath) async {
+  Future<void> uploadImage(String? filePath) async {
     File file = File(filePath!);
+    final extension = p.extension(filePath);
     try {
-      final ref = await firebase_storage.FirebaseStorage.instance.ref('uploads/prpic.jpg').putFile(file);
+      final ref = await firebase_storage.FirebaseStorage.instance.ref('users/${Globals.userID}/images/${Globals.userID}${DateTime.now()}.$extension').putFile(file);
       final url = await ref.ref.getDownloadURL();
       print(url);
+      Profile().addImageURL(url);
     } on FirebaseException catch (e) {
       // e.g, e.code == 'canceled'
     }

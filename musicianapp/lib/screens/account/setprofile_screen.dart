@@ -47,7 +47,9 @@ class _SetProfileScreenState extends State<SetProfileScreen> {
   final tecLastName = TextEditingController();
   String selectedGender = 'NotSelected';
   DateTime selectedDOB = DateTime.now();
+  bool isDateSelected = false;
 
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -56,83 +58,147 @@ class _SetProfileScreenState extends State<SetProfileScreen> {
         title: const Text('Enter Your Details'),
       ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(15.0),
+        child: Form(
+          key: _formKey,
           child: Column(
             children: [
               Expanded(
                 child: ListView(
                   children: [
-                    const Text(
-                      'Your Name',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 17,
-                      ),
-                    ),
-                    MUTextField1(controller: tecFirstName, label: 'First Name'),
-                    SizedBox(height: 5,),
-                    MUTextField1(controller: tecLastName, label: 'Last Name'),
-                    SizedBox(height: 25,),
-                    const Text(
-                      'Gender',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 17,
-                      ),
-                    ),
-                    Wrap(
-                      children: List<Widget>.generate(Profile.genderList.length, (int index) {
-                        return ChoiceChip(
-                          label: Text(Profile.genderList[index]),
-                          selected: selectedGender == Profile.genderList[index],
-                          onSelected: (bool selected) {
-                            setState(() {
-                              selectedGender = selected ? Profile.genderList[index] : null;
-                            });
-                          },
-                        );
-                      },
-                      ).toList(),
-                    ),
-                    SizedBox(height: 25,),
-                    const Text(
-                      'Date of Birth',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 17,
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          '${selectedDOB.day}.${selectedDOB.month}.${selectedDOB.year}',
-                          style: const TextStyle(
-                            fontSize: 17,
-                          ),
-                          //textAlign: TextAlign.center,
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: const Text(
+                        'Your Name',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 17,
                         ),
-                        TextButton(onPressed: (){_selectDate(context);}, child: const Text('Select Date'),),
-                      ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        controller: tecFirstName,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter some text';
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'First Name',
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 5,),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        controller: tecLastName,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter some text';
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Last Name',
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 25,),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: const Text(
+                        'Gender',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 17,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Wrap(
+                        spacing: 3,
+                        children: List<Widget>.generate(Profile.genderList.length, (int index) {
+                          return ChoiceChip(
+                            label: Text(Profile.genderList[index]),
+                            selected: selectedGender == Profile.genderList[index],
+                            onSelected: (bool selected) {
+                              setState(() {
+                                selectedGender = selected ? Profile.genderList[index] : null;
+                              });
+                            },
+                          );
+                        },
+                        ).toList(),
+                      ),
+                    ),
+                    SizedBox(height: 25,),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: const Text(
+                        'Date of Birth',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 17,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Text(
+                            '${selectedDOB.day}.${selectedDOB.month}.${selectedDOB.year}',
+                            style: const TextStyle(
+                              fontSize: 17,
+                            ),
+                            //textAlign: TextAlign.center,
+                          ),
+                          TextButton(
+                            onPressed: (){
+                              _selectDate(context);
+                            },
+                            child: const Text('Select Date'),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
               ),
-              Row(
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: (){
-                        Profile().addUser(tecFirstName.text,tecLastName.text,selectedDOB,selectedGender);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => EnterRoleInfo(widget.userID)),
-                        );
-                      },
-                      child: Text('CONTINUE')
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: (){
+
+                          if(selectedGender != 'NotSelected' && isDateSelected){
+                            if (_formKey.currentState!.validate()) {
+                              Profile().addPersonalInfo(tecFirstName.text,tecLastName.text,selectedDOB,selectedGender);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => EnterRoleInfo(widget.userID)),
+                              );
+                            }
+                          }else{
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Select all fields')),
+                            );
+                          }
+
+                        },
+                        child: Text('CONTINUE')
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
 
             ],
@@ -151,6 +217,7 @@ class _SetProfileScreenState extends State<SetProfileScreen> {
     if (picked != null && picked != selectedDOB) {
       setState(() {
         selectedDOB = picked;
+        isDateSelected = true;
       });
     }
   }
@@ -169,7 +236,7 @@ class _EnterRoleInfoState extends State<EnterRoleInfo> {
   String mainRole = 'Vocalist';
   String selectedInstrument = 'Guitar';
   List<String> selectedGenres = [];
-  List<bool> selectedRole = [false, false, false, false];
+  List<bool> selectedRoleList = [false, false, false, false];
 
   @override
   Widget build(BuildContext context) {
@@ -178,102 +245,112 @@ class _EnterRoleInfoState extends State<EnterRoleInfo> {
         title: const Text('Enter Your Details'),
       ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: ListView(
-            children: [
-              const Text(
-                'What is your main role?',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 17,
-                ),
-              ),
-              Wrap(
-                children: List<Widget>.generate(Profile.roleList.length, (int index) {
-                  return ChoiceChip(
-                    label: Text(Profile.roleList[index]),
-                    selected: mainRole == Profile.roleList[index],
-                    onSelected: (bool selected) {
-                      setState(() {
-                        mainRole = selected ? Profile.roleList[index] : null;
-                        selectedRole = [false, false, false, false];
-                        selectedRole[index] = true;
-                      });
-                    },
-                  );
-                },
-                ).toList(),
-              ),
-              const Text(
-                'What instrument do you play?',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 17,
-                ),
-              ),
-              Container(
-                child: mainRole != 'Instrumentalist'? const Center(child: Text('Not Applicable'),) : Wrap(
-                  children: List<Widget>.generate(Profile.instrumentList.length, (int index) {
-                    return ChoiceChip(
-                      label: Text(Profile.instrumentList[index]),
-                      selected: selectedInstrument == Profile.instrumentList[index],
-                      onSelected: (bool selected) {
-                        setState(() {
-                          selectedInstrument = selected ? Profile.instrumentList[index] : null;
-                        });
+        child: Column(
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ListView(
+                  children: [
+                    const Text(
+                      'What is your main role?',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17,
+                      ),
+                    ),
+                    Wrap(
+                      spacing: 2,
+                      children: List<Widget>.generate(Profile.roleList.length, (int index) {
+                        return ChoiceChip(
+                          label: Text(Profile.roleList[index]),
+                          selected: mainRole == Profile.roleList[index],
+                          onSelected: (bool selected) {
+                            setState(() {
+                              mainRole = selected ? Profile.roleList[index] : null;
+                              selectedRoleList = [false, false, false, false];
+                              selectedRoleList[index] = true;
+                            });
+                          },
+                        );
+                      },).toList(),
+                    ),
+                    const Text(
+                      'What instrument do you play?',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17,
+                      ),
+                    ),
+                    Container(
+                      child: mainRole != 'Instrumentalist'? const Center(child: Text('Not Applicable'),) :
+                      Wrap(
+                        spacing: 2,
+                        children: List<Widget>.generate(Profile.instrumentList.length, (int index) {
+                          return ChoiceChip(
+                            label: Text(Profile.instrumentList[index]),
+                            selected: selectedInstrument == Profile.instrumentList[index],
+                            onSelected: (bool selected) {
+                              setState(() {
+                                selectedInstrument = selected ? Profile.instrumentList[index] : null;
+                              });
+                            },
+                          );
+                        },
+                        ).toList(),
+                      ),
+                    ),
+                    const Text(
+                      'What are your music genres?',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17,
+                      ),
+                    ),
+                    Wrap(
+                      spacing: 2,
+                      children: List<Widget>.generate(Profile.genreList.length, (int index) {
+                        return FilterChip(
+                          label: Text(Profile.genreList[index]),
+                          selected: selectedGenres.contains(Profile.genreList[index]),
+                          onSelected: (bool selected) {
+                            setState(() {
+                              if(selected){
+                                selectedGenres.add(Profile.genreList[index]);
+                              }else{
+                                selectedGenres.remove(Profile.genreList[index]);
+                              }
+                            });
+                          },
+                        );
                       },
-                    );
-                  },
-                  ).toList(),
+                      ).toList(),
+                    ),
+
+                  ],
                 ),
               ),
-              const Text(
-                'What are your music genres?',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 17,
-                ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: (){
+                        Profile().addRoleInfo(mainRole,selectedRoleList,selectedInstrument,selectedGenres);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const EnterBio()),
+                        );
+                      },
+                      child: const Text('SEND'),
+                    ),
+                  ),
+                ],
               ),
-              Wrap(
-                children: List<Widget>.generate(Profile.genreList.length, (int index) {
-                  return FilterChip(
-                    label: Text(Profile.genreList[index]),
-                    selected: selectedGenres.contains(Profile.genreList[index]),
-                    onSelected: (bool selected) {
-                      setState(() {
-                        if(selected){
-                          selectedGenres.add(Profile.genreList[index]);
-                        }else{
-                          selectedGenres.remove(Profile.genreList[index]);
-                        }
-                      });
-                    },
-                  );
-                },
-                ).toList(),
-              ),
-              Center(
-                child: ElevatedButton(
-                  onPressed: (){
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const EnterBio()),
-                    );
-                  },
-                  child: const Text('NEXT'),
-                ),
-              ),
-              Center(
-                child: ElevatedButton(
-                  onPressed: (){
-                    Profile().addRoleInfo(selectedRole,selectedInstrument,selectedGenres);
-                  },
-                  child: const Text('SEND'),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -300,36 +377,40 @@ class _EnterBioState extends State<EnterBio> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(10.0),
-          child: ListView(
+          child: Column(
             children: [
-              TextField(
-                controller: tecBio,
-                keyboardType: TextInputType.multiline,
-                maxLines: 15,
-                textAlign: TextAlign.justify,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Bio',
+              Expanded(
+                child: ListView(
+                  children: [
+                    TextField(
+                      controller: tecBio,
+                      keyboardType: TextInputType.multiline,
+                      maxLines: 15,
+                      textAlign: TextAlign.justify,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        //labelText: 'Bio',
+                        hintText:  'Type your bio here',
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              Center(
-                child: ElevatedButton(
-                  onPressed: (){
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const SetLocationScreen()),
-                    );
-                  },
-                  child: const Text('NEXT'),
-                ),
-              ),
-              Center(
-                child: ElevatedButton(
-                  onPressed: (){
-                    Profile().addBio(tecBio.text);
-                  },
-                  child: const Text('NEXT'),
-                ),
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: (){
+                        Profile().addBio(tecBio.text);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const SetLocationScreen()),
+                        );
+                      },
+                      child: const Text('NEXT'),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
