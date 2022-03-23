@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter/material.dart';
+import 'package:musicianapp/common/globals.dart';
 import 'package:musicianapp/screens/common/home_screen.dart';
 import 'package:musicianapp/screens/connections/connections_screen.dart';
 import 'package:musicianapp/screens/connections/conversations_screen.dart';
@@ -23,7 +24,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
     HomeScreen(),
     ConnectionsView(),
     ConversationsScreen(),
-    ProfileScreen(''),
+    ProfileScreen(Globals.userID),
   ];
   Color _selectedColor = Color(0xFF2f3542);
 
@@ -35,28 +36,21 @@ class _NavigationScreenState extends State<NavigationScreen> {
         currentIndex: _currentIndex,
         onTap: (i) => setState(() => _currentIndex = i),
         items: [
-          /// Home
           SalomonBottomBarItem(
             icon: Icon(Icons.home_filled),
             title: Text("Home"),
             selectedColor: _selectedColor,
           ),
-
-          /// Likes
           SalomonBottomBarItem(
             icon: Icon(Icons.search),
             title: Text("Explore"),
             selectedColor: _selectedColor,
           ),
-
-          /// Search
           SalomonBottomBarItem(
             icon: Icon(Icons.message_rounded),
             title: Text("Messages"),
             selectedColor: _selectedColor,
           ),
-
-          /// Profile
           SalomonBottomBarItem(
             icon: Icon(Icons.person),
             title: Text("Profile"),

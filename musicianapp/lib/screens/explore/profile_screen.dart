@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:musicianapp/common/common_widgets.dart';
+import 'package:musicianapp/common/globals.dart';
 import 'package:musicianapp/screens/settings/settings.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -17,13 +18,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Map<String, dynamic> profileData = {};
   CollectionReference users = FirebaseFirestore.instance.collection('users');
+  String profileType = 'none';
   String bio = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Profile'),
+        title: Text(''),
         actions: [
           IconButton(
             onPressed: (){
@@ -50,7 +52,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
             if (snapshot.connectionState == ConnectionState.done) {
               Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
-
+              
+              if(Globals.connectionsMap.containsKey(widget.userID)){
+                profileType = Globals.connectionsMap[widget.userID]!;
+                print(profileType);
+              }
+              
               DateTime dob = data['dob'].toDate();
               var age = (DateTime.now().difference(dob).inDays)/365;
 
@@ -136,30 +143,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           color: Colors.deepPurple.shade50,
                           child: Padding(
                             padding: const EdgeInsets.symmetric(vertical: 5.0,horizontal: 8.0),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 3.0),
-                                    child: TextButton(
-                                      onPressed: (){},
-                                      child: Text('CONNECT'),
-                                      style: flatButtonStyle1,
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 3.0),
-                                    child: TextButton(
-                                      onPressed: (){},
-                                      child: Text('MESSAGE'),
-                                      style: flatButtonStyle1,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
+                            child: _profileButtons(profileType,widget.userID,data['fName']),
                           ),
                         ),
                       ),
@@ -235,6 +219,144 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       ),
     );
+  }
+
+  Widget _profileButtons(String profileType, String uid, String name){
+    if(profileType == 'accepted'){
+      return Container(
+        child: Row(
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                child: TextButton(
+                  onPressed: (){},
+                  child: Text('CONNECTED'),
+                  style: flatButtonStyle1,
+                ),
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                child: TextButton(
+                  onPressed: (){},
+                  child: Text('MESSAGE'),
+                  style: flatButtonStyle1,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+    else if (profileType == 'incoming'){
+      return Container(
+        child: Column(
+          children: [
+            Text('$name has asked to connect with you'),
+            Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                    child: TextButton(
+                      onPressed: (){},
+                      child: Text('ACCEPT'),
+                      style: flatButtonStyle1,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                    child: TextButton(
+                      onPressed: (){},
+                      child: Text('IGNORE'),
+                      style: flatButtonStyle1,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                    child: TextButton(
+                      onPressed: (){},
+                      child: Text('MESSAGE'),
+                      style: flatButtonStyle1,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
+    }
+    else if (profileType == 'outgoing'){
+      return Container(
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                    child: TextButton(
+                      onPressed: (){},
+                      child: Text('REQUESTED'),
+                      style: flatButtonStyle1,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                    child: TextButton(
+                      onPressed: (){},
+                      child: Text('MESSAGE'),
+                      style: flatButtonStyle1,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
+    }
+    else{
+      return Container(
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                    child: TextButton(
+                      onPressed: (){},
+                      child: Text('CONNECT'),
+                      style: flatButtonStyle1,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                    child: TextButton(
+                      onPressed: (){},
+                      child: Text('MESSAGE'),
+                      style: flatButtonStyle1,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
+    }
   }
 
   void getProfileData(String userID){

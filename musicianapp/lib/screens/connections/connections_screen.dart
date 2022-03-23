@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:musicianapp/common/common_widgets.dart';
+import 'package:musicianapp/common/globals.dart';
 import 'package:musicianapp/screens/explore/profile_screen.dart';
 
 class ConnectionsView extends StatefulWidget {
@@ -29,8 +30,8 @@ class _ConnectionsViewState extends State<ConnectionsView> with AutomaticKeepAli
         ],
       ),
       body: SafeArea(
-        child: StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance.collection('users').doc('hasirunmp@gmail.com').collection('connections').snapshots(),
+        child: FutureBuilder<QuerySnapshot>(
+          future: FirebaseFirestore.instance.collection('users').doc(Globals.userID).collection('connections').where('status',isEqualTo: 'accepted').get(),
           builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasError) {
               return Text('Something went wrong');
@@ -42,7 +43,7 @@ class _ConnectionsViewState extends State<ConnectionsView> with AutomaticKeepAli
               children: snapshot.data!.docs.map((DocumentSnapshot document) {
                 Map<String, dynamic> connectionData = document.data()! as Map<String, dynamic>;
                 return FutureBuilder<DocumentSnapshot>(
-                  future: FirebaseFirestore.instance.collection('users').doc(connectionData['userEmail']).get(),
+                  future: FirebaseFirestore.instance.collection('users').doc(connectionData['connectionUID']).get(),
                   builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
 
                     if (snapshot.hasError) {
@@ -66,7 +67,7 @@ class _ConnectionsViewState extends State<ConnectionsView> with AutomaticKeepAli
                               onPressed: (){
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => ProfileScreen('')),
+                                  MaterialPageRoute(builder: (context) => ProfileScreen(snapshot.data!.id)),
                                 );
                               },
                               child: Padding(
@@ -79,15 +80,26 @@ class _ConnectionsViewState extends State<ConnectionsView> with AutomaticKeepAli
                                           CircleAvatar(
                                             radius: 22,
                                             backgroundColor: Colors.green,
-                                            backgroundImage: NetworkImage(userData['imageLink']),
+                                            backgroundImage: NetworkImage(userData['imageURL']),
                                           ),
                                           SizedBox(width: 7,),
-                                          Text(
-                                            userData['name'],
-                                            style: TextStyle(
-                                              fontSize: 18,
-                                              color: Colors.black87,
-                                            ),
+                                          Column(
+                                            children: [
+                                              Text(
+                                                '${userData['fName']} ${userData['lName']}',
+                                                style: TextStyle(
+                                                  fontSize: 18,
+                                                  color: Colors.black87,
+                                                ),
+                                              ),
+                                              /*Text(
+                                                '${userData['role']}',
+                                                style: TextStyle(
+                                                  //fontSize: 18,
+                                                  color: Colors.black54,
+                                                ),
+                                              ),*/
+                                            ],
                                           ),
                                         ],
                                       ),

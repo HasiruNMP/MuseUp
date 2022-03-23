@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cupertino_icons/cupertino_icons.dart';
 import 'package:musicianapp/common/common_widgets.dart';
-import 'package:musicianapp/screens/account/signin_screen.dart';
+import 'package:musicianapp/screens/authentication/signin_screen.dart';
 
 class ChatScreen extends StatefulWidget {
 

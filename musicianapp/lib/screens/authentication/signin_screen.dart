@@ -31,7 +31,7 @@ class _SignInScreenState extends State<SignInScreen> {
           child: ListView(
             children: [
               SizedBox(
-                height: MediaQuery.of(context).size.height/7,
+                height: MediaQuery.of(context).size.height/12,
               ),
               Text(
                 'Sign In',
@@ -58,7 +58,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 child: MUTextField1(controller: _tecPW,label: 'Password',),
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.symmetric(vertical: 0,horizontal: 8),
                 child: TextButton(
                   onPressed: (){
                     AuthService().signInWithEmail(_tecEmail.text,_tecPW.text);
@@ -67,6 +67,10 @@ class _SignInScreenState extends State<SignInScreen> {
                   child: Text('SIGN IN'),
                   style: flatButtonStyle1,
                 ),
+              ),
+              TextButton(
+                onPressed: (){},
+                child: Text('Forgot Password'),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 0,horizontal: 8),

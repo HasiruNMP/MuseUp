@@ -75,7 +75,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                     padding: const EdgeInsets.all(1.0),
                                     child: CircleAvatar(
                                       radius: 24,
-                                      backgroundImage: NetworkImage(sender['imageLink']),
+                                      backgroundImage: NetworkImage(sender['imageURL']),
                                     ),
                                   ),
                                   SizedBox(width: 5,),
@@ -86,7 +86,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                         text: '',
                                         style: DefaultTextStyle.of(context).style,
                                         children: <TextSpan>[
-                                          TextSpan(text: sender['name'], style: TextStyle(fontWeight: FontWeight.bold)),
+                                          TextSpan(text: sender['fName'], style: TextStyle(fontWeight: FontWeight.bold)),
                                           TextSpan(text: ' has sent you a connection request'),
                                         ],
                                       ),
@@ -95,7 +95,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                         text: 'Congratulations! ',
                                         style: DefaultTextStyle.of(context).style,
                                         children: <TextSpan>[
-                                          TextSpan(text: sender['name'], style: TextStyle(fontWeight: FontWeight.bold)),
+                                          TextSpan(text: sender['fName'], style: TextStyle(fontWeight: FontWeight.bold)),
                                           TextSpan(text: ' has accepted your request.'),
                                         ],
                                       ),

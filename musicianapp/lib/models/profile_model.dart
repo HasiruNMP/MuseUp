@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
@@ -74,5 +75,23 @@ class Profile {
     }).then((value) => print("User Added")).catchError((error) => print("Failed to add user: $error"));
   }
 
+  Future<void> setOnlineStatus(bool state) {
+    return Globals.usersRef.doc(Globals.userID).update({
+      'isOnline': state,
+    }).then((value) => print("Setting Online Status")).catchError((error) => print("Failed to add user: $error"));
+  }
 
+  Future<void> getConnectionsList() async {
+    FirebaseFirestore.instance.collection('users').doc(Globals.userID).collection('connections')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+          querySnapshot.docs.forEach((doc) {
+            print(doc["connectionUID"]);
+            Globals.connectionsMap.putIfAbsent(doc["connectionUID"], () => doc["status"]);
+        });
+    });
+    print(Globals.connectionsMap);
+  }
+
+  
 }

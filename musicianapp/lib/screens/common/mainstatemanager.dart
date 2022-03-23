@@ -5,7 +5,7 @@ import 'package:musicianapp/common/globals.dart';
 import 'package:musicianapp/models/profile_model.dart';
 import 'package:musicianapp/models/user_model.dart';
 import 'package:musicianapp/screens/account/setprofile_screen.dart';
-import 'package:musicianapp/screens/account/signin_screen.dart';
+import 'package:musicianapp/screens/authentication/signin_screen.dart';
 import 'package:musicianapp/screens/common/navigation_screen.dart';
 import 'package:musicianapp/screens/account/welcome_screen.dart';
 import 'package:musicianapp/services/auth_service.dart';
@@ -37,7 +37,11 @@ class _MainStateManagerState extends State<MainStateManager> {
           final currentUser = snapshot.data;
 
           if ((currentUser != null)) {
+
             Globals.userID = currentUser.userID;
+            Profile().getConnectionsList();
+            print(Globals.userID);
+
             return Provider<CurrentUser>.value(
                 value: currentUser,
                 child: ProfileStateManager(currentUser.userID),
@@ -67,7 +71,23 @@ class ProfileStateManager extends StatefulWidget {
   State<ProfileStateManager> createState() => _ProfileStateManagerState();
 }
 
-class _ProfileStateManagerState extends State<ProfileStateManager> {
+class _ProfileStateManagerState extends State<ProfileStateManager> with WidgetsBindingObserver {
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance!.addObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed){
+      Profile().setOnlineStatus(true);
+    }else{
+      Profile().setOnlineStatus(false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -95,6 +115,10 @@ class _ProfileStateManagerState extends State<ProfileStateManager> {
         }
       },
     );
+  }
+  @override
+  void dispose() {
+    super.dispose();
   }
 }
 
