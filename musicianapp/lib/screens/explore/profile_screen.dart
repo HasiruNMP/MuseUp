@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:musicianapp/common/common_widgets.dart';
 import 'package:musicianapp/common/globals.dart';
+import 'package:musicianapp/models/chat_model.dart';
+import 'package:musicianapp/models/connection_model.dart';
 import 'package:musicianapp/screens/settings/settings.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -28,13 +30,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         title: Text(''),
         actions: [
           IconButton(
-            onPressed: (){
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const SettingsScreen()),
-              );
-            },
-            icon: Icon(Icons.settings),),
+            onPressed: (){},
+            icon: Icon(Icons.more_vert),),
         ],
       ),
       body: SafeArea(
@@ -143,7 +140,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           color: Colors.deepPurple.shade50,
                           child: Padding(
                             padding: const EdgeInsets.symmetric(vertical: 5.0,horizontal: 8.0),
-                            child: _profileButtons(profileType,widget.userID,data['fName']),
+                            child: _profileButtons(profileType,widget.userID,data['fName'],data['imageURL']),
                           ),
                         ),
                       ),
@@ -221,7 +218,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget _profileButtons(String profileType, String uid, String name){
+  Widget _profileButtons(String profileType, String uid, String name, String imageURL){
     if(profileType == 'accepted'){
       return Container(
         child: Row(
@@ -230,7 +227,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 3.0),
                 child: TextButton(
-                  onPressed: (){},
+                  onPressed: null,
                   child: Text('CONNECTED'),
                   style: flatButtonStyle1,
                 ),
@@ -240,7 +237,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 3.0),
                 child: TextButton(
-                  onPressed: (){},
+                  onPressed: (){
+                    Chat().openChat(uid, context, name,imageURL);
+                  },
                   child: Text('MESSAGE'),
                   style: flatButtonStyle1,
                 ),
@@ -261,7 +260,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 3.0),
                     child: TextButton(
-                      onPressed: (){},
+                      onPressed: (){
+                        setState(() {
+                          Connection().responseToConnectionRequest(uid, 'accepted');
+                        });
+                      },
                       child: Text('ACCEPT'),
                       style: flatButtonStyle1,
                     ),
@@ -271,7 +274,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 3.0),
                     child: TextButton(
-                      onPressed: (){},
+                      onPressed: (){
+                        setState(() {
+                          Connection().responseToConnectionRequest(uid, 'none');
+                        });
+                      },
                       child: Text('IGNORE'),
                       style: flatButtonStyle1,
                     ),
@@ -281,7 +288,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 3.0),
                     child: TextButton(
-                      onPressed: (){},
+                      onPressed: (){
+                        Chat().openChat(uid, context, name,imageURL);
+                      },
                       child: Text('MESSAGE'),
                       style: flatButtonStyle1,
                     ),
@@ -303,7 +312,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 3.0),
                     child: TextButton(
-                      onPressed: (){},
+                      onPressed: null,
                       child: Text('REQUESTED'),
                       style: flatButtonStyle1,
                     ),
@@ -313,7 +322,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 3.0),
                     child: TextButton(
-                      onPressed: (){},
+                      onPressed: (){
+                        Chat().openChat(uid, context, name,imageURL);
+                      },
                       child: Text('MESSAGE'),
                       style: flatButtonStyle1,
                     ),
@@ -335,7 +346,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 3.0),
                     child: TextButton(
-                      onPressed: (){},
+                      onPressed: (){
+                        setState(() {
+                          Connection().sendConnectionRequest(uid);
+                        });
+                      },
                       child: Text('CONNECT'),
                       style: flatButtonStyle1,
                     ),
@@ -345,7 +360,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 3.0),
                     child: TextButton(
-                      onPressed: (){},
+                      onPressed: (){
+                        Chat().openChat(uid, context, name,imageURL);
+                      },
                       child: Text('MESSAGE'),
                       style: flatButtonStyle1,
                     ),
@@ -366,5 +383,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       }
     });
   }
+
+
 
 }

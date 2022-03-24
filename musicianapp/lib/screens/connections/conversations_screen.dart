@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:musicianapp/common/common_widgets.dart';
 import 'package:musicianapp/common/globals.dart';
+import 'package:musicianapp/models/chat_model.dart';
 import 'package:musicianapp/screens/connections/chat_screen.dart';
 import 'package:musicianapp/screens/connections/connections_screen.dart';
 
@@ -39,7 +40,7 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            Container(
+            /*Container(
               alignment: Alignment.centerLeft,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -53,17 +54,18 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
                   ),
                 ),
               ),
-            ),
+            ),*/
             Container(
-              height: 70,
+              height: 55,
               child: Padding(
-                padding: const EdgeInsets.only(left: 5),
+                padding: const EdgeInsets.only(left: 10),
                 child: OnlineConnections(),
               ),
             ),
+            Divider(),
             Expanded(
               child: StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance.collection('conversations').snapshots(),
+                stream: FirebaseFirestore.instance.collection('conversations').where('participants',arrayContains: Globals.userID).snapshots(),
                 builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.hasError) {
                     return Text('Something went wrong');
@@ -74,8 +76,7 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
                   return ListView(
                     children: snapshot.data!.docs.map((DocumentSnapshot document) {
                       Map<String, dynamic> conversationData = document.data()! as Map<String, dynamic>;
-                      String otherUser = conversationData['participants'][0] == 'anneblake@gmail.com'?
-                        conversationData['participants'][1] : conversationData['participants'][0];
+                      String otherUser = conversationData['participants'][0] == Globals.userID? conversationData['participants'][1] : conversationData['participants'][0];
                       return FutureBuilder<DocumentSnapshot>(
                         future: FirebaseFirestore.instance.collection('users').doc(otherUser).get(),
                         builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
@@ -102,16 +103,16 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
                                   child: TextButton(
                                     style: flatButtonStyleDoc1,
                                     onPressed: (){
-                                      Navigator.push(context, MaterialPageRoute(builder: (context) => ChatScreen(document.id,userData['name'],userData['imageLink']),),);
+                                      Chat().openChat(otherUser, context, userData['fName'],userData['imageURL']);
                                     },
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(vertical: 3),
                                       child: Row(
                                         children: [
                                           CircleAvatar(
-                                            radius: 20,
+                                            radius: 23,
                                             backgroundColor: Colors.green,
-                                            backgroundImage: NetworkImage(userData['imageLink']),
+                                            backgroundImage: NetworkImage(userData['imageURL']),
                                           ),
                                           SizedBox(width: 5,),
                                           Expanded(
@@ -119,7 +120,7 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  userData['name'],
+                                                  userData['fName'],
                                                   style: TextStyle(
                                                     fontSize: 18,
                                                     color: Colors.black87,
@@ -151,7 +152,6 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
                               ),
                             );
                           }
-
                           return Text("loading");
                         },
                       );
@@ -193,29 +193,39 @@ class _OnlineConnectionsState extends State<OnlineConnections> {
           children: snapshot.data!.docs.map((DocumentSnapshot document) {
             Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
             return Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-              child: Badge(
-                badgeContent: Text(''),
-                badgeColor: Colors.green,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(50.0),
-                  child: InkWell(
-                    onTap: (){
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => ChatScreen(document.id,data['fName'],''),),
-                      );
-                    },
-                    child: AspectRatio(
-                      aspectRatio: 1,
-                      child: FittedBox(
-                        fit: BoxFit.fill,
-                        child: Image.network(data['imageURL']),
+              padding: const EdgeInsets.fromLTRB(0, 0, 6, 0),
+              child: Stack(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(50.0),
+                    child: InkWell(
+                      onTap: (){
+
+                      },
+                      child: AspectRatio(
+                        aspectRatio: 1,
+                        child: FittedBox(
+                          fit: BoxFit.fill,
+                          child: Image.network(data['imageURL']),
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ),
+                  Container(
+                    child: AspectRatio(
+                      aspectRatio: 1,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 4, 10, 0),
+                        child: Badge(
+                          badgeColor: Colors.green,
+                          badgeContent: Text(''),
+                          child: Container(),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              )
             );
           }).toList(),
         );

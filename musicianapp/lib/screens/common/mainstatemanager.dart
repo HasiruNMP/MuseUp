@@ -4,6 +4,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:musicianapp/common/globals.dart';
 import 'package:musicianapp/models/profile_model.dart';
 import 'package:musicianapp/models/user_model.dart';
+import 'package:musicianapp/screens/account/blocked_screen.dart';
 import 'package:musicianapp/screens/account/setprofile_screen.dart';
 import 'package:musicianapp/screens/authentication/signin_screen.dart';
 import 'package:musicianapp/screens/common/navigation_screen.dart';
@@ -110,6 +111,8 @@ class _ProfileStateManagerState extends State<ProfileStateManager> with WidgetsB
         Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
         if(data['profileState'] == 1){
           return NavigationScreen();
+        }else if(data['profileState'] == 9){
+          return BlockedScreen();
         }else{
           return SetProfileScreen(widget.userID);
         }

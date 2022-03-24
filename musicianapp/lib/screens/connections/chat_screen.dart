@@ -3,23 +3,25 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cupertino_icons/cupertino_icons.dart';
 import 'package:musicianapp/common/common_widgets.dart';
+import 'package:musicianapp/common/globals.dart';
+import 'package:musicianapp/models/chat_model.dart';
 import 'package:musicianapp/screens/authentication/signin_screen.dart';
 
 class ChatScreen extends StatefulWidget {
 
+  String conversationID;
   String connectionUID;
   String imageURL;
   String connectionName;
 
-  ChatScreen(this.connectionUID,this.connectionName,this.imageURL);
+  ChatScreen(this.conversationID,this.connectionUID,this.connectionName,this.imageURL, {Key? key}) : super(key: key);
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  
-  final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance.collection('conversations').doc('anneblake@gmail.com-emmamclean@gmail.com').collection('messages').orderBy('time', descending: false).snapshots();
+
   final messageTEC = TextEditingController();
   late bool isSenderMe;
 
@@ -51,7 +53,7 @@ class _ChatScreenState extends State<ChatScreen> {
               flex: 10,
               child: Container(
                 child: StreamBuilder<QuerySnapshot>(
-                  stream: _usersStream,
+                  stream: FirebaseFirestore.instance.collection('conversations').doc(widget.conversationID).collection('messages').orderBy('time', descending: false).snapshots(),
                   builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                     if (snapshot.hasError) {
                       return Text('Something went wrong');
@@ -61,10 +63,16 @@ class _ChatScreenState extends State<ChatScreen> {
                       return Text("Loading");
                     }
 
+                    if (snapshot.data!.docs.isEmpty) {
+                      Chat().initializeChat(widget.conversationID, widget.connectionUID);
+                      return Text('Start Chatting with ${widget.connectionName}');
+                    }
+
+
                     return ListView(
                       children: snapshot.data!.docs.map((DocumentSnapshot document) {
                         Map<String, dynamic> messageData = document.data()! as Map<String, dynamic>;
-                        messageData['sender'] == 'anneblake@gmail.com' ? isSenderMe = true : isSenderMe = false;
+                        messageData['sender'] == Globals.userID ? isSenderMe = true : isSenderMe = false;
                         return Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 5.0),
                           child: Container(
@@ -126,7 +134,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     IconButton(
                       onPressed: (){
                         if(messageTEC.text.isNotEmpty){
-                          uploadMessage(messageTEC.text);
+                          uploadMessage(widget.conversationID,messageTEC.text);
                           messageTEC.clear();
                         }
                       },
@@ -142,22 +150,22 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  Future<void> uploadMessage(String text) {
-    return FirebaseFirestore.instance.collection('conversations').doc('anneblake@gmail.com-emmamclean@gmail.com').collection('messages').add({
+  Future<void> uploadMessage(String conversationID, String text) {
+    return FirebaseFirestore.instance.collection('conversations').doc(conversationID).collection('messages').add({
       'order': 0,
       'text': text,
-      'sender': 'anneblake@gmail.com',
+      'sender': Globals.userID,
       'time': FieldValue.serverTimestamp(),
     })
     .then((value) {
       print("Message Added");
-      updateLastMessage(text);
+      updateLastMessage(conversationID,text);
     })
     .catchError((error) => print("Failed to send message: $error"));
   }
 
-  Future<void> updateLastMessage(String text) {
-    return FirebaseFirestore.instance.collection('conversations').doc('anneblake@gmail.com-emmamclean@gmail.com').update({
+  Future<void> updateLastMessage(String conversationID,String text) {
+    return FirebaseFirestore.instance.collection('conversations').doc(conversationID).update({
       'lastMessage': text,
       'lastMessageTime': FieldValue.serverTimestamp(),
     }).then((value) => print("Message Added")).catchError((error) => print("Failed to send message: $error"));

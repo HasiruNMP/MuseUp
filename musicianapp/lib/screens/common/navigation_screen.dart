@@ -24,7 +24,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
     HomeScreen(),
     ConnectionsView(),
     ConversationsScreen(),
-    ProfileScreen(Globals.userID),
+    UserScreen(Globals.userID),
   ];
   Color _selectedColor = Color(0xFF2f3542);
 
