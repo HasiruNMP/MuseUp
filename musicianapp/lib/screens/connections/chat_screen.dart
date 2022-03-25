@@ -60,7 +60,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     }
 
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Text("Loading");
+                      return Center(child: spinkit);
                     }
 
                     if (snapshot.data!.docs.isEmpty) {

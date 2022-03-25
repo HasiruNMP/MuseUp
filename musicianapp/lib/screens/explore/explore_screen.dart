@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:musicianapp/common/common_widgets.dart';
 import 'package:musicianapp/models/explore_model.dart';
 import 'package:musicianapp/screens/explore/profile_screen.dart';
 import 'package:musicianapp/screens/account/setprofile_screen.dart';
@@ -21,12 +22,18 @@ class ExploreScreen extends StatefulWidget {
 class _ExploreScreenState extends State<ExploreScreen> {
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
 
     //SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
     //SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 
     final PageController controller = PageController();
+    bool showGuide = true;
 
     return Scaffold(
       /*appBar: AppBar(
@@ -37,11 +44,12 @@ class _ExploreScreenState extends State<ExploreScreen> {
       ),*/
       body: SafeArea(
         child: Container(
-          color: Colors.black87,
+          color: Colors.white,
           child: Stack(
             children: [
               Consumer<Explorer>(
                 builder: (context, explorerModel, child) {
+                  showGuide = false;
                   return PageView(
                     controller: controller,
                     scrollDirection: Axis.vertical,
@@ -86,7 +94,8 @@ class _ExploreScreenState extends State<ExploreScreen> {
                     ],
                   ),
                 ),
-              )
+              ),
+              //if (showGuide) Center(child: Text('Select filter settings to start exploring'),) else Container(),
             ],
           ),
         ),
@@ -360,7 +369,7 @@ class _VideoAppState extends State<VideoApp> {
             aspectRatio: _controller.value.aspectRatio,
             child: VideoPlayer(_controller),
           ) :
-          const Center(child: Text('Loading'),),
+          const Center(child: spinkit),
         ),
         Padding(
           padding: const EdgeInsets.all(14.0),
@@ -421,7 +430,7 @@ class _VideoAppState extends State<VideoApp> {
       backgroundColor: Colors.white,
       context: context,
       builder: (BuildContext context) {
-        return ProfileScreen('');
+        return Container();
       },
     );
   }

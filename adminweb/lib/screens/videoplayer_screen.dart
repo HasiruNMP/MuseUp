@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoPlayerScreen extends StatefulWidget {
@@ -27,7 +28,17 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Video'),
+        title: Text(
+          'Video',
+          style: GoogleFonts.lato(
+              fontWeight: FontWeight.bold,
+              color: Colors.black87
+          ),
+        ),
+        elevation: 0,
+        centerTitle: true,
+        backgroundColor: Colors.deepPurple.shade50,
+        foregroundColor: Colors.black87,
       ),
       body: Stack(
         children: [
@@ -37,21 +48,37 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
               child: _controller.value.isInitialized ? VideoPlayer(_controller) : const Center(child: Text('Loading'),),
             ),
           ),
-          Center(
-            child: IconButton(
-              onPressed: _controller.value.isPlaying ? (){
-                setState(() {
-                  _controller.pause();
-                });
-              } : (){
-                setState(() {
-                  _controller.play();
-                });
-              },
-              icon: _controller.value.isPlaying ? Icon(Icons.pause_outlined,size: 60,) : Icon(Icons.play_arrow_outlined,size: 60,),
-              color: Colors.white,
+          Padding(
+            padding: const EdgeInsets.all(14.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      onPressed: _controller.value.isPlaying ? (){
+                        setState(() {
+                          _controller.pause();
+                        });
+                      } : (){
+                        setState(() {
+                          _controller.play();
+                        });
+                      },
+                      child: _controller.value.isPlaying ? Icon(Icons.pause,color: Colors.white,) : Icon(Icons.play_arrow,color: Colors.white,),
+                      style: ElevatedButton.styleFrom(
+                        shape: CircleBorder(),
+                        padding: EdgeInsets.all(12),
+                        primary: Color(0xFF303952), // <-- Button color
+                        onPrimary: Color(0xFF40407a), // <-- Splash color
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
-          ),
+          )
         ],
       ),
     );

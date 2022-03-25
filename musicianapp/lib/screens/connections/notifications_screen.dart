@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:musicianapp/common/common_widgets.dart';
 import 'package:musicianapp/common/globals.dart';
 import 'package:musicianapp/screens/explore/profile_screen.dart';
 
@@ -109,7 +110,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                       );
                     }
 
-                    return Text("loading");
+                    return Center(child: spinkit);
                   },
                 );
               }).toList(),

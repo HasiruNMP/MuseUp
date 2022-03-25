@@ -37,7 +37,7 @@ class _ConnectionsViewState extends State<ConnectionsView> with AutomaticKeepAli
               return Text('Something went wrong');
             }
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Text("Loading");
+              return Center(child: spinkit);
             }
             return ListView(
               children: snapshot.data!.docs.map((DocumentSnapshot document) {
@@ -121,7 +121,7 @@ class _ConnectionsViewState extends State<ConnectionsView> with AutomaticKeepAli
                       );
                     }
 
-                    return Text("loading");
+                    return Center(child: spinkit);
                   },
                 );
               }).toList(),

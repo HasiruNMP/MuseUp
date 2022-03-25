@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:musicianapp/screens/authentication/forgotpassword_screen.dart';
 import 'package:musicianapp/services/auth_service.dart';
 import 'package:musicianapp/common/common_widgets.dart';
 import 'package:circle_button/circle_button.dart';
@@ -69,7 +70,12 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
               ),
               TextButton(
-                onPressed: (){},
+                onPressed: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const ForgotPasswordScreen()),
+                  );
+                },
                 child: Text('Forgot Password'),
               ),
               Padding(

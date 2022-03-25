@@ -3,7 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:musicianapp/common/common_widgets.dart';
 import 'package:musicianapp/models/explore_model.dart';
+import 'package:musicianapp/screens/connections/connections_screen.dart';
 import 'package:musicianapp/screens/connections/notifications_screen.dart';
 import 'package:musicianapp/screens/explore/explore_screen.dart';
 import 'package:musicianapp/screens/explore/profile_screen.dart';
@@ -27,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: true,
         leading: IconButton(
             icon: CircleAvatar(
-              backgroundImage: NetworkImage('https://firebasestorage.googleapis.com/v0/b/hnmp-museup.appspot.com/o/users%2Femmamclean%40gmail.com%2Fimages%2Fpexels-pavel-danilyuk-7802607%20(1).jpg?alt=media&token=07fc13be-3990-4db2-9c24-2bb030aa43c3'),
+              backgroundImage: NetworkImage('https://firebasestorage.googleapis.com/v0/b/hnmp-museup.appspot.com/o/users%2FyosJBYpOiVgqDWUZGDaV5pbxs3p2%2Fimages%2F1632695736378%20(1)%20(2).jpg?alt=media&token=375f1c3c-6235-48ae-b641-d3ca74b73829'),
             ),
             onPressed: () { print("Pressed"); }
         ),
@@ -128,7 +130,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 60,
                   color: Colors.deepPurple.shade50,
                   child: TextButton(
-                    onPressed: (){},
+                    onPressed: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ConnectionsView()),
+                      );
+                    },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -184,7 +191,7 @@ class _NearbyListViewState extends State<NearbyListView> {
         }
 
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Text("Loading");
+          return Center(child: spinkit);
         }
 
         return ListView(

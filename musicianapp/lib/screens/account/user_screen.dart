@@ -225,7 +225,7 @@ class _UserScreenState extends State<UserScreen> {
               );
             }
 
-            return Text("loading");
+            return Center(child: spinkit);
           },
         ),
       ),

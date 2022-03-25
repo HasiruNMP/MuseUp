@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 Color lightPurple = Colors.deepPurple.shade50;
 Color darkPurple = Color(0xFF40407a);
+
+const spinkit = SpinKitFadingFour(
+  color: Colors.indigo,
+  size: 25.0,
+);
 
 final ButtonStyle flatButtonStyle1 = TextButton.styleFrom(
   primary: Colors.white,

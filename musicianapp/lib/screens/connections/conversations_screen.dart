@@ -71,7 +71,7 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
                     return Text('Something went wrong');
                   }
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Text("Loading");
+                    return Center(child: spinkit);
                   }
                   return ListView(
                     children: snapshot.data!.docs.map((DocumentSnapshot document) {
@@ -152,7 +152,7 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
                               ),
                             );
                           }
-                          return Text("loading");
+                          return Center(child: spinkit);
                         },
                       );
                     }).toList(),
@@ -185,7 +185,7 @@ class _OnlineConnectionsState extends State<OnlineConnections> {
         }
 
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Text("Loading");
+          return Center(child: spinkit);
         }
 
         return ListView(

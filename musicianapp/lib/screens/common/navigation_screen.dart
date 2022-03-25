@@ -42,8 +42,8 @@ class _NavigationScreenState extends State<NavigationScreen> {
             selectedColor: _selectedColor,
           ),
           SalomonBottomBarItem(
-            icon: Icon(Icons.search),
-            title: Text("Explore"),
+            icon: Icon(Icons.people),
+            title: Text("Connections"),
             selectedColor: _selectedColor,
           ),
           SalomonBottomBarItem(

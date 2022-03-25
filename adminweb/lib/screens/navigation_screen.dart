@@ -18,6 +18,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
   Widget build(BuildContext context) {
     final PageController controller = PageController();
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(
           'MuseUp Admin Dashboard',
@@ -150,7 +151,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
                   FeedbacksScreen(),
                   ReportsScreen(),
                   Center(
-                    child: Text('Third Page'),
+                    child: Text('Profile Screen'),
                   )
                 ],
               ),

@@ -211,7 +211,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               );
             }
 
-            return Text("loading");
+            return Center(child: spinkit);
           },
         ),
       ),
