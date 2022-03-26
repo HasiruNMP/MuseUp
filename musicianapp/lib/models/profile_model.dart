@@ -88,9 +88,24 @@ class Profile {
           querySnapshot.docs.forEach((doc) {
             print(doc["connectionUID"]);
             Globals.connectionsMap.putIfAbsent(doc["connectionUID"], () => doc["status"]);
+            if(doc["status"]=='accepted'){
+              Globals.connectionsList.add(doc["connectionUID"]);
+            }
         });
     });
     print(Globals.connectionsMap);
+  }
+
+  Future<void> getLikedPostsList() async {
+    FirebaseFirestore.instance.collection('posts').where('likedByUIDs',arrayContains: Globals.userID)
+      .get()
+      .then((QuerySnapshot querySnapshot) {
+        querySnapshot.docs.forEach((doc) {
+          print(doc["likedByUIDs"]);
+          Globals.likedPosts.add(doc.id);
+        });
+      });
+    print(Globals.likedPosts);
   }
 
   

@@ -367,7 +367,9 @@ class _VideoAppState extends State<VideoApp> {
           child: _controller.value.isInitialized ?
           AspectRatio(
             aspectRatio: _controller.value.aspectRatio,
-            child: VideoPlayer(_controller),
+            child: VideoPlayer(
+              _controller,
+            ),
           ) :
           const Center(child: spinkit),
         ),

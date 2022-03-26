@@ -41,6 +41,7 @@ class _MainStateManagerState extends State<MainStateManager> {
 
             Globals.userID = currentUser.userID;
             Profile().getConnectionsList();
+            Profile().getLikedPostsList();
             print(Globals.userID);
 
             return Provider<CurrentUser>.value(

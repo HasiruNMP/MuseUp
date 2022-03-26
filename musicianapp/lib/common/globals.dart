@@ -11,4 +11,6 @@ class Globals {
 
   static Map<String,String> connectionsMap = {};
 
+  static List<String> likedPosts = [];
+
 }
