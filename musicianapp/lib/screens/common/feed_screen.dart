@@ -29,6 +29,10 @@ class _FeedScreenState extends State<FeedScreen> {
       appBar: AppBar(
         title: Text('Feed'),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){},
+        child: Icon(Icons.post_add),
+      ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance.collection('posts').where('connectedUIDs',arrayContains: Globals.userID).snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {

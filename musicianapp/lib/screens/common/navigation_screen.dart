@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter/material.dart';
 import 'package:musicianapp/common/globals.dart';
+import 'package:musicianapp/screens/common/feed_screen.dart';
 import 'package:musicianapp/screens/common/home_screen.dart';
 import 'package:musicianapp/screens/connections/connections_screen.dart';
 import 'package:musicianapp/screens/connections/conversations_screen.dart';
@@ -22,7 +23,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
   var _currentIndex = 0;
   List<Widget> pages = [
     HomeScreen(),
-    ConnectionsView(),
+    FeedScreen(),
     ConversationsScreen(),
     UserScreen(Globals.userID),
   ];
@@ -42,8 +43,8 @@ class _NavigationScreenState extends State<NavigationScreen> {
             selectedColor: _selectedColor,
           ),
           SalomonBottomBarItem(
-            icon: Icon(Icons.people),
-            title: Text("Connections"),
+            icon: Icon(Icons.feed),
+            title: Text("Feed"),
             selectedColor: _selectedColor,
           ),
           SalomonBottomBarItem(
