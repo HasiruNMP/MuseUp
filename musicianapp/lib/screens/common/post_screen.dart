@@ -4,7 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:musicianapp/screens/common/feed_screen.dart';
 
 class PostScreen extends StatefulWidget {
-  const PostScreen({Key? key}) : super(key: key);
+  String postID;
+  String time;
+  String authorID;
+  String name;
+  String imageURL;
+  int commentsCount;
+  PostScreen(this.postID, this.time, this.authorID, this.name, this.imageURL, this.commentsCount);
 
   @override
   State<PostScreen> createState() => _PostScreenState();
@@ -15,7 +21,7 @@ class _PostScreenState extends State<PostScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Feed'),
+        title: Text('Post'),
       ),
       body: ListView(
         children: [

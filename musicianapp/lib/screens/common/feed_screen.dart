@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart.';
 import 'package:musicianapp/common/common_widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:musicianapp/common/globals.dart';
+import 'package:musicianapp/screens/common/post_screen.dart';
 import 'package:musicianapp/screens/explore/explore_screen.dart';
 import 'package:musicianapp/screens/explore/videoplayer_screen.dart';
 import 'package:video_player/video_player.dart';
@@ -20,8 +21,6 @@ class FeedScreen extends StatefulWidget {
 }
 
 class _FeedScreenState extends State<FeedScreen> {
-
-  List<String> ids = ['ngA0L5WGjtNUo6vAC6s6gJKlQwg1','rQHDl7Ge1kY0uQlSDtFvty01CCN2'];
 
   @override
   Widget build(BuildContext context) {
@@ -46,9 +45,9 @@ class _FeedScreenState extends State<FeedScreen> {
 
           return ListView(
             children: snapshot.data!.docs.map((DocumentSnapshot document) {
-              Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+              Map<String, dynamic> postData = document.data()! as Map<String, dynamic>;
 
-              Timestamp timestamp = data['time'];
+              Timestamp timestamp = postData['time'];
               DateTime dateTime = timestamp.toDate();
               String dateTimeStr = DateFormat('dd-MM-yyyy, kk:mm').format(dateTime);
 
@@ -66,7 +65,7 @@ class _FeedScreenState extends State<FeedScreen> {
                             Expanded(
                               child: InkWell(
                                 child: FutureBuilder<DocumentSnapshot>(
-                                  future: FirebaseFirestore.instance.collection('users').doc(data['authorUID']).get(),
+                                  future: FirebaseFirestore.instance.collection('users').doc(postData['authorUID']).get(),
                                   builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot>snapshot) {
                                     if (snapshot.hasError) {
                                       return Text("Something went wrong");
@@ -122,10 +121,10 @@ class _FeedScreenState extends State<FeedScreen> {
                           child: Column(
                             children: [
                               Text(
-                                data['text'],
+                                postData['text'],
                                 textAlign: TextAlign.justify,
                               ),
-                              (data['type']=='video')? VideoApp(data['videoURL']) : SizedBox(),
+                              (postData['type']=='video')? VideoApp(postData['videoURL']) : SizedBox(),
                             ],
                           ),
                         ),
@@ -142,11 +141,16 @@ class _FeedScreenState extends State<FeedScreen> {
                             ),
                             Expanded(
                               child: TextButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => PostScreen(document.id,postData['time'],postData['authorUID'],postData['fName'],5)),
+                                  );
+                                },
                                 child: Icon(Icons.comment,color: Colors.black87,),
                               ),
                             ),
-                          ],
+                          ],s
                         )
                       ],
                     ),
