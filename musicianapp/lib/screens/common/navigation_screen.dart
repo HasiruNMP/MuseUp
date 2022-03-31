@@ -9,6 +9,7 @@ import 'package:musicianapp/screens/connections/conversations_screen.dart';
 import 'package:musicianapp/screens/explore/explore_screen.dart';
 import 'package:musicianapp/screens/explore/profile_screen.dart';
 import 'package:musicianapp/screens/account/user_screen.dart';
+import 'package:musicianapp/screens/videos/myvideos_screen.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 class NavigationScreen extends StatefulWidget {
@@ -25,7 +26,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
     HomeScreen(),
     FeedScreen(),
     ConversationsScreen(),
-    UserScreen(Globals.userID),
+    MyVideosScreen(),
   ];
   Color _selectedColor = Color(0xFF2f3542);
 

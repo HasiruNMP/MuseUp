@@ -10,6 +10,7 @@ import 'package:musicianapp/screens/common/post_screen.dart';
 import 'package:musicianapp/screens/explore/explore_screen.dart';
 import 'package:musicianapp/screens/explore/videoplayer_screen.dart';
 import 'package:video_player/video_player.dart';
+import 'package:chewie/chewie.dart';
 
 //String str = 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using Content here content here, making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for lorem ipsum will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).';
 
@@ -47,9 +48,12 @@ class _FeedScreenState extends State<FeedScreen> {
             children: snapshot.data!.docs.map((DocumentSnapshot document) {
               Map<String, dynamic> postData = document.data()! as Map<String, dynamic>;
 
+              String docID = document.id;
               Timestamp timestamp = postData['time'];
               DateTime dateTime = timestamp.toDate();
               String dateTimeStr = DateFormat('dd-MM-yyyy, kk:mm').format(dateTime);
+              late String name;
+              late String imageURL;
 
               return Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -77,6 +81,9 @@ class _FeedScreenState extends State<FeedScreen> {
 
                                     if (snapshot.connectionState == ConnectionState.done) {
                                       Map<String, dynamic> userData = snapshot.data!.data() as Map<String, dynamic>;
+
+                                      name = userData['fName'];
+                                      imageURL = userData['imageURL'];
 
                                       return ListTile(
                                         leading: CircleAvatar(
@@ -124,14 +131,16 @@ class _FeedScreenState extends State<FeedScreen> {
                                 postData['text'],
                                 textAlign: TextAlign.justify,
                               ),
-                              (postData['type']=='video')? VideoApp(postData['videoURL']) : SizedBox(),
+                              (postData['type']=='video')?
+                              PostVideoView(postData['videoURL']) :
+                              SizedBox(),
                             ],
                           ),
                         ),
                         Row(
                           children: [
                             Expanded(
-                              child: (Globals.likedPosts.contains(document.id))? TextButton(
+                              child: (Globals.likedPosts.contains(docID))? TextButton(
                                 onPressed: () {},
                                 child: Icon(Icons.favorite,color: Colors.redAccent,),
                               ):TextButton(
@@ -144,14 +153,14 @@ class _FeedScreenState extends State<FeedScreen> {
                                 onPressed: () {
                                   Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (context) => PostScreen(document.id,postData['time'],postData['authorUID'],postData['fName'],5)),
+                                    MaterialPageRoute(builder: (context) => PostScreen(docID,dateTimeStr,postData['authorUID'],name,imageURL,5)),
                                   );
                                 },
                                 child: Icon(Icons.comment,color: Colors.black87,),
                               ),
                             ),
-                          ],s
-                        )
+                          ],
+                        ),
                       ],
                     ),
                   ),
@@ -164,3 +173,98 @@ class _FeedScreenState extends State<FeedScreen> {
     );
   }
 }
+
+class PostVideoView extends StatefulWidget {
+  String link;
+  PostVideoView(this.link, {Key? key}) : super(key: key);
+
+  @override
+  _PostVideoViewState createState() => _PostVideoViewState();
+}
+
+class _PostVideoViewState extends State<PostVideoView> {
+  late VideoPlayerController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = VideoPlayerController.network(widget.link)
+      ..initialize().then((_) {
+        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+        setState(() {});
+      });
+    _controller.pause();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    //_controller.play();
+    return AspectRatio(
+      aspectRatio: _controller.value.aspectRatio,
+      child: Stack(
+        children: [
+          Container(
+            alignment: Alignment.center,
+            child: _controller.value.isInitialized ?
+            AspectRatio(
+              aspectRatio: _controller.value.aspectRatio,
+              child: VideoPlayer(
+                _controller,
+              ),
+            ) :
+            const Center(child: spinkit),
+          ),
+          Container(
+            child: Center(
+              child: ElevatedButton(
+                onPressed: _controller.value.isPlaying ? (){
+                  setState(() {
+                    _controller.pause();
+                  });
+                } : (){
+                  setState(() {
+                    _controller.play();
+                  });
+                },
+                child: _controller.value.isPlaying ? Icon(Icons.pause,color: Colors.white,) : Icon(Icons.play_arrow,color: Colors.white,),
+                style: ElevatedButton.styleFrom(
+                  shape: CircleBorder(),
+                  padding: EdgeInsets.all(12),
+                  primary: Color(0xFF303952), // <-- Button color
+                  onPrimary: Color(0xFF40407a), // <-- Splash color
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  void play(){
+
+  }
+
+  void showProfileView(){
+    showModalBottomSheet(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      backgroundColor: Colors.white,
+      context: context,
+      builder: (BuildContext context) {
+        return Container();
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+  }
+
+
+}
+
+

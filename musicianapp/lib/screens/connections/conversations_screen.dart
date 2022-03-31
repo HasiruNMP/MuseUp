@@ -65,7 +65,7 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
             Divider(),
             Expanded(
               child: StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance.collection('conversations').where('participants',arrayContains: Globals.userID).snapshots(),
+                stream: FirebaseFirestore.instance.collection('conversations').where('participants',arrayContains: Globals.userID).orderBy("lastMessageTime",descending: true).snapshots(),
                 builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.hasError) {
                     return Text('Something went wrong');

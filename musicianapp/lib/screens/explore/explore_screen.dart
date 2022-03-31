@@ -49,16 +49,19 @@ class _ExploreScreenState extends State<ExploreScreen> {
             children: [
               Consumer<Explorer>(
                 builder: (context, explorerModel, child) {
-                  showGuide = false;
-                  return PageView(
-                    controller: controller,
-                    scrollDirection: Axis.vertical,
-                    allowImplicitScrolling: true,
-                    children: List<Widget>.generate(explorerModel.videoList.length, (int index) {
-                      return VideoApp(explorerModel.videoList[index]);
-                    },
-                    ).toList(),
-                  );
+                  if(Explorer.initialized == true){
+                    return PageView(
+                      controller: controller,
+                      scrollDirection: Axis.vertical,
+                      allowImplicitScrolling: true,
+                      children: List<Widget>.generate(explorerModel.videoList.length, (int index) {
+                        return VideoApp(explorerModel.videoList[index]);
+                      },
+                      ).toList(),
+                    );
+                  }else{
+                    return Center(child: Text('Select Filter Settings to Explore Musicians'));
+                  }
                 },
               ),
               Container(

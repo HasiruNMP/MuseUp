@@ -9,6 +9,7 @@ class Explorer with ChangeNotifier{
   final geo = Geoflutterfire();
   List<String> videoList = [];
   List<String> nearbyList = [];
+  static bool initialized = false;
 
  void searchUsersByMusic(String role, String instrument, List<String> genres) {
    print('ZZZZZZZZZZZZZZZZZMMMMMMMMMMMMMMMMMAAAAAAAAAAAAAAAA');
@@ -20,6 +21,7 @@ class Explorer with ChangeNotifier{
             videoList.add(doc['videoURL']);
             print(doc["fName"]);
           }
+          initialized = true;
           notifyListeners();
         }
       );
@@ -36,6 +38,7 @@ class Explorer with ChangeNotifier{
         print(document['videoLink']);
         videoList.add(document['videoLink']);
       }
+      initialized = true;
       notifyListeners();
     });
   }
