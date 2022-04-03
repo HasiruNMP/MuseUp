@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:musicianapp/models/explore_model.dart';
+import 'package:musicianapp/models/post_model.dart';
 import 'package:musicianapp/screens/account/setlocation_screen.dart';
 import 'package:musicianapp/screens/account/uploadphoto_screen.dart';
 import 'package:musicianapp/screens/connections/chat_screen.dart';
@@ -39,6 +40,7 @@ class MuseUpApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => Explorer()),
+        ChangeNotifierProvider(create: (context) => PostModel()),
         ChangeNotifierProvider(create: (context) => AuthService()),
         //Provider(create: (context) => CurrentUser()),
       ],

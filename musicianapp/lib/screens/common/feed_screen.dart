@@ -6,9 +6,11 @@ import 'package:flutter/cupertino.dart.';
 import 'package:musicianapp/common/common_widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:musicianapp/common/globals.dart';
+import 'package:musicianapp/models/post_model.dart';
 import 'package:musicianapp/screens/common/post_screen.dart';
 import 'package:musicianapp/screens/explore/explore_screen.dart';
 import 'package:musicianapp/screens/explore/videoplayer_screen.dart';
+import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 import 'package:chewie/chewie.dart';
 
@@ -140,12 +142,18 @@ class _FeedScreenState extends State<FeedScreen> {
                         Row(
                           children: [
                             Expanded(
-                              child: (Globals.likedPosts.contains(docID))? TextButton(
-                                onPressed: () {},
-                                child: Icon(Icons.favorite,color: Colors.redAccent,),
-                              ):TextButton(
-                                onPressed: () {},
-                                child: Icon(Icons.favorite_border,color: Colors.black87,),
+                              child: Consumer<PostModel>(
+                                  builder: (context, postModel, child) {
+                                    return (Globals.likedPosts.contains(docID))? TextButton(
+                                      onPressed: () {
+                                        PostModel().likePost(docID);
+                                      },
+                                      child: Icon(Icons.favorite,color: Colors.redAccent,),
+                                    ):TextButton(
+                                      onPressed: () {},
+                                      child: Icon(Icons.favorite_border,color: Colors.black87,),
+                                    );
+                                  }
                               ),
                             ),
                             Expanded(
