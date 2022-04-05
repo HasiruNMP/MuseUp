@@ -10,6 +10,7 @@ import 'package:musicianapp/screens/connections/connections_screen.dart';
 import 'package:musicianapp/screens/connections/notifications_screen.dart';
 import 'package:musicianapp/screens/explore/explore_screen.dart';
 import 'package:musicianapp/screens/explore/profile_screen.dart';
+import 'package:musicianapp/screens/videos/myvideos_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:badges/badges.dart';
 
@@ -134,7 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     onPressed: (){
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => FeedScreen()),
+                        MaterialPageRoute(builder: (context) => MyVideosScreen()),
                       );
                     },
                     child: Row(

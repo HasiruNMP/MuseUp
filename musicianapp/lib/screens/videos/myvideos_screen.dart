@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:chewie/chewie.dart';
+import 'package:video_player/video_player.dart';
 
 class MyVideosScreen extends StatefulWidget {
   const MyVideosScreen({Key? key}) : super(key: key);
@@ -14,14 +16,84 @@ class MyVideosScreen extends StatefulWidget {
 class _MyVideosScreenState extends State<MyVideosScreen> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Center(
-        child: ElevatedButton(
-          onPressed: (){
-            uploadVideo();
-          },
-          child: Text("Upload"),
-        ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("My Videos"),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          uploadVideo();
+        },
+      ),
+      body: Container(
+        child: Column(
+          children: [
+            Expanded(
+              child: ListView(
+                children: [
+                  Wrap(
+                    children: [
+                      Container(
+                        width: MediaQuery.of(context).size.width/3,
+                        child: InkWell(
+                          onTap: (){
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => VideoViewer()),
+                            );
+                          },
+                          child: AspectRatio(
+                            aspectRatio: 1,
+                            child: Container(
+                              color: Colors.deepPurple,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width/3,
+                        child: AspectRatio(
+                          aspectRatio: 1,
+                          child: Container(
+                            color: Colors.redAccent,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width/3,
+                        child: AspectRatio(
+                          aspectRatio: 1,
+                          child: Container(
+                            color: Colors.green,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width/3,
+                        child: AspectRatio(
+                          aspectRatio: 1,
+                          child: Container(
+                            color: Colors.amber,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width/3,
+                        child: AspectRatio(
+                          aspectRatio: 1,
+                          child: Container(
+                            color: Colors.deepPurple,
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            )
+          ],
+        )
       ),
     );
   }
@@ -47,4 +119,43 @@ class _MyVideosScreenState extends State<MyVideosScreen> {
 
   }
 
+}
+
+class VideoViewer extends StatefulWidget {
+  const VideoViewer({Key? key}) : super(key: key);
+
+  @override
+  State<VideoViewer> createState() => _VideoViewerState();
+}
+
+class _VideoViewerState extends State<VideoViewer> {
+
+  final videoPlayerController = VideoPlayerController.network(
+      'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4'
+  );
+
+  final playerWidget = Chewie(
+    controller: ChewieController(
+      videoPlayerController: VideoPlayerController.network(
+          'https://firebasestorage.googleapis.com/v0/b/hnmp-museup.appspot.com/o/users%2FyosJBYpOiVgqDWUZGDaV5pbxs3p2%2Fvideos%2F22222.mp4?alt=media&token=47c604df-dd0c-438f-8647-20017934e2c0'
+      ),
+      autoPlay: true,
+      looping: false,
+    ),
+  );
+
+  @override
+  void initState() {
+    videoPlayerController.initialize();
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        child: playerWidget,
+      ),
+    );
+  }
 }
