@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:musicianapp/common/common_widgets.dart';
+import 'package:musicianapp/common/globals.dart';
 import 'package:musicianapp/models/explore_model.dart';
+import 'package:musicianapp/screens/account/user_screen.dart';
 import 'package:musicianapp/screens/common/feed_screen.dart';
 import 'package:musicianapp/screens/connections/connections_screen.dart';
 import 'package:musicianapp/screens/connections/notifications_screen.dart';
@@ -33,7 +35,12 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: CircleAvatar(
               backgroundImage: NetworkImage('https://firebasestorage.googleapis.com/v0/b/hnmp-museup.appspot.com/o/users%2FyosJBYpOiVgqDWUZGDaV5pbxs3p2%2Fimages%2F1632695736378%20(1)%20(2).jpg?alt=media&token=375f1c3c-6235-48ae-b641-d3ca74b73829'),
             ),
-            onPressed: () { print("Pressed"); }
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => UserScreen(Globals.userID)),
+              );
+            }
         ),
         actions: [
           IconButton(
