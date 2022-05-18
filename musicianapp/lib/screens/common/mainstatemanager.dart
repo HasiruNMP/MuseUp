@@ -1,15 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:musicianapp/common/globals.dart';
 import 'package:musicianapp/models/profile_model.dart';
 import 'package:musicianapp/models/user_model.dart';
 import 'package:musicianapp/screens/account/blocked_screen.dart';
 import 'package:musicianapp/screens/account/setprofile_screen.dart';
-import 'package:musicianapp/screens/authentication/signin_screen.dart';
+import 'package:musicianapp/screens/account/authentication/signin_screen.dart';
 import 'package:musicianapp/screens/common/navigation_screen.dart';
 import 'package:musicianapp/screens/account/welcome_screen.dart';
 import 'package:musicianapp/services/auth_service.dart';
+import 'package:musicianapp/services/notifications_service.dart';
 import 'package:provider/provider.dart';
 
 class MainStateManager extends StatefulWidget {
@@ -21,8 +25,88 @@ class MainStateManager extends StatefulWidget {
 
 class _MainStateManagerState extends State<MainStateManager> {
 
+  late AndroidNotificationChannel channel;
+  late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+
+  void requestPermission() async {
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+    NotificationSettings settings = await messaging.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      print('User granted permission');
+    } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
+      print('User granted provisional permission');
+    } else {
+      print('User declined or has not accepted permission');
+    }
+  }
+
+  void listenFCM() async {
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
+      if (notification != null && android != null && !kIsWeb) {
+        flutterLocalNotificationsPlugin.show(
+          notification.hashCode,
+          notification.title,
+          notification.body,
+          NotificationDetails(
+            android: AndroidNotificationDetails(
+              channel.id,
+              channel.name,
+              // TODO add a proper drawable resource to android, for now using
+              //      one that already exists in example app.
+              icon: 'launch_background',
+            ),
+          ),
+        );
+      }
+    });
+  }
+
+  void loadFCM() async {
+    if (!kIsWeb) {
+      channel = const AndroidNotificationChannel(
+        'high_importance_channel', // id
+        'High Importance Notifications', // title
+        importance: Importance.high,
+        enableVibration: true,
+      );
+
+      flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
+      /// Create an Android Notification Channel.
+      ///
+      /// We use this channel in the `AndroidManifest.xml` file to override the
+      /// default FCM channel to enable heads up notifications.
+      await flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.createNotificationChannel(channel);
+
+      /// Update the iOS foreground notification presentation options to allow
+      /// heads up notifications.
+      await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
+
+    }
+  }
+
   @override
   void initState() {
+    requestPermission();
+    loadFCM();
+    listenFCM();
+    Notifications.getFCMToken();
     super.initState();
   }
 
@@ -67,7 +151,7 @@ class _MainStateManagerState extends State<MainStateManager> {
 
 class ProfileStateManager extends StatefulWidget {
   final String userID;
-  ProfileStateManager(this.userID);
+  const ProfileStateManager(this.userID, {Key? key}) : super(key: key);
 
   @override
   State<ProfileStateManager> createState() => _ProfileStateManagerState();

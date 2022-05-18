@@ -5,7 +5,7 @@ import 'package:cupertino_icons/cupertino_icons.dart';
 import 'package:musicianapp/common/common_widgets.dart';
 import 'package:musicianapp/common/globals.dart';
 import 'package:musicianapp/models/chat_model.dart';
-import 'package:musicianapp/screens/authentication/signin_screen.dart';
+import 'package:musicianapp/screens/account/authentication/signin_screen.dart';
 
 class ChatScreen extends StatefulWidget {
 
