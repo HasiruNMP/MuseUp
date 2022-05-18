@@ -1,10 +1,11 @@
 import 'dart:io';
-
+import 'package:path/path.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:chewie/chewie.dart';
 import 'package:video_player/video_player.dart';
+import 'package:video_thumbnail/video_thumbnail.dart';
 
 class MyVideosScreen extends StatefulWidget {
   const MyVideosScreen({Key? key}) : super(key: key);
@@ -26,75 +27,7 @@ class _MyVideosScreenState extends State<MyVideosScreen> {
           uploadVideo();
         },
       ),
-      body: Container(
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView(
-                children: [
-                  Wrap(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width/3,
-                        child: InkWell(
-                          onTap: (){
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => VideoViewer()),
-                            );
-                          },
-                          child: AspectRatio(
-                            aspectRatio: 1,
-                            child: Container(
-                              color: Colors.deepPurple,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width/3,
-                        child: AspectRatio(
-                          aspectRatio: 1,
-                          child: Container(
-                            color: Colors.redAccent,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width/3,
-                        child: AspectRatio(
-                          aspectRatio: 1,
-                          child: Container(
-                            color: Colors.green,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width/3,
-                        child: AspectRatio(
-                          aspectRatio: 1,
-                          child: Container(
-                            color: Colors.amber,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width/3,
-                        child: AspectRatio(
-                          aspectRatio: 1,
-                          child: Container(
-                            color: Colors.deepPurple,
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            )
-          ],
-        )
-      ),
+      body: MediaContent(),
     );
   }
 
@@ -119,6 +52,77 @@ class _MyVideosScreenState extends State<MyVideosScreen> {
 
   }
 
+}
+
+class MediaContent extends StatelessWidget {
+  const MediaContent({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        children: [
+          Expanded(
+            child: ListView(
+              children: [
+                Wrap(
+                  children: [
+                    MediaItem('https://firebasestorage.googleapis.com/v0/b/hnmp-museup.appspot.com/o/users%2FyosJBYpOiVgqDWUZGDaV5pbxs3p2%2Fvideos%2F22222.mp4?alt=media&token=47c604df-dd0c-438f-8647-20017934e2c0'),
+                    MediaItem('https://firebasestorage.googleapis.com/v0/b/hnmp-museup.appspot.com/o/users%2FrQHDl7Ge1kY0uQlSDtFvty01CCN2%2Fvideos%2FrQHDl7Ge1kY0uQlSDtFvty01CCN22022-03-22%20031419.316234.mp4?alt=media&token=66962ca8-d88a-4b35-9e1c-fc37e1bbe478'),
+                    MediaItem('https://firebasestorage.googleapis.com/v0/b/hnmp-museup.appspot.com/o/users%2FngA0L5WGjtNUo6vAC6s6gJKlQwg1%2Fimages%2Fpexels-cottonbro-7095500.jpg?alt=media&token=9a06f4e3-e9dd-437e-bba7-354967d9d40f'),
+                    MediaItem('https://firebasestorage.googleapis.com/v0/b/hnmp-museup.appspot.com/o/users%2FngA0L5WGjtNUo6vAC6s6gJKlQwg1%2Fimages%2Fpexels-cottonbro-7095500.jpg?alt=media&token=9a06f4e3-e9dd-437e-bba7-354967d9d40f'),
+                  ],
+                )
+              ],
+            ),
+          )
+        ],
+      )
+    );
+  }
+}
+
+class MediaItem extends StatefulWidget {
+  String url;
+  MediaItem(this.url);
+
+  @override
+  State<MediaItem> createState() => _MediaItemState();
+}
+
+class _MediaItemState extends State<MediaItem> {
+
+  late VideoPlayerController _controller;
+
+  @override
+  void initState() {
+    _controller = VideoPlayerController.network(widget.url)
+      ..initialize().then((_) {
+        setState(() {});  //when your thumbnail will show.
+      });
+  }
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width/3,
+      child: AspectRatio(
+        aspectRatio: 1,
+        child: Container(
+          color: Colors.redAccent,
+          child: VideoPlayer(_controller),
+        ),
+      ),
+    );
+  }
 }
 
 class VideoViewer extends StatefulWidget {

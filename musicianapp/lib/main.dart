@@ -1,28 +1,24 @@
-//import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:musicianapp/models/explore_model.dart';
 import 'package:musicianapp/models/post_model.dart';
-import 'package:musicianapp/screens/account/setlocation_screen.dart';
 import 'package:musicianapp/screens/account/uploadphoto_screen.dart';
-import 'package:musicianapp/screens/connections/chat_screen.dart';
-import 'package:musicianapp/screens/connections/connections_screen.dart';
-import 'package:musicianapp/screens/explore/explore_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:musicianapp/screens/authentication/signin_screen.dart';
-import 'package:musicianapp/screens/explore/profile_screen.dart';
 import 'package:musicianapp/screens/common/mainstatemanager.dart';
-import 'package:musicianapp/screens/common/navigation_screen.dart';
-import 'package:musicianapp/screens/explore/reportuser_screen.dart';
 import 'package:musicianapp/screens/account/setprofile_screen.dart';
-import 'package:musicianapp/screens/authentication/signup_screen.dart';
 import 'package:musicianapp/screens/account/welcome_screen.dart';
+import 'package:musicianapp/screens/feed/addpost_screen.dart';
+import 'package:musicianapp/screens/videos/myvideos_screen.dart';
 import 'package:musicianapp/services/auth_service.dart';
 import 'package:provider/provider.dart';
-import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'services/firebase_options.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // If you're going to use other Firebase services in the background, such as Firestore,
+  // make sure you call `initializeApp` before using other Firebase services.
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  print('Handling a background message ${message.messageId}');
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -56,10 +52,12 @@ class MuseUpApp extends StatelessWidget {
 
   Map<String, WidgetBuilder> routes() {
     return {
-      'test': (context) => SetProfileScreen(''),
+      '/': (context) => const MainStateManager(),
+      'test': (context) => const SetProfileScreen(''),
       'test2': (context) => const WelcomeScreen(),
       'image': (context) => const UploadPhotoScreen(),
-      '/': (context) => const MainStateManager(),
+      'add-post': (context) => const AddPost(),
+      'media': (context) => const MyVideosScreen(),
     };
   }
 
@@ -72,7 +70,7 @@ class MuseUpApp extends StatelessWidget {
         foregroundColor: Colors.black,
         elevation: 0.0,
       ),
-      bottomAppBarTheme: BottomAppBarTheme(
+      bottomAppBarTheme: const BottomAppBarTheme(
         elevation: 0.0,
         color: Colors.white,
       ),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter/material.dart';
 import 'package:musicianapp/common/globals.dart';
-import 'package:musicianapp/screens/common/feed_screen.dart';
+import 'package:musicianapp/screens/feed/feed_screen.dart';
 import 'package:musicianapp/screens/common/home_screen.dart';
 import 'package:musicianapp/screens/connections/connections_screen.dart';
 import 'package:musicianapp/screens/connections/conversations_screen.dart';
@@ -26,7 +26,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
     HomeScreen(),
     FeedScreen(),
     ConversationsScreen(),
-    MyVideosScreen(),
+    UserScreen(Globals.userID),
   ];
   Color _selectedColor = Color(0xFF2f3542);
 

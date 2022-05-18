@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/cupertino.dart.';
 import 'package:flutter/material.dart';
 import 'package:musicianapp/common/globals.dart';
-import 'package:musicianapp/screens/common/feed_screen.dart';
+import 'package:musicianapp/screens/feed/feed_screen.dart';
 
 import '../explore/explore_screen.dart';
 

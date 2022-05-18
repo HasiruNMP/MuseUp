@@ -7,7 +7,7 @@ import 'package:musicianapp/common/common_widgets.dart';
 import 'package:musicianapp/common/globals.dart';
 import 'package:musicianapp/models/explore_model.dart';
 import 'package:musicianapp/screens/account/user_screen.dart';
-import 'package:musicianapp/screens/common/feed_screen.dart';
+import 'package:musicianapp/screens/feed/feed_screen.dart';
 import 'package:musicianapp/screens/connections/connections_screen.dart';
 import 'package:musicianapp/screens/connections/notifications_screen.dart';
 import 'package:musicianapp/screens/explore/explore_screen.dart';
@@ -31,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: Text('MuseUp'),
         centerTitle: true,
-        leading: IconButton(
+/*        leading: IconButton(
             icon: CircleAvatar(
               backgroundImage: NetworkImage('https://firebasestorage.googleapis.com/v0/b/hnmp-museup.appspot.com/o/users%2FyosJBYpOiVgqDWUZGDaV5pbxs3p2%2Fimages%2F1632695736378%20(1)%20(2).jpg?alt=media&token=375f1c3c-6235-48ae-b641-d3ca74b73829'),
             ),
@@ -41,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 MaterialPageRoute(builder: (context) => UserScreen(Globals.userID)),
               );
             }
-        ),
+        ),*/
         actions: [
           IconButton(
             onPressed: (){
@@ -60,6 +60,39 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ],
+      ),
+      drawer: Drawer(
+        child: ListView(
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Text('Menu'),
+            ),
+            ListTile(
+              title: const Text('My Profile'),
+              onTap: () {
+
+              },
+            ),
+            ListTile(
+              title: const Text('My Videos'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MyVideosScreen()),
+                );
+              },
+            ),
+            ListTile(
+              title: const Text('Settings'),
+              onTap: () {
+
+              },
+            ),
+          ],
+        ),
       ),
       body: RefreshIndicator(
         onRefresh: refresh,
@@ -142,7 +175,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     onPressed: (){
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => MyVideosScreen()),
+                        MaterialPageRoute(builder: (context) => ConnectionsView()),
                       );
                     },
                     child: Row(
@@ -193,7 +226,7 @@ class _NearbyListViewState extends State<NearbyListView> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance.collection('users').snapshots(),
+      stream: FirebaseFirestore.instance.collection('users').where('profileState',isEqualTo: 1).snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
           return Text('Something went wrong');

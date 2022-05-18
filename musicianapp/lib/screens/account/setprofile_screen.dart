@@ -1,12 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:musicianapp/common/common_widgets.dart';
-import 'package:musicianapp/common/globals.dart';
 import 'package:musicianapp/models/profile_model.dart';
 import 'package:musicianapp/screens/account/setlocation_screen.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-class GetStartedScreen extends StatefulWidget {
+/*class GetStartedScreen extends StatefulWidget {
 
   String userID;
   int profileState;
@@ -21,21 +17,21 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
   @override
   Widget build(BuildContext context) {
 
-    /*switch(widget.profileState){
+    *//*switch(widget.profileState){
       case 0: {return SetProfileScreen(widget.userID);}
       case 1: {return EnterRoleInfo(widget.userID);}
       case 2: {return EnterBio();}
-    }*/
+    }*//*
     return Container();
   }
-}
+}*/
 
 
 class SetProfileScreen extends StatefulWidget {
 
-  String userID;
+  final String userID;
 
-  SetProfileScreen(this.userID, {Key? key}) : super(key: key);
+  const SetProfileScreen(this.userID, {Key? key}) : super(key: key);
 
   @override
   _SetProfileScreenState createState() => _SetProfileScreenState();
@@ -65,9 +61,9 @@ class _SetProfileScreenState extends State<SetProfileScreen> {
               Expanded(
                 child: ListView(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: const Text(
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
                         'Your Name',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -85,13 +81,13 @@ class _SetProfileScreenState extends State<SetProfileScreen> {
                           }
                           return null;
                         },
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           labelText: 'First Name',
                         ),
                       ),
                     ),
-                    SizedBox(height: 5,),
+                    const SizedBox(height: 5,),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
@@ -102,16 +98,16 @@ class _SetProfileScreenState extends State<SetProfileScreen> {
                           }
                           return null;
                         },
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           labelText: 'Last Name',
                         ),
                       ),
                     ),
-                    SizedBox(height: 25,),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: const Text(
+                    const SizedBox(height: 25,),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
                         'Gender',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -124,7 +120,7 @@ class _SetProfileScreenState extends State<SetProfileScreen> {
                       child: Wrap(
                         spacing: 3,
                         children: List<Widget>.generate(Profile.genderList.length, (int index) {
-                          return ChoiceChip(
+                          return FilterChip(
                             label: Text(Profile.genderList[index]),
                             selected: selectedGender == Profile.genderList[index],
                             onSelected: (bool selected) {
@@ -137,10 +133,10 @@ class _SetProfileScreenState extends State<SetProfileScreen> {
                         ).toList(),
                       ),
                     ),
-                    SizedBox(height: 25,),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: const Text(
+                    const SizedBox(height: 25,),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
                         'Date of Birth',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -194,7 +190,7 @@ class _SetProfileScreenState extends State<SetProfileScreen> {
                           }
 
                         },
-                        child: Text('CONTINUE')
+                        child: const Text('CONTINUE')
                       ),
                     ),
                   ],
@@ -207,6 +203,7 @@ class _SetProfileScreenState extends State<SetProfileScreen> {
       ),
     );
   }
+
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
@@ -221,11 +218,12 @@ class _SetProfileScreenState extends State<SetProfileScreen> {
       });
     }
   }
+
 }
 
 class EnterRoleInfo extends StatefulWidget {
-  String userID;
-  EnterRoleInfo(this.userID, {Key? key}) : super(key: key);
+  final String userID;
+  const EnterRoleInfo(this.userID, {Key? key}) : super(key: key);
 
   @override
   State<EnterRoleInfo> createState() => _EnterRoleInfoState();
@@ -262,7 +260,7 @@ class _EnterRoleInfoState extends State<EnterRoleInfo> {
                     Wrap(
                       spacing: 2,
                       children: List<Widget>.generate(Profile.roleList.length, (int index) {
-                        return ChoiceChip(
+                        return FilterChip(
                           label: Text(Profile.roleList[index]),
                           selected: mainRole == Profile.roleList[index],
                           onSelected: (bool selected) {
@@ -275,31 +273,7 @@ class _EnterRoleInfoState extends State<EnterRoleInfo> {
                         );
                       },).toList(),
                     ),
-                    const Text(
-                      'What instrument do you play?',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 17,
-                      ),
-                    ),
-                    Container(
-                      child: mainRole != 'Instrumentalist'? const Center(child: Text('Not Applicable'),) :
-                      Wrap(
-                        spacing: 2,
-                        children: List<Widget>.generate(Profile.instrumentList.length, (int index) {
-                          return ChoiceChip(
-                            label: Text(Profile.instrumentList[index]),
-                            selected: selectedInstrument == Profile.instrumentList[index],
-                            onSelected: (bool selected) {
-                              setState(() {
-                                selectedInstrument = selected ? Profile.instrumentList[index] : null;
-                              });
-                            },
-                          );
-                        },
-                        ).toList(),
-                      ),
-                    ),
+                    const SizedBox(height: 15,),
                     const Text(
                       'What are your music genres?',
                       style: TextStyle(
@@ -326,7 +300,32 @@ class _EnterRoleInfoState extends State<EnterRoleInfo> {
                       },
                       ).toList(),
                     ),
-
+                    const SizedBox(height: 15,),
+                    const Text(
+                      'What instrument do you play?',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17,
+                      ),
+                    ),
+                    Container(
+                      child: mainRole != 'Instrumentalist'? const Center(child: Text('Not Applicable'),) :
+                      Wrap(
+                        spacing: 2,
+                        children: List<Widget>.generate(Profile.instrumentList.length, (int index) {
+                          return FilterChip(
+                            label: Text(Profile.instrumentList[index]),
+                            selected: selectedInstrument == Profile.instrumentList[index],
+                            onSelected: (bool selected) {
+                              setState(() {
+                                selectedInstrument = selected ? Profile.instrumentList[index] : null;
+                              });
+                            },
+                          );
+                        },
+                        ).toList(),
+                      ),
+                    ),
                   ],
                 ),
               ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
+/*
 class ExploreScreen extends StatefulWidget {
   const ExploreScreen({ Key? key }) : super(key: key);
 
@@ -70,4 +71,4 @@ class _VideoAppState extends State<VideoApp> {
     super.dispose();
     _controller.dispose();
   }
-}
+}*/
