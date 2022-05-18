@@ -107,6 +107,7 @@ class _MainStateManagerState extends State<MainStateManager> {
     loadFCM();
     listenFCM();
     Notifications.getFCMToken();
+    Notifications.listenToFCMToken();
     super.initState();
   }
 

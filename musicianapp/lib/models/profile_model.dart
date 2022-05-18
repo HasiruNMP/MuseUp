@@ -18,7 +18,8 @@ class Profile {
   Future<void> createUser(UserCredential userCredential) {
     return Globals.usersRef.doc(userCredential.user!.uid).set({
       'email': userCredential.user!.email,
-      'profileState':0
+      'profileState':0,
+      'fcmToken':'0',
     }).then((value) => print("User Added")).catchError((error) => print("Failed to add user: $error"));
   }
 
@@ -39,6 +40,7 @@ class Profile {
       'isProducer': mainRole[3],
       'genres': genres,
       'role': selectedRole,
+      'instrument': instrument,
     }).then((value) => print("User Added")).catchError((error) => print("Failed to add user: $error"));
   }
 

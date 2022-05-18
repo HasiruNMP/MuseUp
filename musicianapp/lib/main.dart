@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:musicianapp/models/explore_model.dart';
 import 'package:musicianapp/models/post_model.dart';
+import 'package:musicianapp/screens/account/authentication/signin_screen.dart';
 import 'package:musicianapp/screens/account/uploadphoto_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:musicianapp/screens/common/mainstatemanager.dart';
@@ -57,6 +58,7 @@ class MuseUpApp extends StatelessWidget {
       'image': (context) => const UploadPhotoScreen(),
       'add-post': (context) => const AddPost(),
       'media': (context) => const MyVideosScreen(),
+      'sign-in-phone': (context) => const SignInWithPhone(),
     };
   }
 

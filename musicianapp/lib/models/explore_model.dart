@@ -35,8 +35,8 @@ class Explorer with ChangeNotifier{
     Stream<List<DocumentSnapshot>> stream = geo.collection(collectionRef: collectionReference).within(center: center, radius: radius, field: field);
     stream.listen((List<DocumentSnapshot> documentList) {
       for (var document in documentList) {
-        print(document['videoLink']);
-        videoList.add(document['videoLink']);
+        print(document['videoURL']);
+        videoList.add(document['videoURL']);
       }
       initialized = true;
       notifyListeners();

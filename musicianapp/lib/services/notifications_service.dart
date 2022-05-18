@@ -50,7 +50,7 @@ class Notifications {
         print("Error getting document: $e");
       },
     );
-    return "";
+    return token;
   }
 
   static Future<void> sendNotificationToUser(String userID, String title, String body,) async {

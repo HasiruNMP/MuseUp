@@ -1,11 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:cupertino_icons/cupertino_icons.dart';
 import 'package:musicianapp/common/common_widgets.dart';
 import 'package:musicianapp/common/globals.dart';
 import 'package:musicianapp/models/chat_model.dart';
-import 'package:musicianapp/screens/account/authentication/signin_screen.dart';
+import 'package:musicianapp/services/notifications_service.dart';
 
 class ChatScreen extends StatefulWidget {
 
@@ -150,8 +149,8 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  Future<void> uploadMessage(String conversationID, String text) {
-    return FirebaseFirestore.instance.collection('conversations').doc(conversationID).collection('messages').add({
+  Future<void> uploadMessage(String conversationID, String text) async {
+    var task = FirebaseFirestore.instance.collection('conversations').doc(conversationID).collection('messages').add({
       'order': 0,
       'text': text,
       'sender': Globals.userID,
@@ -159,9 +158,13 @@ class _ChatScreenState extends State<ChatScreen> {
     })
     .then((value) {
       print("Message Added");
-      updateLastMessage(conversationID,text);
     })
     .catchError((error) => print("Failed to send message: $error"));
+
+    updateLastMessage(conversationID,text);
+
+    Notifications.sendNotificationToUser(widget.connectionUID, widget.connectionName, text);
+
   }
 
   Future<void> updateLastMessage(String conversationID,String text) {

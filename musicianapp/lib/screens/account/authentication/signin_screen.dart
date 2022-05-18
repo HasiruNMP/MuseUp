@@ -105,7 +105,9 @@ class _SignInScreenState extends State<SignInScreen> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: CircleButton(
-                        onTap: () => {},
+                        onTap: () => {
+                          AuthService().signInWithGoogle()
+                        },
                         tooltip: 'Sign In with Google',
                         width: 40.0,
                         height: 40.0,
@@ -119,7 +121,9 @@ class _SignInScreenState extends State<SignInScreen> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: CircleButton(
-                        onTap: () => {},
+                        onTap: () => {
+                          Navigator.pushReplacementNamed(context, 'sign-in-phone')
+                        },
                         tooltip: 'Sign In with Phone',
                         width: 40.0,
                         height: 40.0,
@@ -141,5 +145,71 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 }
 
+
+
+class SignInWithPhone extends StatefulWidget {
+  const SignInWithPhone({Key? key}) : super(key: key);
+
+  @override
+  State<SignInWithPhone> createState() => _SignInWithPhoneState();
+}
+
+class _SignInWithPhoneState extends State<SignInWithPhone> {
+
+  FirebaseAuth auth = FirebaseAuth.instance;
+
+  final tecPhoneNo = TextEditingController();
+
+  @override
+  void initState() {
+    tecPhoneNo.text = '+94';
+  }
+
+  Future<void> signInWithPhone(String phone) async {
+    print(phone);
+    await FirebaseAuth.instance.verifyPhoneNumber(
+      phoneNumber: phone,
+      verificationCompleted: (PhoneAuthCredential credential) async {
+        await auth.signInWithCredential(credential);
+      },
+      verificationFailed: (FirebaseAuthException e) {},
+      codeSent: (String verificationId, int? resendToken) {},
+      codeAutoRetrievalTimeout: (String verificationId) {},
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Sign In with Your Phone"),
+      ),
+      body: SafeArea(
+        child: ListView(
+          children: [
+            ListTile(
+              leading: Icon(Icons.phone_android),
+              title: TextFormField(
+                controller: tecPhoneNo,
+                keyboardType: TextInputType.phone,
+                decoration: InputDecoration(
+                  label: Text('Phone Number')
+                ),
+              ),
+            ),
+            ListTile(
+              title: ElevatedButton(
+                onPressed: (){
+                  signInWithPhone(tecPhoneNo.text);
+                },
+                child: Text('Send Code'),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
 
 
