@@ -23,7 +23,6 @@ class _UserScreenState extends State<UserScreen> with SingleTickerProviderStateM
   Map<String, dynamic> profileData = {};
   CollectionReference users = FirebaseFirestore.instance.collection('users');
   String profileType = 'none';
-  //String bio = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit';
   late TabController _controller;
 
   @override
@@ -180,6 +179,8 @@ class _UserScreenState extends State<UserScreen> with SingleTickerProviderStateM
     );
   }
 
+  //_profileButtons(profileType,widget.userID,data['fName'],data['imageURL']),
+
   Widget profileInfo(Map<String, dynamic> _data) {
     return ListView(
       children: [
@@ -267,6 +268,164 @@ class _UserScreenState extends State<UserScreen> with SingleTickerProviderStateM
         ),
       ],
     );
+  }
+
+  Widget _profileButtons(String profileType, String uid, String name, String imageURL){
+    if(profileType == 'accepted'){
+      return Container(
+        child: Row(
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                child: TextButton(
+                  onPressed: null,
+                  child: Text('CONNECTED'),
+                  style: flatButtonStyle1,
+                ),
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                child: TextButton(
+                  onPressed: (){
+                    Chat().openChat(uid, context, name,imageURL);
+                  },
+                  child: Text('MESSAGE'),
+                  style: flatButtonStyle1,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+    else if (profileType == 'incoming'){
+      return Container(
+        child: Column(
+          children: [
+            Text('$name has asked to connect with you'),
+            Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                    child: TextButton(
+                      onPressed: (){
+                        setState(() {
+                          Connection().responseToConnectionRequest(uid, 'accepted');
+                        });
+                      },
+                      child: Text('ACCEPT'),
+                      style: flatButtonStyle1,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                    child: TextButton(
+                      onPressed: (){
+                        setState(() {
+                          Connection().responseToConnectionRequest(uid, 'none');
+                        });
+                      },
+                      child: Text('IGNORE'),
+                      style: flatButtonStyle1,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                    child: TextButton(
+                      onPressed: (){
+                        Chat().openChat(uid, context, name,imageURL);
+                      },
+                      child: Text('MESSAGE'),
+                      style: flatButtonStyle1,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
+    }
+    else if (profileType == 'outgoing'){
+      return Container(
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                    child: TextButton(
+                      onPressed: null,
+                      child: Text('REQUESTED'),
+                      style: flatButtonStyle1,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                    child: TextButton(
+                      onPressed: (){
+                        Chat().openChat(uid, context, name,imageURL);
+                      },
+                      child: Text('MESSAGE'),
+                      style: flatButtonStyle1,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
+    }
+    else{
+      return Container(
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                    child: TextButton(
+                      onPressed: (){
+                        setState(() {
+                          Connection().sendConnectionRequest(uid);
+                        });
+                      },
+                      child: Text('CONNECT'),
+                      style: flatButtonStyle1,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                    child: TextButton(
+                      onPressed: (){
+                        Chat().openChat(uid, context, name,imageURL);
+                      },
+                      child: Text('MESSAGE'),
+                      style: flatButtonStyle1,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
+    }
   }
 
   void getProfileData(String userID){

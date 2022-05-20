@@ -16,11 +16,16 @@ class Profile {
 
 
   Future<void> createUser(UserCredential userCredential) {
-    return Globals.usersRef.doc(userCredential.user!.uid).set({
-      'email': userCredential.user!.email,
-      'profileState':0,
-      'fcmToken':'0',
-    }).then((value) => print("User Added")).catchError((error) => print("Failed to add user: $error"));
+    return Globals.usersRef.doc(userCredential.user!.uid).set(
+      {
+        'email': userCredential.user!.email,
+        'profileState':0,
+        'fcmToken':'0',
+      },
+      SetOptions(
+        merge: true,
+      ),
+    ).then((value) => print("User Added")).catchError((error) => print("Failed to add user: $error"));
   }
 
   Future<void> addPersonalInfo(String fName, String lName, DateTime dob, String gender) {
