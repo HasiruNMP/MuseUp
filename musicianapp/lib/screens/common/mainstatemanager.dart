@@ -112,8 +112,8 @@ class _AuthStateControllerState extends State<AuthStateController> {
   }
 
   Future<void> preLoadData() async {
-    Profile().getConnectionsList();
-    Profile().getLikedPostsList();
+    ProfileModel().getConnectionsList();
+    ProfileModel().getLikedPostsList();
   }
 
   @override
@@ -168,9 +168,9 @@ class _ProfileStateControllerState extends State<ProfileStateController> with Wi
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed){
-      Profile().setOnlineStatus(true);
+      ProfileModel().setOnlineStatus(true);
     }else{
-      Profile().setOnlineStatus(false);
+      ProfileModel().setOnlineStatus(false);
     }
   }
 

@@ -167,8 +167,8 @@ class _UploadVideoScreenState extends State<UploadVideoScreen> {
       final ref = await firebase_storage.FirebaseStorage.instance.ref('users/${Globals.userID}/videos/${Globals.userID}${DateTime.now()}.$extension').putFile(file);
       final url = await ref.ref.getDownloadURL();
       print(url);
-      Profile().setProfileState(1);
-      Profile().addVideoURL(url);
+      ProfileModel().setProfileState(1);
+      ProfileModel().addVideoURL(url);
     } on FirebaseException catch (e) {
       // e.g, e.code == 'canceled'
     }

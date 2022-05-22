@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:musicianapp/models/explore_model.dart';
 import 'package:musicianapp/models/post_model.dart';
+import 'package:musicianapp/models/profile_model.dart';
 import 'package:musicianapp/screens/account/authentication/signin_screen.dart';
 import 'package:musicianapp/screens/account/setlocationmap_screen.dart';
 import 'package:musicianapp/screens/account/uploadphoto_screen.dart';
@@ -39,6 +40,7 @@ class MuseUpApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => Explorer()),
         ChangeNotifierProvider(create: (context) => PostModel()),
         ChangeNotifierProvider(create: (context) => AuthService()),
+        ChangeNotifierProvider(create: (context) => ProfileModel()),
         //Provider(create: (context) => CurrentUser()),
       ],
       child: MaterialApp(

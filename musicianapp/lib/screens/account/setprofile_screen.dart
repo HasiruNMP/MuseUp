@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:musicianapp/common/ux.dart';
 import 'package:musicianapp/models/profile_model.dart';
 import 'package:musicianapp/screens/account/setlocation_screen.dart';
+import 'package:provider/provider.dart';
+//import 'package:toast/toast.dart';
 
 /*class GetStartedScreen extends StatefulWidget {
 
@@ -119,13 +123,13 @@ class _SetProfileScreenState extends State<SetProfileScreen> {
                       padding: const EdgeInsets.all(8.0),
                       child: Wrap(
                         spacing: 3,
-                        children: List<Widget>.generate(Profile.genderList.length, (int index) {
+                        children: List<Widget>.generate(ProfileModel.genderList.length, (int index) {
                           return FilterChip(
-                            label: Text(Profile.genderList[index]),
-                            selected: selectedGender == Profile.genderList[index],
+                            label: Text(ProfileModel.genderList[index]),
+                            selected: selectedGender == ProfileModel.genderList[index],
                             onSelected: (bool selected) {
                               setState(() {
-                                selectedGender = selected ? Profile.genderList[index] : null;
+                                selectedGender = selected ? ProfileModel.genderList[index] : null;
                               });
                             },
                           );
@@ -172,25 +176,29 @@ class _SetProfileScreenState extends State<SetProfileScreen> {
                 child: Row(
                   children: [
                     Expanded(
-                      child: ElevatedButton(
-                        onPressed: (){
+                      child: Consumer<ProfileModel>(
+                        builder: (context, profile, child) {
+                          bool loading = false, result = false;
+                          return ElevatedButton(
+                              onPressed: () async {
+                                if(selectedGender != 'NotSelected' && isDateSelected){
+                                  if (_formKey.currentState!.validate()) {
+                                    //Navigator.push(context,MaterialPageRoute(builder: (context) => EnterRoleInfo(widget.userID)),);
+                                    setState(() async {
+                                      loading = true;
+                                      result = await ProfileModel().addPersonalInfo(tecFirstName.text,tecLastName.text,selectedDOB,selectedGender);
+                                    });
+                                  }
+                                }else{
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text('Select all fields')),
+                                  );
+                                }
 
-                          if(selectedGender != 'NotSelected' && isDateSelected){
-                            if (_formKey.currentState!.validate()) {
-                              Profile().addPersonalInfo(tecFirstName.text,tecLastName.text,selectedDOB,selectedGender);
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => EnterRoleInfo(widget.userID)),
-                              );
-                            }
-                          }else{
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Select all fields')),
-                            );
-                          }
-
-                        },
-                        child: const Text('CONTINUE')
+                              },
+                              child: (loading)? CircularProgressIndicator(color: Colors.white,) : Text("CONTINUE"),
+                          );
+                        }
                       ),
                     ),
                   ],
@@ -259,13 +267,13 @@ class _EnterRoleInfoState extends State<EnterRoleInfo> {
                     ),
                     Wrap(
                       spacing: 2,
-                      children: List<Widget>.generate(Profile.roleList.length, (int index) {
+                      children: List<Widget>.generate(ProfileModel.roleList.length, (int index) {
                         return FilterChip(
-                          label: Text(Profile.roleList[index]),
-                          selected: mainRole == Profile.roleList[index],
+                          label: Text(ProfileModel.roleList[index]),
+                          selected: mainRole == ProfileModel.roleList[index],
                           onSelected: (bool selected) {
                             setState(() {
-                              mainRole = selected ? Profile.roleList[index] : null;
+                              mainRole = selected ? ProfileModel.roleList[index] : null;
                               selectedRoleList = [false, false, false, false];
                               selectedRoleList[index] = true;
                             });
@@ -283,16 +291,16 @@ class _EnterRoleInfoState extends State<EnterRoleInfo> {
                     ),
                     Wrap(
                       spacing: 2,
-                      children: List<Widget>.generate(Profile.genreList.length, (int index) {
+                      children: List<Widget>.generate(ProfileModel.genreList.length, (int index) {
                         return FilterChip(
-                          label: Text(Profile.genreList[index]),
-                          selected: selectedGenres.contains(Profile.genreList[index]),
+                          label: Text(ProfileModel.genreList[index]),
+                          selected: selectedGenres.contains(ProfileModel.genreList[index]),
                           onSelected: (bool selected) {
                             setState(() {
                               if(selected){
-                                selectedGenres.add(Profile.genreList[index]);
+                                selectedGenres.add(ProfileModel.genreList[index]);
                               }else{
-                                selectedGenres.remove(Profile.genreList[index]);
+                                selectedGenres.remove(ProfileModel.genreList[index]);
                               }
                             });
                           },
@@ -312,13 +320,13 @@ class _EnterRoleInfoState extends State<EnterRoleInfo> {
                       child: mainRole != 'Instrumentalist'? const Center(child: Text('Not Applicable'),) :
                       Wrap(
                         spacing: 2,
-                        children: List<Widget>.generate(Profile.instrumentList.length, (int index) {
+                        children: List<Widget>.generate(ProfileModel.instrumentList.length, (int index) {
                           return FilterChip(
-                            label: Text(Profile.instrumentList[index]),
-                            selected: selectedInstrument == Profile.instrumentList[index],
+                            label: Text(ProfileModel.instrumentList[index]),
+                            selected: selectedInstrument == ProfileModel.instrumentList[index],
                             onSelected: (bool selected) {
                               setState(() {
-                                selectedInstrument = selected ? Profile.instrumentList[index] : null;
+                                selectedInstrument = selected ? ProfileModel.instrumentList[index] : null;
                               });
                             },
                           );
@@ -337,7 +345,7 @@ class _EnterRoleInfoState extends State<EnterRoleInfo> {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: (){
-                        Profile().addRoleInfo(mainRole,selectedRoleList,selectedInstrument,selectedGenres);
+                        ProfileModel().addRoleInfo(mainRole,selectedRoleList,selectedInstrument,selectedGenres);
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => const EnterBio()),
@@ -400,7 +408,7 @@ class _EnterBioState extends State<EnterBio> {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: (){
-                        Profile().addBio(tecBio.text);
+                        ProfileModel().addBio(tecBio.text);
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => const SetLocationScreen()),

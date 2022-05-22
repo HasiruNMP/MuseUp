@@ -58,7 +58,7 @@ class AuthService with ChangeNotifier {
     // Once signed in, return the UserCredential
     UserCredential user = await FirebaseAuth.instance.signInWithCredential(credential);
 
-    Profile().createUser(user);
+    ProfileModel().createUser(user);
   }
 
   void signInWithEmail(String email, String password) async{
@@ -82,7 +82,7 @@ class AuthService with ChangeNotifier {
         email: email,
         password: password,
       );
-      Profile().createUser(userCredential);
+      ProfileModel().createUser(userCredential);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');

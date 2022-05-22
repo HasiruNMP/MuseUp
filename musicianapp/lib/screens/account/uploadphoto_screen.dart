@@ -110,7 +110,7 @@ class _UploadPhotoScreenState extends State<UploadPhotoScreen> {
       final ref = await firebase_storage.FirebaseStorage.instance.ref('users/${Globals.userID}/images/${Globals.userID}${DateTime.now()}.$extension').putFile(file);
       final url = await ref.ref.getDownloadURL();
       print(url);
-      Profile().addImageURL(url);
+      ProfileModel().addImageURL(url);
     } on FirebaseException catch (e) {
       // e.g, e.code == 'canceled'
     }

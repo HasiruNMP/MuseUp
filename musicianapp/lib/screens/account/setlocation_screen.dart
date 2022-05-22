@@ -115,7 +115,7 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: (){
-                        Profile().addLocation(currentLocation,tecCountry.text,tecCity.text);
+                        ProfileModel().addLocation(currentLocation,tecCountry.text,tecCity.text);
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => const UploadPhotoScreen()),
