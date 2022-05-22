@@ -16,14 +16,14 @@ import 'package:musicianapp/services/auth_service.dart';
 import 'package:musicianapp/services/notifications_service.dart';
 import 'package:provider/provider.dart';
 
-class MainStateManager extends StatefulWidget {
-  const MainStateManager({Key? key}) : super(key: key);
+class AuthStateController extends StatefulWidget {
+  const AuthStateController({Key? key}) : super(key: key);
 
   @override
-  State<MainStateManager> createState() => _MainStateManagerState();
+  State<AuthStateController> createState() => _AuthStateControllerState();
 }
 
-class _MainStateManagerState extends State<MainStateManager> {
+class _AuthStateControllerState extends State<AuthStateController> {
 
   late AndroidNotificationChannel channel;
   late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
@@ -111,54 +111,53 @@ class _MainStateManagerState extends State<MainStateManager> {
     super.initState();
   }
 
+  Future<void> preLoadData() async {
+    Profile().getConnectionsList();
+    Profile().getLikedPostsList();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final authService = Provider.of<AuthService>(context,listen: false);
-    return StreamBuilder<CurrentUser>(
 
-      stream: authService.onAuthStateChanged,
+    final authService = Provider.of<AuthService>(context,listen: false);
+
+    //changes the state of the application after sign in and sign out
+    return StreamBuilder<CurrentUser>(
+      stream: authService.onAuthStateChanged, //authentication changes stream
       builder: (context, snapshot) {
         if(snapshot.connectionState == ConnectionState.active){
-
           final currentUser = snapshot.data;
-
           if ((currentUser != null)) {
-
             Globals.userID = currentUser.userID;
-            Profile().getConnectionsList();
-            Profile().getLikedPostsList();
-            print(Globals.userID);
+
+            //downloads the necessary connections and posts data of the user
+            preLoadData();
 
             return Provider<CurrentUser>.value(
                 value: currentUser,
-                child: ProfileStateManager(currentUser.userID),
+                child: ProfileStateController(currentUser.userID),
             );
 
           } else {
-            return WelcomeScreen();
+            return const WelcomeScreen();
           }
+
         }
-        return Scaffold(
-          body: Container(
-            child: Center(
-              child: Text('ZXC'),
-            ),
-          ),
-        );
+        return const LoadingScreen();
       }
     );
   }
 }
 
-class ProfileStateManager extends StatefulWidget {
+class ProfileStateController extends StatefulWidget {
   final String userID;
-  const ProfileStateManager(this.userID, {Key? key}) : super(key: key);
+  const ProfileStateController(this.userID, {Key? key}) : super(key: key);
 
   @override
-  State<ProfileStateManager> createState() => _ProfileStateManagerState();
+  State<ProfileStateController> createState() => _ProfileStateControllerState();
 }
 
-class _ProfileStateManagerState extends State<ProfileStateManager> with WidgetsBindingObserver {
+class _ProfileStateControllerState extends State<ProfileStateController> with WidgetsBindingObserver {
 
   @override
   void initState() {

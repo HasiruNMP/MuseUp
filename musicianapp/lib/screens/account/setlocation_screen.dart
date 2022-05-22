@@ -42,7 +42,8 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
         child: Column(
           children: [
             Expanded(
-              child: ListView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -97,6 +98,13 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
                       ),
                     ),
                   ),
+                  SizedBox(height: 50,),
+                  TextButton(
+                    onPressed: (){
+                      _navigateToMap(context);
+                    },
+                    child: Text("Set Location Manually"),
+                  ),
                 ],
               ),
             ),
@@ -124,6 +132,20 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
       ),
     );
   }
+
+  Future<void> _navigateToMap(BuildContext context) async {
+    final result = await Navigator.pushNamed(context, 'set-location-map');
+    currentLocation = result as LatLng;
+    List<Placemark> placeMarks = await placemarkFromCoordinates(currentLocation.latitude,currentLocation.longitude);
+    setState(() {
+      selectedLocationName = placeMarks[0].country! + " " + placeMarks[0].subAdministrativeArea!;
+      tecCountry.text = placeMarks[0].country!;
+      tecCity.text = placeMarks[0].subAdministrativeArea!;
+    });
+    print(result);
+
+  }
+
   Future<void> getCurrentLocation() async {
     Position position = await _determinePosition();
     List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);

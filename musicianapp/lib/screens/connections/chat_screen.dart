@@ -49,104 +49,100 @@ class _ChatScreenState extends State<ChatScreen> {
         child: Column(
           children: [
             Expanded(
-              flex: 10,
-              child: Container(
-                child: StreamBuilder<QuerySnapshot>(
-                  stream: FirebaseFirestore.instance.collection('conversations').doc(widget.conversationID).collection('messages').orderBy('time', descending: false).snapshots(),
-                  builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                    if (snapshot.hasError) {
-                      return Text('Something went wrong');
-                    }
+              child: StreamBuilder<QuerySnapshot>(
+                stream: messagesStream(widget.conversationID),
+                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.hasError) {
+                    return const Text('Something went wrong');
+                  }
 
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: spinkit);
-                    }
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: spinkit);
+                  }
 
-                    if (snapshot.data!.docs.isEmpty) {
-                      Chat().initializeChat(widget.conversationID, widget.connectionUID);
-                      return Text('Start Chatting with ${widget.connectionName}');
-                    }
+                  if (snapshot.data!.docs.isEmpty) {
+                    Chat().initializeChat(widget.conversationID, widget.connectionUID);
+                    return Text('Start Chatting with ${widget.connectionName}');
+                  }
 
-
-                    return ListView(
-                      children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                        Map<String, dynamic> messageData = document.data()! as Map<String, dynamic>;
-                        messageData['sender'] == Globals.userID ? isSenderMe = true : isSenderMe = false;
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                          child: Container(
-                            alignment: isSenderMe? Alignment.centerRight : Alignment.centerLeft,
-                            child: Padding(
-                              padding: const EdgeInsets.all(1.0),
-                              child: Container(
-                                //alignment: Alignment.centerRight,
-                                height: 36,
-                                decoration: BoxDecoration(
-                                  color: isSenderMe? lightPurple : darkPurple,
-                                  borderRadius: BorderRadius.all(Radius.circular(15),),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
-                                  child: Column(
-                                    children: [
-                                      Text(
-                                        messageData['text'],
-                                        //textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          color: isSenderMe? Colors.black : Colors.white,
-                                        ),
+                  return ListView(
+                    children: snapshot.data!.docs.map((DocumentSnapshot document) {
+                      Map<String, dynamic> messageData = document.data()! as Map<String, dynamic>;
+                      messageData['sender'] == Globals.userID ? isSenderMe = true : isSenderMe = false;
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                        child: Container(
+                          alignment: isSenderMe? Alignment.centerRight : Alignment.centerLeft,
+                          child: Padding(
+                            padding: const EdgeInsets.all(1.0),
+                            child: Container(
+                              //alignment: Alignment.centerRight,
+                              height: 36,
+                              decoration: BoxDecoration(
+                                color: isSenderMe? lightPurple : darkPurple,
+                                borderRadius: BorderRadius.all(Radius.circular(15),),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      messageData['text'],
+                                      //textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        color: isSenderMe? Colors.black : Colors.white,
                                       ),
-                                      //Text(messageData['time'].toString(),),
-                                    ],
-                                  ),
+                                    ),
+                                    //Text(messageData['time'].toString(),),
+                                  ],
                                 ),
                               ),
                             ),
                           ),
-                        );
-                      }).toList(),
-                    );
-                  },
-                ),
+                        ),
+                      );
+                    }).toList(),
+                  );
+                },
               ),
             ),
-            Expanded(
-              flex: 1,
-              child: Container(
-                //color: Colors.grey,
-                height: 50,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    IconButton(onPressed: (){}, icon: Icon(Icons.add_circle),),
-                    Container(
-                      width: 270,
-                      child: TextField (
-                        controller: messageTEC,
-                        decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Type message here'
-                        ),
+            SizedBox(
+              height: 50,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  IconButton(onPressed: (){}, icon: Icon(Icons.add_circle),),
+                  Container(
+                    width: 270,
+                    child: TextField (
+                      controller: messageTEC,
+                      decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: 'Type message here'
                       ),
                     ),
-                    IconButton(
-                      onPressed: (){
-                        if(messageTEC.text.isNotEmpty){
-                          uploadMessage(widget.conversationID,messageTEC.text);
-                          messageTEC.clear();
-                        }
-                      },
-                      icon: Icon(Icons.send),
-                    ),
-                  ],
-                ),
+                  ),
+                  IconButton(
+                    onPressed: (){
+                      if(messageTEC.text.isNotEmpty){
+                        uploadMessage(widget.conversationID,messageTEC.text);
+                        messageTEC.clear();
+                      }
+                    },
+                    icon: Icon(Icons.send),
+                  ),
+                ],
               ),
             ),
           ],
         )
       ),
     );
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> messagesStream(String conversationID) {
+    return FirebaseFirestore.instance.collection('conversations').doc(conversationID).collection('messages').orderBy('time', descending: false).snapshots();
   }
 
   Future<void> uploadMessage(String conversationID, String text) async {

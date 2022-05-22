@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:path/path.dart';
 import 'package:file_picker/file_picker.dart';
@@ -132,6 +133,15 @@ class _MediaItemState extends State<MediaItem> {
     _controller.dispose();
   }
 
+  Future<Uint8List?> getThumbnail(String vidUrl) async {
+    Uint8List? imgData = await VideoThumbnail.thumbnailData(
+      video: vidUrl,
+      imageFormat: ImageFormat.JPEG,
+      maxWidth: 128, // specify the width of the thumbnail, let the height auto-scaled to keep the source aspect ratio
+      quality: 25,
+    );
+    return imgData;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -140,14 +150,17 @@ class _MediaItemState extends State<MediaItem> {
       child: AspectRatio(
         aspectRatio: 1,
         child: FittedBox(
-          fit: BoxFit.fitHeight,
-          child: Container(
-            color: Colors.redAccent,
-            width: _controller.value.size?.width ?? 0,
-            height: _controller.value.size?.width ?? 0,
-            child: VideoPlayer(_controller),
+          fit: BoxFit.cover,
+          child: FutureBuilder<Uint8List?>(
+            future: getThumbnail(widget.url),
+            builder: (BuildContext context, AsyncSnapshot<Uint8List?> snapshot){
+              if(snapshot.hasData){
+                return Image.memory(snapshot.data!);
+              }
+              return SizedBox();
+            }
           ),
-        )
+        ),
       ),
     );
   }
