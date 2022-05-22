@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:musicianapp/common/globals.dart';
+import 'package:musicianapp/common/ux.dart';
 
 class ProfileModel with ChangeNotifier {
 
@@ -13,6 +14,7 @@ class ProfileModel with ChangeNotifier {
   static List instrumentList = ['Guitar','Piano','Drums', 'Violin','Harp','Cello','Trumpet','Viola','Bass Guitar','Percussion','Flute'];
   static String gender = 'NotSelected';
   DateTime selectedDate = DateTime.now();
+  bool success = false;
 
 
   Future<void> createUser(UserCredential userCredential) {
@@ -28,8 +30,7 @@ class ProfileModel with ChangeNotifier {
     ).then((value) => print("User Added")).catchError((error) => print("Failed to add user: $error"));
   }
 
-  Future<bool> addPersonalInfo(String fName, String lName, DateTime dob, String gender) async {
-    bool result = false;
+  Future<void> addPersonalInfo(String fName, String lName, DateTime dob, String gender) async {
     Globals.usersRef.doc(Globals.userID).update({
       'fName': fName,
       'lName': lName,
@@ -37,14 +38,14 @@ class ProfileModel with ChangeNotifier {
       'gender': gender,
     }).then((value) {
       print("User Added");
-      result = true;
-      notifyListeners();
+      success = true;
+      UX.showLongToast('done');
     }).catchError((error) {
       print("Failed to add user: $error");
-      result = false;
-      return result;
+      success = false;
+      UX.showLongToast('error');
     });
-    return result;
+    notifyListeners();
   }
 
   Future<void> addRoleInfo(String selectedRole, List<bool> mainRole, String instrument, List<String> genres) {

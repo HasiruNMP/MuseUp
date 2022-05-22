@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:musicianapp/common/ux.dart';
@@ -50,6 +51,9 @@ class _SetProfileScreenState extends State<SetProfileScreen> {
   bool isDateSelected = false;
 
   final _formKey = GlobalKey<FormState>();
+
+  //bool loading = false;
+  final ValueNotifier<bool> loading = ValueNotifier<bool>(false);
 
   @override
   Widget build(BuildContext context) {
@@ -178,25 +182,31 @@ class _SetProfileScreenState extends State<SetProfileScreen> {
                     Expanded(
                       child: Consumer<ProfileModel>(
                         builder: (context, profile, child) {
-                          bool loading = false, result = false;
+                          loading.value = false;
                           return ElevatedButton(
                               onPressed: () async {
                                 if(selectedGender != 'NotSelected' && isDateSelected){
                                   if (_formKey.currentState!.validate()) {
-                                    //Navigator.push(context,MaterialPageRoute(builder: (context) => EnterRoleInfo(widget.userID)),);
-                                    setState(() async {
-                                      loading = true;
-                                      result = await ProfileModel().addPersonalInfo(tecFirstName.text,tecLastName.text,selectedDOB,selectedGender);
-                                    });
+                                    loading.value = true;
+                                    profile.addPersonalInfo(tecFirstName.text,tecLastName.text,selectedDOB,selectedGender);
+                                    Navigator.push(context,MaterialPageRoute(builder: (context) => EnterRoleInfo(widget.userID)),);
                                   }
                                 }else{
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(content: Text('Select all fields')),
                                   );
                                 }
-
                               },
-                              child: (loading)? CircularProgressIndicator(color: Colors.white,) : Text("CONTINUE"),
+                              child: ValueListenableBuilder<bool>(
+                                valueListenable: loading,
+                                builder: (BuildContext context, bool value, Widget? child) {
+                                  if(value == true){
+                                    return const CircularProgressIndicator(color: Colors.white,);
+                                  }else{
+                                    return const Text("CONTINUE");
+                                  }
+                                },
+                              ),
                           );
                         }
                       ),
