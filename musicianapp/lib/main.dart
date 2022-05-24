@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:musicianapp/models/explore_model.dart';
+import 'package:musicianapp/models/media_model.dart';
 import 'package:musicianapp/models/post_model.dart';
 import 'package:musicianapp/models/profile_model.dart';
 import 'package:musicianapp/screens/account/authentication/signin_screen.dart';
 import 'package:musicianapp/screens/account/setlocationmap_screen.dart';
 import 'package:musicianapp/screens/account/uploadphoto_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:musicianapp/screens/account/uploadvideo_screen.dart';
 import 'package:musicianapp/screens/common/mainstatemanager.dart';
 import 'package:musicianapp/screens/account/setprofile_screen.dart';
 import 'package:musicianapp/screens/account/welcome_screen.dart';
-import 'package:musicianapp/screens/feed/addpost_screen.dart';
+import 'package:musicianapp/screens/feed/createpost_screen.dart';
 import 'package:musicianapp/screens/videos/myvideos_screen.dart';
 import 'package:musicianapp/services/auth_service.dart';
 import 'package:provider/provider.dart';
@@ -41,7 +43,8 @@ class MuseUpApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => PostModel()),
         ChangeNotifierProvider(create: (context) => AuthService()),
         ChangeNotifierProvider(create: (context) => ProfileModel()),
-        //Provider(create: (context) => CurrentUser()),
+        Provider(create: (context) => FeedModel()),
+        Provider(create: (context) => MediaModel()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -59,8 +62,9 @@ class MuseUpApp extends StatelessWidget {
       'test': (context) => const SetProfileScreen(''),
       'test2': (context) => const WelcomeScreen(),
       'image': (context) => const UploadPhotoScreen(),
-      'add-post': (context) => const AddPost(),
+      'add-post': (context) => const CreatePostScreen(),
       'media': (context) => const MyVideosScreen(),
+      //'upload-video': (context) => UploadVideoScreen(),
       'sign-in-phone': (context) => const SignInWithPhone(),
       'set-location-map': (context) => const SetLocationMapScreen(),
     };

@@ -64,7 +64,7 @@ class _UploadPhotoScreenState extends State<UploadPhotoScreen> {
                         uploadImage(file.path);
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const UploadVideoScreen()),
+                          MaterialPageRoute(builder: (context) => const UploadVideoScreen(atSignup: true,)),
                         );
                       },
                       child: Text('NEXT'),

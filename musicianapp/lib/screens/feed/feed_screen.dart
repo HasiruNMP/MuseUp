@@ -7,7 +7,7 @@ import 'package:musicianapp/common/common_widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:musicianapp/common/globals.dart';
 import 'package:musicianapp/models/post_model.dart';
-import 'package:musicianapp/screens/feed/addpost_screen.dart';
+import 'package:musicianapp/screens/feed/createpost_screen.dart';
 import 'package:musicianapp/screens/feed/post_screen.dart';
 import 'package:musicianapp/screens/explore/explore_screen.dart';
 import 'package:musicianapp/screens/explore/videoplayer_screen.dart';

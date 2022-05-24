@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:musicianapp/screens/account/uploadvideo_screen.dart';
 import 'package:path/path.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -79,7 +80,12 @@ class _MediaContentState extends State<MediaContent> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: (){},
+        onPressed: (){
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const UploadVideoScreen(atSignup: false)),
+          );
+        },
         child: Icon(Icons.add),
       ),
       body: Container(
@@ -110,7 +116,7 @@ class _MediaContentState extends State<MediaContent> {
 
 class MediaItem extends StatefulWidget {
   String url;
-  MediaItem(this.url);
+  MediaItem(this.url, {Key? key}) : super(key: key);
 
   @override
   State<MediaItem> createState() => _MediaItemState();
