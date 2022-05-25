@@ -71,11 +71,11 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
               DateTime dob = data['dob'].toDate();
               var age = (DateTime.now().difference(dob).inDays)/365;
 
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    ClipRRect(
+              return Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ClipRRect(
                       borderRadius: BorderRadius.circular(8.0),
                       child: Container(
                         color: Colors.deepPurple.shade50,
@@ -99,7 +99,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                               ),
                               Expanded(
                                 child: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                                  padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                                   child: Container(
                                     //color: Colors.black12,
                                     child: Column(
@@ -137,31 +137,31 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                         ),
                       ),
                     ),
-                    Container(
-                      child: TabBar(
+                  ),
+                  Container(
+                    child: TabBar(
+                      controller: _controller,
+                      labelColor: Colors.black87,
+                      tabs: [
+                        Tab(text: 'INFO'),
+                        Tab(text: 'POSTS'),
+                        Tab(text: 'MEDIA'),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      child: TabBarView(
                         controller: _controller,
-                        labelColor: Colors.black87,
-                        tabs: [
-                          Tab(text: 'INFO'),
-                          Tab(text: 'POSTS'),
-                          Tab(text: 'MEDIA'),
+                        children: [
+                          profileInfo(data),
+                          FeedContent(FirebaseFirestore.instance.collection('posts').where('authorUID',isEqualTo: Globals.userID).snapshots()),
+                          MediaContent(),
                         ],
                       ),
                     ),
-                    Expanded(
-                      child: Container(
-                        child: TabBarView(
-                          controller: _controller,
-                          children: [
-                            profileInfo(data),
-                            FeedContent(FirebaseFirestore.instance.collection('posts').where('authorUID',isEqualTo: Globals.userID).snapshots()),
-                            MediaContent(),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               );
             }
             return Center(child: spinkit);
@@ -174,90 +174,96 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
   //_profileButtons(profileType,widget.userID,data['fName'],data['imageURL']),
 
   Widget profileInfo(Map<String, dynamic> _data) {
-    return ListView(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(5.0),
-          child: Divider(),
-        ),
-        Container(
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(8.0),
-            child: Container(
-              color: Colors.deepPurple.shade50,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 5.0,horizontal: 8.0),
-                child: Row(
-                  children: [
-                    Text("10 Connections")
-                  ],
-                )
-              ),
-            ),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ListView(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: Divider(),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(5.0),
-          child: Divider(),
-        ),
-        Container(
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(8.0),
-            child: Container(
-              color: Colors.deepPurple.shade50,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('BIO',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
-                        SizedBox(
-                          width: 350,
-                          child: Text(_data['bio'], style: TextStyle(fontSize: 15,),overflow: TextOverflow.fade),
-                        ),
-                      ],
-                    )
-                  ],
+          Container(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8.0),
+              child: Container(
+                color: Colors.deepPurple.shade50,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 5.0,horizontal: 8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("10 Connections"),
+                      SizedBox(width: 5,),
+                      Icon(Icons.people,size: 22,)
+                    ],
+                  )
                 ),
               ),
             ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(5.0),
-          child: Divider(),
-        ),
-        Container(
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(8.0),
-            child: Container(
-              color: Colors.deepPurple.shade50,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('ROLE',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
-                        Text(_data['role'], style: TextStyle(fontSize: 15,),),
-                        SizedBox(height: 8,),
-                        Text('INSTRUMENT',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
-                        Text(_data['instrument'], style: TextStyle(fontSize: 15,),),
-                        SizedBox(height: 8,),
-                        Text('GENRES',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
-                        Text(_data['genres'].toString(), style: TextStyle(fontSize: 15,),),
-                      ],
-                    )
-                  ],
+          Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: Divider(),
+          ),
+          Container(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8.0),
+              child: Container(
+                color: Colors.deepPurple.shade50,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('BIO',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
+                          SizedBox(
+                            width: 350,
+                            child: Text(_data['bio'], style: TextStyle(fontSize: 15,),overflow: TextOverflow.fade),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-      ],
+          Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: Divider(),
+          ),
+          Container(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8.0),
+              child: Container(
+                color: Colors.deepPurple.shade50,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('ROLE',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
+                          Text(_data['role'], style: TextStyle(fontSize: 15,),),
+                          SizedBox(height: 8,),
+                          Text('INSTRUMENT',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
+                          Text(_data['instrument'], style: TextStyle(fontSize: 15,),),
+                          SizedBox(height: 8,),
+                          Text('GENRES',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
+                          Text(_data['genres'].toString(), style: TextStyle(fontSize: 15,),),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -269,10 +275,11 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 3.0),
-                child: TextButton(
+                child: IconButton(
                   onPressed: null,
-                  child: Text('CONNECTED'),
-                  style: flatButtonStyle1,
+                  icon: Icon(Icons.person_add_alt_1),
+                  //child: Text('CONNECTED'),
+                  //style: flatButtonWithIconStyle1,
                 ),
               ),
             ),
@@ -285,7 +292,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                   },
                   icon: Icon(Icons.add),
                   //child: Text('MESSAGE'),
-                  //style: flatButtonStyle1,
+                  //style: flatButtonWithIconStyle1,
                 ),
               ),
             ),
@@ -310,7 +317,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                         });
                       },
                       child: Text('ACCEPT'),
-                      style: flatButtonStyle1,
+                      style: flatButtonWithIconStyle1,
                     ),
                   ),
                 ),
@@ -324,7 +331,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                         });
                       },
                       child: Text('IGNORE'),
-                      style: flatButtonStyle1,
+                      style: flatButtonWithIconStyle1,
                     ),
                   ),
                 ),
@@ -336,7 +343,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                         Chat().openChat(uid, context, name,imageURL);
                       },
                       child: Text('MESSAGE'),
-                      style: flatButtonStyle1,
+                      style: flatButtonWithIconStyle1,
                     ),
                   ),
                 ),
@@ -358,7 +365,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                     child: TextButton(
                       onPressed: null,
                       child: Text('REQUESTED'),
-                      style: flatButtonStyle1,
+                      style: flatButtonWithIconStyle1,
                     ),
                   ),
                 ),
@@ -370,7 +377,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                         Chat().openChat(uid, context, name,imageURL);
                       },
                       child: Text('MESSAGE'),
-                      style: flatButtonStyle1,
+                      style: flatButtonWithIconStyle1,
                     ),
                   ),
                 ),
@@ -395,8 +402,8 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                           Connection().sendConnectionRequest(uid);
                         });
                       },
-                      child: Text('CONNECT'),
-                      style: flatButtonStyle1,
+                      child: Icon(Icons.person_add_alt_1),
+                      style: flatButtonWithIconStyle1,
                     ),
                   ),
                 ),
@@ -407,8 +414,8 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                       onPressed: (){
                         Chat().openChat(uid, context, name,imageURL);
                       },
-                      child: Text('MESSAGE'),
-                      style: flatButtonStyle1,
+                      child: Icon(Icons.chat),
+                      style: flatButtonWithIconStyle1,
                     ),
                   ),
                 ),
@@ -420,6 +427,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
     }
   }
 
+/*
   void getProfileData(String userID){
     FirebaseFirestore.instance.collection('users').doc(userID).get().then((DocumentSnapshot documentSnapshot) {
       if (documentSnapshot.exists) {
@@ -427,6 +435,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
       }
     });
   }
+*/
 
 
 

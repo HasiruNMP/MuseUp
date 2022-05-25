@@ -14,7 +14,7 @@ class Explorer with ChangeNotifier{
  void searchUsersByMusic(String role, String instrument, List<String> genres) {
    print('ZZZZZZZZZZZZZZZZZMMMMMMMMMMMMMMMMMAAAAAAAAAAAAAAAA');
     videoList.clear();
-    FirebaseFirestore.instance.collection('users')
+    FirebaseFirestore.instance.collection('users').where('genres',arrayContainsAny: genres)
         .get()
         .then((QuerySnapshot querySnapshot) {
           for (var doc in querySnapshot.docs) {

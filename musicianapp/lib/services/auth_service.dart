@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 
 
 
-class AuthService with ChangeNotifier {
+class AuthService {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   //String userID = 'No User';
@@ -16,7 +16,7 @@ class AuthService with ChangeNotifier {
 
   Stream<CurrentUser> get onAuthStateChanged => _auth.authStateChanges().map((User? user) => CurrentUser(user!.uid));
 
-  void listenToAuthStateChanges(){
+  /*void listenToAuthStateChanges(){
     _auth.authStateChanges().listen((user) {
       if (user == null) {
         print('User is currently signed out!');
@@ -28,8 +28,9 @@ class AuthService with ChangeNotifier {
         notifyListeners();
       }
     });
-  }
+  }*/
 
+  ValueNotifier<int> signInNotifier = ValueNotifier(0);
 
   Future<void> signInWithPhone(String phone) async {
     await FirebaseAuth.instance.verifyPhoneNumber(
@@ -62,18 +63,23 @@ class AuthService with ChangeNotifier {
   }
 
   void signInWithEmail(String email, String password) async{
+    signInNotifier.value = 1;
     try {
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
+      signInNotifier.value = 3;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
+        signInNotifier.value = 4;
         print('No user found for that email.');
       } else if (e.code == 'wrong-password') {
+        signInNotifier.value = 5;
         print('Wrong password provided for that user.');
       }
     }
+    //signInNotifier.value = 0;
   }
 
   void registerWithEmail(String email, String password) async{
@@ -104,7 +110,7 @@ class AuthService with ChangeNotifier {
   }
 
   void signOut() async{
-    await FirebaseAuth.instance.signOut();
+    await _auth.signOut();
     Globals.userID = 'NoUser';
   }
 

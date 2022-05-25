@@ -49,6 +49,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   leading: Icon(Icons.format_paint),
                   title: Text('Enable custom theme'),
                 ),
+                SettingsTile(
+                  title: Text("Log Out"),
+                  onPressed: signOut(),
+                  description: Text("log out of the application"),
+                ),
               ],
             ),
           ],
@@ -65,5 +70,38 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),*/
       ),
     );
+  }
+
+  Future<void> _signOutAlertDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('AlertDialog Title'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const <Widget>[
+                Text('This is a demo alert dialog.'),
+                Text('Would you like to approve of this message?'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Approve'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  dynamic signOut(){
+    _signOutAlertDialog();
+    //AuthService().signOut();
   }
 }

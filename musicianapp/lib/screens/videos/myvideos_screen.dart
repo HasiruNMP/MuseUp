@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:musicianapp/screens/account/uploadvideo_screen.dart';
+import 'package:musicianapp/screens/feed/feed_screen.dart';
 import 'package:path/path.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,8 @@ import 'package:http/http.dart' as http;
 import 'package:chewie/chewie.dart';
 import 'package:video_player/video_player.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
+
+import '../explore/videoplayer_screen.dart';
 
 class MyVideosScreen extends StatefulWidget {
   const MyVideosScreen({Key? key}) : super(key: key);
@@ -100,11 +103,40 @@ class _MediaContentState extends State<MediaContent> {
               return Center(child: CircularProgressIndicator(),);
             }
 
-            return GridView.count(
-              crossAxisCount: 3,
+            return Wrap(
               children: snapshot.data!.docs.map((DocumentSnapshot document) {
                 Map<String, dynamic> mediaItemData = document.data()! as Map<String, dynamic>;
-                return MediaItem(mediaItemData['url']);
+                return SizedBox(
+                  width: MediaQuery.of(context).size.width/3,
+                  child: InkWell(
+                    onTap: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => VideoView(mediaItemData['url'])),
+                      );
+                    },
+                    child: AspectRatio(
+                      aspectRatio: 1,
+                      child: Stack(
+                        children: [
+                          FittedBox(
+                            fit: BoxFit.fill,
+                            child: Image.network('https://picsum.photos/200'),
+                          ),
+                          Container(
+                            alignment: Alignment.center,
+                            child: IconButton(
+                              onPressed: (){},
+                              icon: Icon(Icons.play_arrow_rounded),
+                              iconSize: 65,
+                              color: Colors.black87.withOpacity(0.5),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
               }).toList(),
             );
           },
@@ -114,99 +146,3 @@ class _MediaContentState extends State<MediaContent> {
   }
 }
 
-class MediaItem extends StatefulWidget {
-  String url;
-  MediaItem(this.url, {Key? key}) : super(key: key);
-
-  @override
-  State<MediaItem> createState() => _MediaItemState();
-}
-
-class _MediaItemState extends State<MediaItem> {
-
-  late VideoPlayerController _controller;
-
-  @override
-  void initState() {
-    _controller = VideoPlayerController.network(widget.url)
-      ..initialize().then((_) {
-        setState(() {});  //when your thumbnail will show.
-      });
-  }
-  @override
-  void dispose() {
-    super.dispose();
-    _controller.dispose();
-  }
-
-  Future<Uint8List?> getThumbnail(String vidUrl) async {
-    Uint8List? imgData = await VideoThumbnail.thumbnailData(
-      video: vidUrl,
-      imageFormat: ImageFormat.JPEG,
-      maxWidth: 128, // specify the width of the thumbnail, let the height auto-scaled to keep the source aspect ratio
-      quality: 25,
-    );
-    return imgData;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      //width: MediaQuery.of(context).size.width/3,
-      child: AspectRatio(
-        aspectRatio: 1,
-        child: FittedBox(
-          fit: BoxFit.cover,
-          child: FutureBuilder<Uint8List?>(
-            future: getThumbnail(widget.url),
-            builder: (BuildContext context, AsyncSnapshot<Uint8List?> snapshot){
-              if(snapshot.hasData){
-                return Image.memory(snapshot.data!);
-              }
-              return SizedBox();
-            }
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class VideoViewer extends StatefulWidget {
-  const VideoViewer({Key? key}) : super(key: key);
-
-  @override
-  State<VideoViewer> createState() => _VideoViewerState();
-}
-
-class _VideoViewerState extends State<VideoViewer> {
-
-  final videoPlayerController = VideoPlayerController.network(
-      'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4'
-  );
-
-  final playerWidget = Chewie(
-    controller: ChewieController(
-      videoPlayerController: VideoPlayerController.network(
-          'https://firebasestorage.googleapis.com/v0/b/hnmp-museup.appspot.com/o/users%2FyosJBYpOiVgqDWUZGDaV5pbxs3p2%2Fvideos%2F22222.mp4?alt=media&token=47c604df-dd0c-438f-8647-20017934e2c0'
-      ),
-      autoPlay: true,
-      looping: false,
-    ),
-  );
-
-  @override
-  void initState() {
-    videoPlayerController.initialize();
-  }
-
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        child: playerWidget,
-      ),
-    );
-  }
-}

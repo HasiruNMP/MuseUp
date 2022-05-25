@@ -20,6 +20,17 @@ final ButtonStyle flatButtonStyle1 = TextButton.styleFrom(
   ),
 );
 
+final ButtonStyle flatButtonWithIconStyle1 = TextButton.styleFrom(
+  primary: Colors.black87,
+  backgroundColor: Colors.indigo.shade100,
+  minimumSize: Size(60, 36),
+  padding: EdgeInsets.symmetric(horizontal: 8.0),
+
+  shape: const RoundedRectangleBorder(
+    borderRadius: BorderRadius.all(Radius.circular(5.0)),
+  ),
+);
+
 final ButtonStyle flatButtonStyleDoc1 = ButtonStyle(
   backgroundColor: MaterialStateProperty.all(Colors.deepPurple.shade50),
   shape: MaterialStateProperty.all<RoundedRectangleBorder>(

@@ -41,7 +41,7 @@ class MuseUpApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => Explorer()),
         ChangeNotifierProvider(create: (context) => PostModel()),
-        ChangeNotifierProvider(create: (context) => AuthService()),
+        Provider(create: (context) => AuthService()),
         ChangeNotifierProvider(create: (context) => ProfileModel()),
         Provider(create: (context) => FeedModel()),
         Provider(create: (context) => MediaModel()),
