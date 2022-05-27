@@ -29,11 +29,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
           builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
 
             if (snapshot.hasError) {
-              return Text("Something went wrong");
+              return const Text("Something went wrong");
             }
 
             if (snapshot.hasData && !snapshot.data!.exists) {
-              return Text("Document does not exist");
+              return const Text("Document does not exist");
             }
 
             if (snapshot.connectionState == ConnectionState.done) {
@@ -44,8 +44,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
               return ListView(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
                     child: Text(
                       'REPORTEE PROFILE',
                       style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),
@@ -61,7 +61,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         height: 200,
                         width: 200,
                         color: Colors.blueGrey.shade100,
-                        child: Icon(Icons.person),
+                        child: const Icon(Icons.person),
                       ),
                     ),
                   ),
@@ -74,47 +74,47 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           MaterialPageRoute(builder: (context) => VideoPlayerScreen(data['imageURL']),),
                         );
                       },
-                      child: Text('Play Video'),
+                      child: const Text('Play Video'),
                     ),
                   ),
                   ListTile(
-                    title: Text('USER ID',style: TextStyle(fontWeight: FontWeight.bold),),
-                    subtitle: Text(snapshot.data!.id,style: TextStyle(fontSize: 16),),
+                    title: const Text('USER ID',style: TextStyle(fontWeight: FontWeight.bold),),
+                    subtitle: Text(snapshot.data!.id,style: const TextStyle(fontSize: 16),),
                     textColor: Colors.black,
                   ),
                   ListTile(
-                    title: Text('NAME',style: TextStyle(fontWeight: FontWeight.bold),),
-                    subtitle: Text(data['fName']+' '+data['lName'],style: TextStyle(fontSize: 16),),
+                    title: const Text('NAME',style: TextStyle(fontWeight: FontWeight.bold),),
+                    subtitle: Text(data['fName']+' '+data['lName'],style: const TextStyle(fontSize: 16),),
                     textColor: Colors.black,
                   ),
                   ListTile(
-                    title: Text('DOB',style: TextStyle(fontWeight: FontWeight.bold),),
-                    subtitle: Text(dob.toString(),style: TextStyle(fontSize: 16),),
+                    title: const Text('DOB',style: TextStyle(fontWeight: FontWeight.bold),),
+                    subtitle: Text(dob.toString(),style: const TextStyle(fontSize: 16),),
                     textColor: Colors.black,
                   ),
                   ListTile(
-                    title: Text('GENDER',style: TextStyle(fontWeight: FontWeight.bold),),
-                    subtitle: Text(data['gender'],style: TextStyle(fontSize: 16),),
+                    title: const Text('GENDER',style: TextStyle(fontWeight: FontWeight.bold),),
+                    subtitle: Text(data['gender'],style: const TextStyle(fontSize: 16),),
                     textColor: Colors.black,
                   ),
                   ListTile(
-                    title: Text('COUNTRY',style: TextStyle(fontWeight: FontWeight.bold),),
-                    subtitle: Text(data['country'],style: TextStyle(fontSize: 16),),
+                    title: const Text('COUNTRY',style: TextStyle(fontWeight: FontWeight.bold),),
+                    subtitle: Text(data['country'],style: const TextStyle(fontSize: 16),),
                     textColor: Colors.black,
                   ),
                   ListTile(
-                    title: Text('CITY',style: TextStyle(fontWeight: FontWeight.bold),),
-                    subtitle: Text(data['city'],style: TextStyle(fontSize: 16),),
+                    title: const Text('CITY',style: TextStyle(fontWeight: FontWeight.bold),),
+                    subtitle: Text(data['city'],style: const TextStyle(fontSize: 16),),
                     textColor: Colors.black,
                   ),
                   ListTile(
-                    title: Text('BIO',style: TextStyle(fontWeight: FontWeight.bold),),
-                    subtitle: Text(data['bio'],style: TextStyle(fontSize: 16),),
+                    title: const Text('BIO',style: TextStyle(fontWeight: FontWeight.bold),),
+                    subtitle: Text(data['bio'],style: const TextStyle(fontSize: 16),),
                     textColor: Colors.black,
                   ),
                   ListTile(
-                    title: Text('ROLE',style: TextStyle(fontWeight: FontWeight.bold),),
-                    subtitle: Text(data['role'],style: TextStyle(fontSize: 16),),
+                    title: const Text('ROLE',style: TextStyle(fontWeight: FontWeight.bold),),
+                    subtitle: Text(data['role'],style: const TextStyle(fontSize: 16),),
                     textColor: Colors.black,
                   ),
                   Padding(
@@ -123,14 +123,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       onPressed: (){
                         blockProfile(snapshot.data!.id);
                       },
-                      child: Text('BLOCK USER'),
+                      child: const Text('BLOCK USER'),
                     ),
                   ),
 
                 ],
               );
             }
-            return Center(child: spinkit);
+            return const Center(child: spinkit);
           },
         ),
       ),

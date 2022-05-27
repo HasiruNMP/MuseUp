@@ -25,11 +25,11 @@ class _ReportsScreenState extends State<ReportsScreen> {
             stream: FirebaseFirestore.instance.collection('reports').snapshots(),
             builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (snapshot.hasError) {
-                return Text('Something went wrong');
+                return const Text('Something went wrong');
               }
 
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: spinkit);
+                return const Center(child: spinkit);
               }
 
               return ListView(
@@ -65,15 +65,15 @@ class _ReportsScreenState extends State<ReportsScreen> {
             },
           ),
         ),
-        VerticalDivider(),
+        const VerticalDivider(),
         Expanded(
           flex: 5,
-          child: _selectedDoc != 'none'? reportDetails(_selectedDoc) : Center(child: Text('Select A Report'),),
+          child: _selectedDoc != 'none'? reportDetails(_selectedDoc) : const Center(child: Text('Select A Report'),),
         ),
-        VerticalDivider(),
+        const VerticalDivider(),
         Expanded(
           flex: 5,
-          child: _selectedDoc != 'none'? ProfileScreen(_selectedDocUID) : Center(child: Text('Select A Report'),),
+          child: _selectedDoc != 'none'? ProfileScreen(_selectedDocUID) : const Center(child: Text('Select A Report'),),
         ),
       ],
     );
@@ -84,11 +84,11 @@ class _ReportsScreenState extends State<ReportsScreen> {
       builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
 
         if (snapshot.hasError) {
-          return Text("Something went wrong");
+          return const Text("Something went wrong");
         }
 
         if (snapshot.hasData && !snapshot.data!.exists) {
-          return Text("Document does not exist");
+          return const Text("Document does not exist");
         }
 
         if (snapshot.connectionState == ConnectionState.done) {
@@ -100,26 +100,26 @@ class _ReportsScreenState extends State<ReportsScreen> {
           return ListView(
             children: [
               ListTile(
-                title: Text('REPORTER',style: TextStyle(fontWeight: FontWeight.bold),),
-                subtitle: Text(data['reporterName'],style: TextStyle(fontSize: 16),),
+                title: const Text('REPORTER',style: TextStyle(fontWeight: FontWeight.bold),),
+                subtitle: Text(data['reporterName'],style: const TextStyle(fontSize: 16),),
                 textColor: Colors.black,
               ),
               ListTile(
-                title: Text('REPORTEE',style: TextStyle(fontWeight: FontWeight.bold),),
-                subtitle: Text(data['reporteeName'],style: TextStyle(fontSize: 16),),
+                title: const Text('REPORTEE',style: TextStyle(fontWeight: FontWeight.bold),),
+                subtitle: Text(data['reporteeName'],style: const TextStyle(fontSize: 16),),
                 textColor: Colors.black,
               ),
               ListTile(
-                title: Text('DATE',style: TextStyle(fontWeight: FontWeight.bold),),
-                subtitle: Text(time.toString(),style: TextStyle(fontSize: 16),),
+                title: const Text('DATE',style: TextStyle(fontWeight: FontWeight.bold),),
+                subtitle: Text(time.toString(),style: const TextStyle(fontSize: 16),),
                 textColor: Colors.black,
               ),
               ListTile(
-                title: Text('CONTENT',style: TextStyle(fontWeight: FontWeight.bold),),
-                subtitle: Text(data['content'],style: TextStyle(fontSize: 16),),
+                title: const Text('CONTENT',style: TextStyle(fontWeight: FontWeight.bold),),
+                subtitle: Text(data['content'],style: const TextStyle(fontSize: 16),),
                 textColor: Colors.black,
               ),
-              Container(
+              SizedBox(
                 height: 80,
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
@@ -130,7 +130,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
                           padding: const EdgeInsets.all(8.0),
                           child: OutlinedButton(
                             onPressed: (){},
-                            child: Text('Mark As Action Taken'),
+                            child: const Text('Mark As Action Taken'),
                           ),
                         ),
                       ),
@@ -139,7 +139,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
                           padding: const EdgeInsets.all(8.0),
                           child: OutlinedButton(
                             onPressed: (){},
-                            child: Text('Ignore'),
+                            child: const Text('Ignore'),
                           ),
                         ),
                       ),
@@ -150,7 +150,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
             ],
           );
         }
-        return Center(child: spinkit);
+        return const Center(child: spinkit);
       },
     );
   }

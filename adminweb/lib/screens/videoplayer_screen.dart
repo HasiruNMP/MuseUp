@@ -66,12 +66,12 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                           _controller.play();
                         });
                       },
-                      child: _controller.value.isPlaying ? Icon(Icons.pause,color: Colors.white,) : Icon(Icons.play_arrow,color: Colors.white,),
+                      child: _controller.value.isPlaying ? const Icon(Icons.pause,color: Colors.white,) : const Icon(Icons.play_arrow,color: Colors.white,),
                       style: ElevatedButton.styleFrom(
-                        shape: CircleBorder(),
-                        padding: EdgeInsets.all(12),
-                        primary: Color(0xFF303952), // <-- Button color
-                        onPrimary: Color(0xFF40407a), // <-- Splash color
+                        shape: const CircleBorder(),
+                        padding: const EdgeInsets.all(12),
+                        primary: const Color(0xFF303952), // <-- Button color
+                        onPrimary: const Color(0xFF40407a), // <-- Splash color
                       ),
                     ),
                   ],

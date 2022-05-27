@@ -22,11 +22,11 @@ class _FeedbacksScreenState extends State<FeedbacksScreen> {
             stream: FirebaseFirestore.instance.collection('feedback').snapshots(),
             builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (snapshot.hasError) {
-                return Text('Something went wrong');
+                return const Text('Something went wrong');
               }
 
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: spinkit);
+                return const Center(child: spinkit);
               }
 
               return ListView(
@@ -45,7 +45,7 @@ class _FeedbacksScreenState extends State<FeedbacksScreen> {
                             });
                           },
                           child: ListTile(
-                            title: Text(data['name'].toString(),style: TextStyle(
+                            title: Text(data['name'].toString(),style: const TextStyle(
                               fontWeight: FontWeight.w400,
                             ),),
                             subtitle: Text(
@@ -62,10 +62,10 @@ class _FeedbacksScreenState extends State<FeedbacksScreen> {
             },
           ),
         ),
-        VerticalDivider(),
+        const VerticalDivider(),
         Expanded(
           flex: 8,
-          child: _selectedDoc != 'none'? feedbackDetails(_selectedDoc) : Center(child: Text('Select A Feedback'),),
+          child: _selectedDoc != 'none'? feedbackDetails(_selectedDoc) : const Center(child: Text('Select A Feedback'),),
         ),
       ],
     );
@@ -76,11 +76,11 @@ class _FeedbacksScreenState extends State<FeedbacksScreen> {
       builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
 
         if (snapshot.hasError) {
-          return Center(child: Text("Something went wrong"));
+          return const Center(child: Text("Something went wrong"));
         }
 
         if (snapshot.hasData && !snapshot.data!.exists) {
-          return Center(child: Text("Document does not exist"));
+          return const Center(child: Text("Document does not exist"));
         }
 
         if (snapshot.connectionState == ConnectionState.done) {
@@ -92,37 +92,37 @@ class _FeedbacksScreenState extends State<FeedbacksScreen> {
           return ListView(
             children: [
               ListTile(
-                title: Text('USER',style: TextStyle(fontWeight: FontWeight.bold),),
+                title: const Text('USER',style: TextStyle(fontWeight: FontWeight.bold),),
                 subtitle: Text(
                   data['name'],
-                  style: TextStyle(fontSize: 16),
+                  style: const TextStyle(fontSize: 16),
                 ),
                 textColor: Colors.black,
               ),
               ListTile(
-                title: Text('DATE',style: TextStyle(fontWeight: FontWeight.bold),),
-                subtitle: Text(time.toString(),style: TextStyle(fontSize: 16),),
+                title: const Text('DATE',style: TextStyle(fontWeight: FontWeight.bold),),
+                subtitle: Text(time.toString(),style: const TextStyle(fontSize: 16),),
                 textColor: Colors.black,
               ),
               ListTile(
-                title: Text('RATING',style: TextStyle(fontWeight: FontWeight.bold),),
+                title: const Text('RATING',style: TextStyle(fontWeight: FontWeight.bold),),
                 subtitle: Row(
                   children: List.generate(data['rating'],(index){
-                    return Icon(Icons.star,color: Colors.amber,size: 24,);
+                    return const Icon(Icons.star,color: Colors.amber,size: 24,);
                   }),
                 ),
                 textColor: Colors.black,
               ),
               ListTile(
-                title: Text('CONTENT',style: TextStyle(fontWeight: FontWeight.bold),),
-                subtitle: Text(data['content'].toString(),style: TextStyle(fontSize: 16),),
+                title: const Text('CONTENT',style: TextStyle(fontWeight: FontWeight.bold),),
+                subtitle: Text(data['content'].toString(),style: const TextStyle(fontSize: 16),),
                 textColor: Colors.black,
               ),
             ],
           );
         }
 
-        return Center(child: spinkit);
+        return const Center(child: spinkit);
       },
     );
   }

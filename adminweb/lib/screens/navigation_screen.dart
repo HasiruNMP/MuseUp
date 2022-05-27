@@ -60,7 +60,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Icon(Icons.label),
+                                    const Icon(Icons.label),
                                     Text(
                                       'FEEDBACK',
                                       style: GoogleFonts.lato(
@@ -92,7 +92,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Icon(Icons.label),
+                                    const Icon(Icons.label),
                                     Text(
                                       'REPORTS',
                                       style: GoogleFonts.lato(
@@ -124,7 +124,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Icon(Icons.label),
+                                    const Icon(Icons.label),
                                     Text(
                                       'PROFILES',
                                       style: GoogleFonts.lato(
