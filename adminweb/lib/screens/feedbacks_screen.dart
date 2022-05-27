@@ -1,3 +1,4 @@
+import 'package:adminweb/models/report_model.dart';
 import 'package:adminweb/screens/common.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -19,14 +20,14 @@ class _FeedbacksScreenState extends State<FeedbacksScreen> {
         Expanded(
           flex: 3,
           child: StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance.collection('feedback').snapshots(),
+            stream: Reports.getFeedbacksStream(),
             builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (snapshot.hasError) {
                 return const Text('Something went wrong');
               }
 
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: spinkit);
+                return const Center(child: spinKit);
               }
 
               return ListView(
@@ -70,9 +71,11 @@ class _FeedbacksScreenState extends State<FeedbacksScreen> {
       ],
     );
   }
+
+
   Widget feedbackDetails(String docID){
     return FutureBuilder<DocumentSnapshot>(
-      future: FirebaseFirestore.instance.collection('feedback').doc(docID).get(),
+      future: Reports.getFeedBackDetailsFuture(docID),
       builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
 
         if (snapshot.hasError) {
@@ -122,7 +125,7 @@ class _FeedbacksScreenState extends State<FeedbacksScreen> {
           );
         }
 
-        return const Center(child: spinkit);
+        return const Center(child: spinKit);
       },
     );
   }

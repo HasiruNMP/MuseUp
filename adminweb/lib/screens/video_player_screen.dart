@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:video_player/video_player.dart';
 
+import 'common.dart';
+
 class VideoPlayerScreen extends StatefulWidget {
-  String url;
-  VideoPlayerScreen(this.url, {Key? key}) : super(key: key);
+  final String url;
+  const VideoPlayerScreen(this.url, {Key? key}) : super(key: key);
 
   @override
   State<VideoPlayerScreen> createState() => _VideoPlayerScreenState();
@@ -18,7 +20,6 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
     super.initState();
     _controller = VideoPlayerController.network(widget.url)
       ..initialize().then((_) {
-        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
         setState(() {});
       });
     _controller.pause();
@@ -45,10 +46,10 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
           Center(
             child: AspectRatio(
               aspectRatio: _controller.value.aspectRatio,
-              child: _controller.value.isInitialized ? VideoPlayer(_controller) : const Center(child: Text('Loading'),),
+              child: _controller.value.isInitialized ? VideoPlayer(_controller) : const Center(child: spinKit),
             ),
           ),
-          Padding(
+          (_controller.value.isInitialized)? Padding(
             padding: const EdgeInsets.all(14.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -70,15 +71,15 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                       style: ElevatedButton.styleFrom(
                         shape: const CircleBorder(),
                         padding: const EdgeInsets.all(12),
-                        primary: const Color(0xFF303952), // <-- Button color
-                        onPrimary: const Color(0xFF40407a), // <-- Splash color
+                        primary: const Color(0xFF303952),
+                        onPrimary: const Color(0xFF40407a),
                       ),
                     ),
                   ],
                 ),
               ],
             ),
-          )
+          ): const SizedBox(),
         ],
       ),
     );

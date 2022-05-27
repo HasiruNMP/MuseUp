@@ -23,141 +23,139 @@ class _NavigationScreenState extends State<NavigationScreen> {
         title: Text(
           'MuseUp Admin Dashboard',
           style: GoogleFonts.lato(
-            fontWeight: FontWeight.bold,
-            color: Colors.black87
+            //fontWeight: FontWeight.bold,
+            color: Colors.white
           ),
         ),
         elevation: 0,
         centerTitle: true,
-        backgroundColor: Colors.deepPurple.shade50,
+        backgroundColor: Colors.indigo,
       ),
-      body: Container(
-        child: Row(
-          children: [
-            Expanded(
-              flex: 1,
-              child: Container(
-                color: Colors.deepPurple.shade50,
-                child: Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: Column(
-                    children: [
-                      AspectRatio(
-                        aspectRatio: 1,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: InkWell(
-                            onTap: (){
-                              controller.jumpToPage(0);
-                              setState(() {
-                                _selectedPage = 0;
-                              });
-                            },
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(15),
-                              child: Container(
-                                color: _selectedPage==0? Colors.indigo.shade200 : Colors.indigo.shade100,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Icon(Icons.label),
-                                    Text(
-                                      'FEEDBACK',
-                                      style: GoogleFonts.lato(
-                                        fontSize: 20,
-                                      ),
+      body: Row(
+        children: [
+          Expanded(
+            flex: 1,
+            child: Container(
+              color: Colors.deepPurple.shade50,
+              child: Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Column(
+                  children: [
+                    AspectRatio(
+                      aspectRatio: 1,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: InkWell(
+                          onTap: (){
+                            controller.jumpToPage(0);
+                            setState(() {
+                              _selectedPage = 0;
+                            });
+                          },
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(15),
+                            child: Container(
+                              color: _selectedPage==0? Colors.indigo.shade200 : Colors.indigo.shade100,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Icon(Icons.feedback_rounded),
+                                  Text(
+                                    'FEEDBACKS',
+                                    style: GoogleFonts.lato(
+                                      fontSize: 18,
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
                         ),
                       ),
-                      AspectRatio(
-                        aspectRatio: 1,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: InkWell(
-                            onTap: (){
-                              controller.jumpToPage(1);
-                              setState(() {
-                                _selectedPage = 1;
-                              });
-                            },
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(15),
-                              child: Container(
-                                color: _selectedPage==1? Colors.indigo.shade200 : Colors.indigo.shade100,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Icon(Icons.label),
-                                    Text(
-                                      'REPORTS',
-                                      style: GoogleFonts.lato(
-                                        fontSize: 20,
-                                      ),
+                    ),
+                    AspectRatio(
+                      aspectRatio: 1,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: InkWell(
+                          onTap: (){
+                            controller.jumpToPage(1);
+                            setState(() {
+                              _selectedPage = 1;
+                            });
+                          },
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(15),
+                            child: Container(
+                              color: _selectedPage==1? Colors.indigo.shade200 : Colors.indigo.shade100,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Icon(Icons.report_rounded),
+                                  Text(
+                                    'REPORTS',
+                                    style: GoogleFonts.lato(
+                                      fontSize: 18,
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
                         ),
                       ),
-                      AspectRatio(
-                        aspectRatio: 1,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: InkWell(
-                            onTap: (){
-                              controller.jumpToPage(2);
-                              setState(() {
-                                _selectedPage = 2;
-                              });
-                            },
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(15),
-                              child: Container(
-                                color: _selectedPage==2? Colors.indigo.shade200 : Colors.indigo.shade100,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Icon(Icons.label),
-                                    Text(
-                                      'PROFILES',
-                                      style: GoogleFonts.lato(
-                                        fontSize: 20,
-                                      ),
+                    ),
+                    /*AspectRatio(
+                      aspectRatio: 1,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: InkWell(
+                          onTap: (){
+                            controller.jumpToPage(2);
+                            setState(() {
+                              _selectedPage = 2;
+                            });
+                          },
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(15),
+                            child: Container(
+                              color: _selectedPage==2? Colors.indigo.shade200 : Colors.indigo.shade100,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Icon(Icons.label),
+                                  Text(
+                                    'PROFILES',
+                                    style: GoogleFonts.lato(
+                                      fontSize: 20,
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),*/
+                  ],
                 ),
               ),
             ),
-            Expanded(
-              flex: 11,
-              child: PageView(
-                controller: controller,
-                children: const <Widget>[
-                  FeedbacksScreen(),
-                  ReportsScreen(),
-                  Center(
-                    child: Text('Profile Screen'),
-                  )
-                ],
-              ),
+          ),
+          Expanded(
+            flex: 11,
+            child: PageView(
+              controller: controller,
+              children: const <Widget>[
+                FeedbacksScreen(),
+                ReportsScreen(),
+                Center(
+                  child: Text('Profile Screen'),
+                )
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

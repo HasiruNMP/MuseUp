@@ -1,3 +1,4 @@
+import 'package:adminweb/models/report_model.dart';
 import 'package:adminweb/screens/common.dart';
 import 'package:adminweb/screens/profile_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -22,14 +23,14 @@ class _ReportsScreenState extends State<ReportsScreen> {
         Expanded(
           flex: 3,
           child: StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance.collection('reports').snapshots(),
+            stream: Reports.reportsStream(),
             builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (snapshot.hasError) {
                 return const Text('Something went wrong');
               }
 
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: spinkit);
+                return const Center(child: spinKit);
               }
 
               return ListView(
@@ -78,9 +79,10 @@ class _ReportsScreenState extends State<ReportsScreen> {
       ],
     );
   }
-  Widget reportDetails(String docID){
+
+  Widget reportDetails(String _reportID){
     return FutureBuilder<DocumentSnapshot>(
-      future: FirebaseFirestore.instance.collection('reports').doc(docID).get(),
+      future: Reports.getReportDetailsFuture(_reportID),
       builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
 
         if (snapshot.hasError) {
@@ -105,7 +107,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
                 textColor: Colors.black,
               ),
               ListTile(
-                title: const Text('REPORTEE',style: TextStyle(fontWeight: FontWeight.bold),),
+                title: const Text('REPORTED BY',style: TextStyle(fontWeight: FontWeight.bold),),
                 subtitle: Text(data['reporteeName'],style: const TextStyle(fontSize: 16),),
                 textColor: Colors.black,
               ),
@@ -150,7 +152,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
             ],
           );
         }
-        return const Center(child: spinkit);
+        return const Center(child: spinKit);
       },
     );
   }
