@@ -2,7 +2,6 @@ import 'package:adminweb/models/user_model.dart';
 import 'package:adminweb/screens/ux.dart';
 import 'package:adminweb/services/database_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {

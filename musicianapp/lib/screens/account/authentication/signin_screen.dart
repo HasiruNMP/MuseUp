@@ -75,9 +75,18 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(5.0),
-                  child: MUTextField1(
+                  child: TextFormField(
                     controller: _tecPW,
-                    label: 'Password',
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter some text';
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                      label: Text("Password"),
+                    ),
+                    obscureText: true,
                   ),
                 ),
                 Padding(

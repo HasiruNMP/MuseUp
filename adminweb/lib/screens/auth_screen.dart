@@ -29,9 +29,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.all(15.0),
-                      child: Container(
-                        child: Image.asset('assets/img/logo.png'),
-                      ),
+                      child: Image.asset('assets/img/logo.png'),
                     ),
                   ),
                   const Padding(

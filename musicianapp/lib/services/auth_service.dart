@@ -58,8 +58,6 @@ class AuthService {
 
     // Once signed in, return the UserCredential
     UserCredential user = await FirebaseAuth.instance.signInWithCredential(credential);
-
-    ProfileModel().createUser(user);
   }
 
   void signInWithEmail(String email, String password) async{

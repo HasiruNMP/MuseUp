@@ -214,6 +214,7 @@ class _FeedListItemState extends State<FeedListItem> {
                               });
                             },
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(
                                   Icons.favorite,
@@ -232,6 +233,7 @@ class _FeedListItemState extends State<FeedListItem> {
                               });
                             },
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(
                                   Icons.favorite_border,
@@ -258,6 +260,7 @@ class _FeedListItemState extends State<FeedListItem> {
                         );
                       },
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(
                             Icons.comment,

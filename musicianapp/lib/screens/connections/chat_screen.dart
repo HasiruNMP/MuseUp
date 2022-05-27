@@ -70,7 +70,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       Map<String, dynamic> messageData = document.data()! as Map<String, dynamic>;
                       messageData['sender'] == Globals.userID ? isSenderMe = true : isSenderMe = false;
                       return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 5.0,vertical: 2),
                         child: Container(
                           alignment: isSenderMe? Alignment.centerRight : Alignment.centerLeft,
                           child: Padding(
