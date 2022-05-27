@@ -1,19 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:musicianapp/common/common_widgets.dart';
-import 'package:musicianapp/common/globals.dart';
-import 'package:musicianapp/models/explore_model.dart';
-import 'package:musicianapp/screens/account/user_screen.dart';
-import 'package:musicianapp/screens/feed/feed_screen.dart';
 import 'package:musicianapp/screens/connections/connections_screen.dart';
 import 'package:musicianapp/screens/connections/notifications_screen.dart';
 import 'package:musicianapp/screens/explore/explore_screen.dart';
 import 'package:musicianapp/screens/explore/profile_screen.dart';
 import 'package:musicianapp/screens/videos/myvideos_screen.dart';
-import 'package:provider/provider.dart';
 import 'package:badges/badges.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -29,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('MuseUp'),
+        title: const Text('MuseUp'),
         centerTitle: true,
 /*        leading: IconButton(
             icon: CircleAvatar(
@@ -47,16 +41,16 @@ class _HomeScreenState extends State<HomeScreen> {
             onPressed: (){
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => NotificationsScreen()),
+                MaterialPageRoute(builder: (context) => const NotificationsScreen()),
               );
             },
             icon: Badge(
-              badgeContent: Text(
+              badgeContent: const Text(
                 '2',
                 style: TextStyle(color: Colors.white),
               ),
               elevation: 0,
-              child: FaIcon(FontAwesomeIcons.solidBell),
+              child: const FaIcon(FontAwesomeIcons.solidBell),
             ),
           ),
         ],
@@ -81,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => MyVideosScreen()),
+                  MaterialPageRoute(builder: (context) => const MyVideosScreen()),
                 );
               },
             ),
@@ -105,12 +99,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Text(
                   'Discover',
                   style: GoogleFonts.lato(
-                    textStyle: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),
+                    textStyle: const TextStyle(fontSize: 20,fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
             ),
-            Container(
+            const SizedBox(
               height: 210,
               child: NearbyListView(),
             ),
@@ -121,16 +115,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Text(
                   'Highlighted',
                   style: GoogleFonts.lato(
-                    textStyle: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),
+                    textStyle: const TextStyle(fontSize: 20,fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
             ),
-            Container(
+            const SizedBox(
               height: 210,
               child: NearbyListView(),
             ),
-            Divider(),
+            const Divider(),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: ClipRRect(
@@ -142,7 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     onPressed: (){
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => ExploreScreen()),
+                        MaterialPageRoute(builder: (context) => const ExploreScreen()),
                       );
                     },
                     child: Row(
@@ -152,11 +146,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         Text(
                           'Explore Musicians',
                           style: GoogleFonts.lato(
-                            textStyle: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Colors.black87),
+                            textStyle: const TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Colors.black87),
                           ),
                         ),
-                        SizedBox(width: 10,),
-                        FaIcon(FontAwesomeIcons.search,color: Colors.black87,size: 16,),
+                        const SizedBox(width: 10,),
+                        const FaIcon(FontAwesomeIcons.search,color: Colors.black87,size: 16,),
                         //FaIcon(FontAwesomeIcons.angleRight,color: Colors.black45,),
                       ],
                     ),
@@ -175,7 +169,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     onPressed: (){
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => ConnectionsView()),
+                        MaterialPageRoute(builder: (context) => const ConnectionsView()),
                       );
                     },
                     child: Row(
@@ -185,11 +179,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         Text(
                           'Connections',
                           style: GoogleFonts.lato(
-                            textStyle: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Colors.black87),
+                            textStyle: const TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Colors.black87),
                           ),
                         ),
-                        SizedBox(width: 10,),
-                        FaIcon(FontAwesomeIcons.users,color: Colors.black87,size: 16,),
+                        const SizedBox(width: 10,),
+                        const FaIcon(FontAwesomeIcons.users,color: Colors.black87,size: 16,),
                         //FaIcon(FontAwesomeIcons.angleRight,color: Colors.black45,),
                       ],
                     ),
@@ -203,7 +197,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
   Future<void> refresh() async {
-    return Future.delayed(Duration(seconds: 1));
+    return Future.delayed(const Duration(seconds: 1));
   }
 }
 
@@ -229,11 +223,11 @@ class _NearbyListViewState extends State<NearbyListView> {
       stream: FirebaseFirestore.instance.collection('users').where('profileState',isEqualTo: 1).snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
-          return Text('Something went wrong');
+          return const Text('Something went wrong');
         }
 
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: spinkit);
+          return const Center(child: spinkit);
         }
 
         return ListView(
@@ -266,13 +260,13 @@ class _NearbyListViewState extends State<NearbyListView> {
                         Text(
                           '${data['fName']} ${data['lName']}',
                           style: GoogleFonts.lato(
-                            textStyle: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),
+                            textStyle: const TextStyle(fontSize: 16,fontWeight: FontWeight.bold),
                           ),
                         ),
                         Text(
                           data['role'],
                           style: GoogleFonts.lato(
-                            textStyle: TextStyle(fontSize: 14,fontWeight: FontWeight.w400),
+                            textStyle: const TextStyle(fontSize: 14,fontWeight: FontWeight.w400),
                           ),
                         ),
                       ],

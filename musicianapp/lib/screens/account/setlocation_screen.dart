@@ -1,13 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:musicianapp/models/profile_model.dart';
 import 'package:musicianapp/screens/account/uploadphoto_screen.dart';
-import 'package:musicianapp/screens/account/uploadvideo_screen.dart';
 
 class SetLocationScreen extends StatefulWidget {
   const SetLocationScreen({Key? key}) : super(key: key);
@@ -36,7 +34,7 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Select Your Location'),
+        title: const Text('Select Your Location'),
       ),
       body: SafeArea(
         child: Column(
@@ -45,14 +43,14 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
                     child: Text('Determining Your Location',textAlign: TextAlign.center,),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(15.0),
                     child: Container(
-                      child: SpinKitRipple(
+                      child: const SpinKitRipple(
                         color: Colors.black38,
                         size: 100.0,
                       ),
@@ -76,7 +74,7 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
                         }
                         return null;
                       },
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'Country',
                       ),
@@ -92,18 +90,18 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
                         }
                         return null;
                       },
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'City/District',
                       ),
                     ),
                   ),
-                  SizedBox(height: 50,),
+                  const SizedBox(height: 50,),
                   TextButton(
                     onPressed: (){
                       _navigateToMap(context);
                     },
-                    child: Text("Set Location Manually"),
+                    child: const Text("Set Location Manually"),
                   ),
                 ],
               ),
@@ -121,7 +119,7 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
                           MaterialPageRoute(builder: (context) => const UploadPhotoScreen()),
                         );
                       },
-                      child: Text('CONTINUE'),
+                      child: const Text('CONTINUE'),
                     ),
                   ),
                 ],
@@ -201,14 +199,14 @@ class MapSample extends StatefulWidget {
 }
 
 class MapSampleState extends State<MapSample> {
-  Completer<GoogleMapController> _controller = Completer();
+  final Completer<GoogleMapController> _controller = Completer();
 
-  static final CameraPosition _kGooglePlex = CameraPosition(
+  static const CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(37.42796133580664, -122.085749655962),
     zoom: 14.4746,
   );
 
-  static final CameraPosition _kLake = CameraPosition(
+  static const CameraPosition _kLake = CameraPosition(
       bearing: 192.8334901395799,
       target: LatLng(37.43296265331129, -122.08832357078792),
       tilt: 59.440717697143555,
@@ -216,7 +214,7 @@ class MapSampleState extends State<MapSample> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       body: GoogleMap(
         mapType: MapType.normal,
         initialCameraPosition: _kGooglePlex,

@@ -1,10 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/cupertino.dart.';
 import 'package:flutter/material.dart';
 import 'package:musicianapp/common/globals.dart';
-import 'package:musicianapp/screens/feed/feed_screen.dart';
 
 import '../explore/explore_screen.dart';
 
@@ -36,7 +34,7 @@ class _PostScreenState extends State<PostScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Post'),
+        title: const Text('Post'),
       ),
       body: Column(
         children: [
@@ -44,11 +42,11 @@ class _PostScreenState extends State<PostScreen> {
             future: FirebaseFirestore.instance.collection('posts').doc(widget.postID).get(),
             builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot>snapshot) {
               if (snapshot.hasError) {
-                return Text("Something went wrong");
+                return const Text("Something went wrong");
               }
 
               if (snapshot.hasData && !snapshot.data!.exists) {
-                return Text("Document does not exist");
+                return const Text("Document does not exist");
               }
 
               if (snapshot.connectionState == ConnectionState.done) {
@@ -71,11 +69,11 @@ class _PostScreenState extends State<PostScreen> {
                                     future: FirebaseFirestore.instance.collection('users').doc(postData['authorUID']).get(),
                                     builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot>snapshot) {
                                       if (snapshot.hasError) {
-                                        return Text("Something went wrong");
+                                        return const Text("Something went wrong");
                                       }
 
                                       if (snapshot.hasData && !snapshot.data!.exists) {
-                                        return Text("Document does not exist");
+                                        return const Text("Document does not exist");
                                       }
 
                                       if (snapshot.connectionState == ConnectionState.done) {
@@ -91,7 +89,7 @@ class _PostScreenState extends State<PostScreen> {
                                           ),
                                           title: Text(
                                             userData['fName']+' '+userData['lName'],
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
@@ -99,10 +97,10 @@ class _PostScreenState extends State<PostScreen> {
                                         );
                                       }
                                       return ListTile(
-                                        leading: CircleAvatar(
+                                        leading: const CircleAvatar(
                                           backgroundColor: Colors.green,
                                         ),
-                                        title: Text(''),
+                                        title: const Text(''),
                                         subtitle: Text(widget.time),
                                       );
                                     },
@@ -117,7 +115,7 @@ class _PostScreenState extends State<PostScreen> {
                                 const EdgeInsets.symmetric(horizontal: 8),
                                 child: IconButton(
                                   onPressed: () {},
-                                  icon: Icon(Icons.person_add_alt_1),
+                                  icon: const Icon(Icons.person_add_alt_1),
                                 ),
                               ),
                             ],
@@ -130,7 +128,7 @@ class _PostScreenState extends State<PostScreen> {
                                   postData['text'],
                                   textAlign: TextAlign.justify,
                                 ),
-                                (postData['type']=='video')? VideoApp(postData['videoURL']) : SizedBox(),
+                                (postData['type']=='video')? VideoApp(postData['videoURL']) : const SizedBox(),
                               ],
                             ),
                           ),
@@ -139,10 +137,10 @@ class _PostScreenState extends State<PostScreen> {
                               Expanded(
                                 child: (Globals.likedPosts.contains(widget.postID))? TextButton(
                                   onPressed: () {},
-                                  child: Icon(Icons.favorite,color: Colors.redAccent,),
+                                  child: const Icon(Icons.favorite,color: Colors.redAccent,),
                                 ):TextButton(
                                   onPressed: () {},
-                                  child: Icon(Icons.favorite_border,color: Colors.black87,),
+                                  child: const Icon(Icons.favorite_border,color: Colors.black87,),
                                 ),
                               ),
                             ],
@@ -153,20 +151,20 @@ class _PostScreenState extends State<PostScreen> {
                   ),
                 );
               }
-              return Text('Loading');
+              return const Text('Loading');
             },
           ),
-          Divider(),
+          const Divider(),
           Expanded(
             child: StreamBuilder<QuerySnapshot>(
               stream: FirebaseFirestore.instance.collection('posts').doc(widget.postID).collection('comments').snapshots(),
               builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (snapshot.hasError) {
-                  return Text('Something went wrong');
+                  return const Text('Something went wrong');
                 }
 
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Text("Loading");
+                  return const Text("Loading");
                 }
 
                 return ListView(
@@ -177,11 +175,11 @@ class _PostScreenState extends State<PostScreen> {
                       future: FirebaseFirestore.instance.collection('users').doc(commentData['UID']).get(),
                       builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot>snapshot) {
                         if (snapshot.hasError) {
-                          return Text("Something went wrong");
+                          return const Text("Something went wrong");
                         }
 
                         if (snapshot.hasData && !snapshot.data!.exists) {
-                          return Text("Document does not exist");
+                          return const Text("Document does not exist");
                         }
 
                         if (snapshot.connectionState == ConnectionState.done) {
@@ -197,7 +195,7 @@ class _PostScreenState extends State<PostScreen> {
                             ),
                             title: Text(
                               userData['fName']+' '+userData['lName'],
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -205,10 +203,10 @@ class _PostScreenState extends State<PostScreen> {
                           );
                         }
                         return ListTile(
-                          leading: CircleAvatar(
+                          leading: const CircleAvatar(
                             backgroundColor: Colors.green,
                           ),
-                          title: Text(''),
+                          title: const Text(''),
                           subtitle: Text(widget.time),
                         );
                       },
@@ -229,7 +227,7 @@ class _PostScreenState extends State<PostScreen> {
                   ),
                 ),
                 CupertinoButton(
-                  child: Text('Send'),
+                  child: const Text('Send'),
                   onPressed: (){
                     addComment(widget.postID, tecComment.text);
                   },

@@ -3,14 +3,11 @@ import 'package:file_picker/file_picker.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:image_cropper/image_cropper.dart';
 import 'package:musicianapp/common/globals.dart';
 import 'package:musicianapp/models/profile_model.dart';
 import 'package:musicianapp/screens/account/uploadvideo_screen.dart';
-import 'package:image_crop/image_crop.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter_image_compress/flutter_image_compress.dart';
-import 'package:http/http.dart';
 import 'package:path/path.dart' as p;
 
 class UploadPhotoScreen extends StatefulWidget {
@@ -30,7 +27,7 @@ class _UploadPhotoScreenState extends State<UploadPhotoScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Upload Profile Picture'),
+        title: const Text('Upload Profile Picture'),
       ),
       body: SafeArea(
         child: Column(
@@ -41,14 +38,14 @@ class _UploadPhotoScreenState extends State<UploadPhotoScreen> {
                   aspectRatio: 1,
                   child: Container(
                     color: Colors.deepPurple.shade50.withOpacity(0.5),
-                    child: imageSelected? Image.file(file) : Center(child: FaIcon(FontAwesomeIcons.image),),
+                    child: imageSelected? Image.file(file) : const Center(child: FaIcon(FontAwesomeIcons.image),),
                   ),
                 ),
                 Row(
                   children: [
                     Expanded(child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: ElevatedButton(onPressed: selectFile, child: Text('Select image'),),
+                      child: ElevatedButton(onPressed: selectFile, child: const Text('Select image'),),
                     )),
                   ],
                 ),
@@ -67,7 +64,7 @@ class _UploadPhotoScreenState extends State<UploadPhotoScreen> {
                           MaterialPageRoute(builder: (context) => const UploadVideoScreen(atSignup: true,)),
                         );
                       },
-                      child: Text('NEXT'),
+                      child: const Text('NEXT'),
                     ),
                   ),
                 ),
@@ -111,7 +108,7 @@ class _UploadPhotoScreenState extends State<UploadPhotoScreen> {
       final url = await ref.ref.getDownloadURL();
       print(url);
       ProfileModel().addImageURL(url);
-    } on FirebaseException catch (e) {
+    } on FirebaseException {
       // e.g, e.code == 'canceled'
     }
   }

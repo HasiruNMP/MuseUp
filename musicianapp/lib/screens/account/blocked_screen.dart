@@ -39,7 +39,7 @@ class _BlockedScreenState extends State<BlockedScreen> {
             'You have been blocked because you have violated the community guidlines! \n\n You will be signed out now. \n\n',
             textAlign: TextAlign.center,
             style: GoogleFonts.lato(
-              textStyle: TextStyle(
+              textStyle: const TextStyle(
                 fontSize: 15,
                 //fontWeight: FontWeight.bold
               ),

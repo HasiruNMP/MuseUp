@@ -35,7 +35,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Your Profile'),
+        title: const Text('Your Profile'),
         actions: [
           IconButton(
             onPressed: (){
@@ -44,7 +44,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                 MaterialPageRoute(builder: (context) => const SettingsScreen()),
               );
             },
-            icon: Icon(Icons.settings),),
+            icon: const Icon(Icons.settings),),
         ],
       ),
       body: SafeArea(
@@ -53,11 +53,11 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
           builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
 
             if (snapshot.hasError) {
-              return Text("Something went wrong");
+              return const Text("Something went wrong");
             }
 
             if (snapshot.hasData && !snapshot.data!.exists) {
-              return Text("Document does not exist");
+              return const Text("Document does not exist");
             }
 
             if (snapshot.connectionState == ConnectionState.done) {
@@ -108,18 +108,18 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                                       children: [
                                         Text(
                                           '${data['fName']} ${data['lName']}',
-                                          style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),
+                                          style: const TextStyle(fontSize: 20,fontWeight: FontWeight.bold),
                                         ),
                                         //SizedBox(height: 18,),
                                         Text(
                                           '${age.round().toString()} Y',
-                                          style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),
+                                          style: const TextStyle(fontSize: 16,fontWeight: FontWeight.bold),
                                         ),
                                         //SizedBox(height: 18,),
                                         Row(
                                           mainAxisAlignment: MainAxisAlignment.start,
                                           children: [
-                                            Icon(Icons.location_on,size: 12,),
+                                            const Icon(Icons.location_on,size: 12,),
                                             Text(
                                               '${data['city']}, ${data['country']}',
                                               //style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),
@@ -142,7 +142,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                     child: TabBar(
                       controller: _controller,
                       labelColor: Colors.black87,
-                      tabs: [
+                      tabs: const [
                         Tab(text: 'INFO'),
                         Tab(text: 'POSTS'),
                         Tab(text: 'MEDIA'),
@@ -156,7 +156,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                         children: [
                           profileInfo(data),
                           FeedContent(FirebaseFirestore.instance.collection('posts').where('authorUID',isEqualTo: Globals.userID).snapshots()),
-                          MediaContent(),
+                          const MediaContent(),
                         ],
                       ),
                     ),
@@ -164,7 +164,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                 ],
               );
             }
-            return Center(child: spinkit);
+            return const Center(child: spinkit);
           },
         ),
       ),
@@ -178,8 +178,8 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
       padding: const EdgeInsets.all(8.0),
       child: ListView(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(5.0),
+          const Padding(
+            padding: EdgeInsets.all(5.0),
             child: Divider(),
           ),
           Container(
@@ -191,7 +191,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                   padding: const EdgeInsets.symmetric(vertical: 5.0,horizontal: 8.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+                    children: const [
                       Text("10 Connections"),
                       SizedBox(width: 5,),
                       Icon(Icons.people,size: 22,)
@@ -201,8 +201,8 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(5.0),
+          const Padding(
+            padding: EdgeInsets.all(5.0),
             child: Divider(),
           ),
           Container(
@@ -217,10 +217,10 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('BIO',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
+                          const Text('BIO',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
                           SizedBox(
                             width: 350,
-                            child: Text(_data['bio'], style: TextStyle(fontSize: 15,),overflow: TextOverflow.fade),
+                            child: Text(_data['bio'], style: const TextStyle(fontSize: 15,),overflow: TextOverflow.fade),
                           ),
                         ],
                       )
@@ -230,8 +230,8 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(5.0),
+          const Padding(
+            padding: EdgeInsets.all(5.0),
             child: Divider(),
           ),
           Container(
@@ -246,14 +246,14 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('ROLE',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
-                          Text(_data['role'], style: TextStyle(fontSize: 15,),),
-                          SizedBox(height: 8,),
-                          Text('INSTRUMENT',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
-                          Text(_data['instrument'], style: TextStyle(fontSize: 15,),),
-                          SizedBox(height: 8,),
-                          Text('GENRES',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
-                          Text(_data['genres'].toString(), style: TextStyle(fontSize: 15,),),
+                          const Text('ROLE',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
+                          Text(_data['role'], style: const TextStyle(fontSize: 15,),),
+                          const SizedBox(height: 8,),
+                          const Text('INSTRUMENT',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
+                          Text(_data['instrument'], style: const TextStyle(fontSize: 15,),),
+                          const SizedBox(height: 8,),
+                          const Text('GENRES',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
+                          Text(_data['genres'].toString(), style: const TextStyle(fontSize: 15,),),
                         ],
                       )
                     ],
@@ -272,9 +272,9 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
       return Container(
         child: Row(
           children: [
-            Expanded(
+            const Expanded(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                padding: EdgeInsets.symmetric(horizontal: 3.0),
                 child: IconButton(
                   onPressed: null,
                   icon: Icon(Icons.person_add_alt_1),
@@ -290,7 +290,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                   onPressed: (){
                     Chat().openChat(uid, context, name,imageURL);
                   },
-                  icon: Icon(Icons.add),
+                  icon: const Icon(Icons.add),
                   //child: Text('MESSAGE'),
                   //style: flatButtonWithIconStyle1,
                 ),
@@ -316,7 +316,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                           Connection().responseToConnectionRequest(uid, 'accepted');
                         });
                       },
-                      child: Text('ACCEPT'),
+                      child: const Text('ACCEPT'),
                       style: flatButtonWithIconStyle1,
                     ),
                   ),
@@ -330,7 +330,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                           Connection().responseToConnectionRequest(uid, 'none');
                         });
                       },
-                      child: Text('IGNORE'),
+                      child: const Text('IGNORE'),
                       style: flatButtonWithIconStyle1,
                     ),
                   ),
@@ -342,7 +342,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                       onPressed: (){
                         Chat().openChat(uid, context, name,imageURL);
                       },
-                      child: Text('MESSAGE'),
+                      child: const Text('MESSAGE'),
                       style: flatButtonWithIconStyle1,
                     ),
                   ),
@@ -364,7 +364,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                     padding: const EdgeInsets.symmetric(horizontal: 3.0),
                     child: TextButton(
                       onPressed: null,
-                      child: Text('REQUESTED'),
+                      child: const Text('REQUESTED'),
                       style: flatButtonWithIconStyle1,
                     ),
                   ),
@@ -376,7 +376,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                       onPressed: (){
                         Chat().openChat(uid, context, name,imageURL);
                       },
-                      child: Text('MESSAGE'),
+                      child: const Text('MESSAGE'),
                       style: flatButtonWithIconStyle1,
                     ),
                   ),
@@ -402,7 +402,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                           Connection().sendConnectionRequest(uid);
                         });
                       },
-                      child: Icon(Icons.person_add_alt_1),
+                      child: const Icon(Icons.person_add_alt_1),
                       style: flatButtonWithIconStyle1,
                     ),
                   ),
@@ -414,7 +414,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                       onPressed: (){
                         Chat().openChat(uid, context, name,imageURL);
                       },
-                      child: Icon(Icons.chat),
+                      child: const Icon(Icons.chat),
                       style: flatButtonWithIconStyle1,
                     ),
                   ),

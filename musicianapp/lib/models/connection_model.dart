@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:musicianapp/common/globals.dart';
-import 'package:musicianapp/models/chat_model.dart';
-import 'package:musicianapp/models/profile_model.dart';
 
 class Connection {
 

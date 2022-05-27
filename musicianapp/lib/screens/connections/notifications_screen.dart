@@ -20,7 +20,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
         title: Text(
           'Notifications',
           style: GoogleFonts.lato(
-            textStyle: TextStyle(
+            textStyle: const TextStyle(
               //fontSize: 16,
               //fontWeight: FontWeight.bold,
               //color: Colors.black87,
@@ -33,11 +33,11 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
           stream: FirebaseFirestore.instance.collection('users').doc(Globals.userID).collection('notifications').snapshots(),
           builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasError) {
-              return Text('Something went wrong');
+              return const Text('Something went wrong');
             }
 
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Text("Loading");
+              return const Text("Loading");
             }
 
             return ListView(
@@ -48,11 +48,11 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                   builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
 
                     if (snapshot.hasError) {
-                      return Text("Something went wrong");
+                      return const Text("Something went wrong");
                     }
 
                     if (snapshot.hasData && !snapshot.data!.exists) {
-                      return Text("Document does not exist");
+                      return const Text("Document does not exist");
                     }
 
                     if (snapshot.connectionState == ConnectionState.done) {
@@ -79,16 +79,16 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                       backgroundImage: NetworkImage(sender['imageURL']),
                                     ),
                                   ),
-                                  SizedBox(width: 5,),
-                                  Container(
+                                  const SizedBox(width: 5,),
+                                  SizedBox(
                                     width: MediaQuery.of(context).size.width/1.3,
                                     child: (data['type']=='requested')? RichText(
                                       text: TextSpan(
                                         text: '',
                                         style: DefaultTextStyle.of(context).style,
                                         children: <TextSpan>[
-                                          TextSpan(text: sender['fName'], style: TextStyle(fontWeight: FontWeight.bold)),
-                                          TextSpan(text: ' has sent you a connection request'),
+                                          TextSpan(text: sender['fName'], style: const TextStyle(fontWeight: FontWeight.bold)),
+                                          const TextSpan(text: ' has sent you a connection request'),
                                         ],
                                       ),
                                     ):RichText(
@@ -96,8 +96,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                         text: 'Congratulations! ',
                                         style: DefaultTextStyle.of(context).style,
                                         children: <TextSpan>[
-                                          TextSpan(text: sender['fName'], style: TextStyle(fontWeight: FontWeight.bold)),
-                                          TextSpan(text: ' has accepted your request.'),
+                                          TextSpan(text: sender['fName'], style: const TextStyle(fontWeight: FontWeight.bold)),
+                                          const TextSpan(text: ' has accepted your request.'),
                                         ],
                                       ),
                                     ),
@@ -110,7 +110,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                       );
                     }
 
-                    return Center(child: spinkit);
+                    return const Center(child: spinkit);
                   },
                 );
               }).toList(),
@@ -125,7 +125,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
 class GetUserName extends StatelessWidget {
   final String documentId;
 
-  GetUserName(this.documentId);
+  const GetUserName(this.documentId);
 
   @override
   Widget build(BuildContext context) {
@@ -136,11 +136,11 @@ class GetUserName extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
 
         if (snapshot.hasError) {
-          return Text("Something went wrong");
+          return const Text("Something went wrong");
         }
 
         if (snapshot.hasData && !snapshot.data!.exists) {
-          return Text("Document does not exist");
+          return const Text("Document does not exist");
         }
 
         if (snapshot.connectionState == ConnectionState.done) {
@@ -154,9 +154,9 @@ class GetUserName extends StatelessWidget {
                 child: TextButton(
                   onPressed: (){},
                   child: Row(
-                    children: [
+                    children: const [
                       Padding(
-                        padding: const EdgeInsets.all(1.0),
+                        padding: EdgeInsets.all(1.0),
                         child: CircleAvatar(
                           radius: 24,
                           backgroundColor: Colors.deepPurple,
@@ -175,7 +175,7 @@ class GetUserName extends StatelessWidget {
           );
         }
 
-        return Text("loading");
+        return const Text("loading");
       },
     );
   }

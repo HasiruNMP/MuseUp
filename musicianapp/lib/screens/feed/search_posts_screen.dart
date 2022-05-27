@@ -22,7 +22,7 @@ class _SearchPostsScreenState extends State<SearchPostsScreen> {
         title: Container(
           child: TextField(
             controller: tecKeywords,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               hintText: 'Type Keywords Here',
             ),
           ),
@@ -34,13 +34,13 @@ class _SearchPostsScreenState extends State<SearchPostsScreen> {
                 submitted = true;
               });
             },
-            icon: Icon(Icons.search),
+            icon: const Icon(Icons.search),
           )
         ],
       ),
       body: SafeArea(
         child: (!submitted)? Container(
-          child: Center(
+          child: const Center(
             child: Text("Search"),
           ),
         ): FeedContent(FirebaseFirestore.instance.collection('posts').where('keywords',arrayContainsAny: tecKeywords.text.split(',')).snapshots()),

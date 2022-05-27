@@ -15,23 +15,23 @@ class _ReportUserState extends State<ReportUser> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Report User'),
+        title: const Text('Report User'),
       ),
       body: SafeArea(
         child: ListView(
           children: [
             Row(
               children: [
-                Text('Report Subject: '),
+                const Text('Report Subject: '),
                 dropDownSubject()
               ],
             ),
-            TextField(
+            const TextField(
               keyboardType: TextInputType.multiline,
               maxLines: 10,
               textAlign: TextAlign.justify,
             ),
-            ElevatedButton(onPressed: (){}, child: Text('Submit'))
+            ElevatedButton(onPressed: (){}, child: const Text('Submit'))
           ],
         ),
       ),

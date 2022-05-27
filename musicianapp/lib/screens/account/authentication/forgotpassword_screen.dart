@@ -17,18 +17,18 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Reset Password'),
+        title: const Text('Reset Password'),
       ),
       body: SafeArea(
         child: Column(
           children: [
-            SizedBox(height: 50,),
+            const SizedBox(height: 50,),
             Container(
               alignment: Alignment.center,
               child: Text(
                 'Enter your email address. \nYou will receive an email to reset your password.',
                 style: GoogleFonts.lato(
-                  textStyle: TextStyle(
+                  textStyle: const TextStyle(
                     fontSize: 15,
                     //fontWeight: FontWeight.bold,
                   ),
@@ -36,22 +36,22 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 textAlign: TextAlign.center,
               ),
             ),
-            SizedBox(height: 40,),
+            const SizedBox(height: 40,),
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: TextFormField(
                 controller: tecEmail,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   label: Text('Email'),
                 ),
               ),
             ),
-            SizedBox(height: 40,),
+            const SizedBox(height: 40,),
             ElevatedButton(
               onPressed: (){
                 AuthService().resetPassword(tecEmail.text);
               },
-              child: Text('SEND PASSWORD RESET LINK'),
+              child: const Text('SEND PASSWORD RESET LINK'),
             ),
           ],
         ),

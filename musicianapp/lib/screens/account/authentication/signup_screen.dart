@@ -1,11 +1,8 @@
 import 'package:circle_button/circle_button.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:musicianapp/common/common_widgets.dart';
-import 'package:musicianapp/models/profile_model.dart';
 import 'package:musicianapp/services/auth_service.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -25,7 +22,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(''),
+        title: const Text(''),
       ),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
@@ -38,7 +35,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               'Create an Account',
               textAlign: TextAlign.center,
               style: GoogleFonts.lato(
-                textStyle: TextStyle(
+                textStyle: const TextStyle(
                   fontSize: 26,
                   fontWeight: FontWeight.bold,
                 ),
@@ -76,7 +73,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               padding: const EdgeInsets.symmetric(vertical: 0,horizontal: 8),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
+                children: const [
                   Expanded(
                     child: Divider(
                       color: Colors.black,
@@ -107,7 +104,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       borderWidth: 0.4,
                       borderStyle: BorderStyle.solid,
                       backgroundColor: Colors.transparent,
-                      child: FaIcon(FontAwesomeIcons.google),
+                      child: const FaIcon(FontAwesomeIcons.google),
                     ),
                   ),
                   Padding(
@@ -121,7 +118,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       borderWidth: 0.4,
                       borderStyle: BorderStyle.solid,
                       backgroundColor: Colors.transparent,
-                      child: FaIcon(FontAwesomeIcons.phone),
+                      child: const FaIcon(FontAwesomeIcons.phone),
                     ),
                   ),
                 ],

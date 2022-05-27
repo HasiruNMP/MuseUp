@@ -1,16 +1,10 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:musicianapp/screens/account/uploadvideo_screen.dart';
-import 'package:musicianapp/screens/feed/feed_screen.dart';
-import 'package:path/path.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:chewie/chewie.dart';
-import 'package:video_player/video_player.dart';
-import 'package:video_thumbnail/video_thumbnail.dart';
 
 import '../explore/videoplayer_screen.dart';
 
@@ -26,15 +20,15 @@ class _MyVideosScreenState extends State<MyVideosScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("My Videos"),
+        title: const Text("My Videos"),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
         onPressed: () {
           uploadVideo();
         },
       ),
-      body: MediaContent(),
+      body: const MediaContent(),
     );
   }
 
@@ -89,18 +83,18 @@ class _MediaContentState extends State<MediaContent> {
             MaterialPageRoute(builder: (context) => const UploadVideoScreen(atSignup: false)),
           );
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
       body: Container(
         child: StreamBuilder<QuerySnapshot>(
           stream: mediaList,
           builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasError) {
-              return Text('Something went wrong');
+              return const Text('Something went wrong');
             }
 
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator(),);
+              return const Center(child: CircularProgressIndicator(),);
             }
 
             return Wrap(
@@ -127,7 +121,7 @@ class _MediaContentState extends State<MediaContent> {
                             alignment: Alignment.center,
                             child: IconButton(
                               onPressed: (){},
-                              icon: Icon(Icons.play_arrow_rounded),
+                              icon: const Icon(Icons.play_arrow_rounded),
                               iconSize: 65,
                               color: Colors.black87.withOpacity(0.5),
                             ),

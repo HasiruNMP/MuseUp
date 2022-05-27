@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:musicianapp/common/common_widgets.dart';
 import 'package:musicianapp/common/globals.dart';
@@ -35,14 +34,14 @@ class _ChatScreenState extends State<ChatScreen> {
               backgroundColor: Colors.green,
               backgroundImage: NetworkImage(widget.imageURL),
             ),
-            SizedBox(width: 8,),
+            const SizedBox(width: 8,),
             Text(widget.connectionName),
           ],
         ),
         actions: [
           IconButton(
             onPressed: (){},
-            icon: Icon(Icons.more_vert),),
+            icon: const Icon(Icons.more_vert),),
         ],
       ),
       body: SafeArea(
@@ -80,7 +79,7 @@ class _ChatScreenState extends State<ChatScreen> {
                               height: 36,
                               decoration: BoxDecoration(
                                 color: isSenderMe? lightPurple : darkPurple,
-                                borderRadius: BorderRadius.all(Radius.circular(15),),
+                                borderRadius: const BorderRadius.all(Radius.circular(15),),
                               ),
                               child: Padding(
                                 padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
@@ -112,12 +111,12 @@ class _ChatScreenState extends State<ChatScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  IconButton(onPressed: (){}, icon: Icon(Icons.add_circle),),
-                  Container(
+                  IconButton(onPressed: (){}, icon: const Icon(Icons.add_circle),),
+                  SizedBox(
                     width: 270,
                     child: TextField (
                       controller: messageTEC,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                       border: InputBorder.none,
                       hintText: 'Type message here'
                       ),
@@ -130,7 +129,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         messageTEC.clear();
                       }
                     },
-                    icon: Icon(Icons.send),
+                    icon: const Icon(Icons.send),
                   ),
                 ],
               ),

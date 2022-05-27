@@ -34,7 +34,7 @@ class _UserScreenState extends State<UserScreen> with SingleTickerProviderStateM
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Your Profile'),
+        title: const Text('Your Profile'),
         actions: [
           IconButton(
             onPressed: (){
@@ -43,7 +43,7 @@ class _UserScreenState extends State<UserScreen> with SingleTickerProviderStateM
                 MaterialPageRoute(builder: (context) => const SettingsScreen()),
               );
             },
-            icon: Icon(Icons.settings),),
+            icon: const Icon(Icons.settings),),
         ],
       ),
       body: SafeArea(
@@ -52,11 +52,11 @@ class _UserScreenState extends State<UserScreen> with SingleTickerProviderStateM
           builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
 
             if (snapshot.hasError) {
-              return Text("Something went wrong");
+              return const Text("Something went wrong");
             }
 
             if (snapshot.hasData && !snapshot.data!.exists) {
-              return Text("Document does not exist");
+              return const Text("Document does not exist");
             }
 
             if (snapshot.connectionState == ConnectionState.done) {
@@ -113,7 +113,7 @@ class _UserScreenState extends State<UserScreen> with SingleTickerProviderStateM
                             padding: const EdgeInsets.all(2.0),
                             child: Text(
                               '${data['fName']} ${data['lName']}',
-                              style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),
+                              style: const TextStyle(fontSize: 25,fontWeight: FontWeight.bold),
                             ),
                           ),
                           //SizedBox(height: 18,),
@@ -121,7 +121,7 @@ class _UserScreenState extends State<UserScreen> with SingleTickerProviderStateM
                             padding: const EdgeInsets.all(2.0),
                             child: Text(
                               '${age.round().toString()} Y',
-                              style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),
+                              style: const TextStyle(fontSize: 20,fontWeight: FontWeight.bold),
                             ),
                           ),
                           //SizedBox(height: 18,),
@@ -130,10 +130,10 @@ class _UserScreenState extends State<UserScreen> with SingleTickerProviderStateM
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(Icons.location_on,size: 20,),
+                                const Icon(Icons.location_on,size: 20,),
                                 Text(
                                   '${data['city']}, ${data['country']}',
-                                  style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),
+                                  style: const TextStyle(fontSize: 15,fontWeight: FontWeight.bold),
                                 ),
                               ],
                             ),
@@ -149,7 +149,7 @@ class _UserScreenState extends State<UserScreen> with SingleTickerProviderStateM
                       child: TabBar(
                         controller: _controller,
                         labelColor: Colors.black87,
-                        tabs: [
+                        tabs: const [
                           Tab(text: 'INFO'),
                           Tab(text: 'POSTS'),
                           Tab(text: 'MEDIA'),
@@ -163,7 +163,7 @@ class _UserScreenState extends State<UserScreen> with SingleTickerProviderStateM
                           children: [
                             profileInfo(data),
                             FeedContent(FirebaseFirestore.instance.collection('posts').where('authorUID',isEqualTo: Globals.userID).snapshots()),
-                            MediaContent(),
+                            const MediaContent(),
                           ],
                         ),
                       ),
@@ -172,7 +172,7 @@ class _UserScreenState extends State<UserScreen> with SingleTickerProviderStateM
                 ),
               );
             }
-            return Center(child: spinkit);
+            return const Center(child: spinkit);
           },
         ),
       ),
@@ -195,7 +195,7 @@ class _UserScreenState extends State<UserScreen> with SingleTickerProviderStateM
                   onPressed: (){},
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+                    children: const [
                       Text('Video'),
                       Icon(Icons.video_file),
                     ],
@@ -205,8 +205,8 @@ class _UserScreenState extends State<UserScreen> with SingleTickerProviderStateM
             ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.all(5.0),
+        const Padding(
+          padding: EdgeInsets.all(5.0),
           child: Divider(),
         ),
         Container(
@@ -221,10 +221,10 @@ class _UserScreenState extends State<UserScreen> with SingleTickerProviderStateM
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('BIO',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
+                        const Text('BIO',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
                         SizedBox(
                           width: 350,
-                          child: Text(_data['bio'], style: TextStyle(fontSize: 15,),overflow: TextOverflow.fade),
+                          child: Text(_data['bio'], style: const TextStyle(fontSize: 15,),overflow: TextOverflow.fade),
                         ),
                       ],
                     )
@@ -234,8 +234,8 @@ class _UserScreenState extends State<UserScreen> with SingleTickerProviderStateM
             ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.all(5.0),
+        const Padding(
+          padding: EdgeInsets.all(5.0),
           child: Divider(),
         ),
         Container(
@@ -250,14 +250,14 @@ class _UserScreenState extends State<UserScreen> with SingleTickerProviderStateM
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('ROLE',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
-                        Text(_data['role'], style: TextStyle(fontSize: 15,),),
-                        SizedBox(height: 8,),
-                        Text('INSTRUMENT',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
-                        Text(_data['instrument'], style: TextStyle(fontSize: 15,),),
-                        SizedBox(height: 8,),
-                        Text('GENRES',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
-                        Text(_data['genres'].toString(), style: TextStyle(fontSize: 15,),),
+                        const Text('ROLE',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
+                        Text(_data['role'], style: const TextStyle(fontSize: 15,),),
+                        const SizedBox(height: 8,),
+                        const Text('INSTRUMENT',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
+                        Text(_data['instrument'], style: const TextStyle(fontSize: 15,),),
+                        const SizedBox(height: 8,),
+                        const Text('GENRES',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
+                        Text(_data['genres'].toString(), style: const TextStyle(fontSize: 15,),),
                       ],
                     )
                   ],
@@ -280,7 +280,7 @@ class _UserScreenState extends State<UserScreen> with SingleTickerProviderStateM
                 padding: const EdgeInsets.symmetric(horizontal: 3.0),
                 child: TextButton(
                   onPressed: null,
-                  child: Text('CONNECTED'),
+                  child: const Text('CONNECTED'),
                   style: flatButtonStyle1,
                 ),
               ),
@@ -292,7 +292,7 @@ class _UserScreenState extends State<UserScreen> with SingleTickerProviderStateM
                   onPressed: (){
                     Chat().openChat(uid, context, name,imageURL);
                   },
-                  child: Text('MESSAGE'),
+                  child: const Text('MESSAGE'),
                   style: flatButtonStyle1,
                 ),
               ),
@@ -317,7 +317,7 @@ class _UserScreenState extends State<UserScreen> with SingleTickerProviderStateM
                           Connection().responseToConnectionRequest(uid, 'accepted');
                         });
                       },
-                      child: Text('ACCEPT'),
+                      child: const Text('ACCEPT'),
                       style: flatButtonStyle1,
                     ),
                   ),
@@ -331,7 +331,7 @@ class _UserScreenState extends State<UserScreen> with SingleTickerProviderStateM
                           Connection().responseToConnectionRequest(uid, 'none');
                         });
                       },
-                      child: Text('IGNORE'),
+                      child: const Text('IGNORE'),
                       style: flatButtonStyle1,
                     ),
                   ),
@@ -343,7 +343,7 @@ class _UserScreenState extends State<UserScreen> with SingleTickerProviderStateM
                       onPressed: (){
                         Chat().openChat(uid, context, name,imageURL);
                       },
-                      child: Text('MESSAGE'),
+                      child: const Text('MESSAGE'),
                       style: flatButtonStyle1,
                     ),
                   ),
@@ -365,7 +365,7 @@ class _UserScreenState extends State<UserScreen> with SingleTickerProviderStateM
                     padding: const EdgeInsets.symmetric(horizontal: 3.0),
                     child: TextButton(
                       onPressed: null,
-                      child: Text('REQUESTED'),
+                      child: const Text('REQUESTED'),
                       style: flatButtonStyle1,
                     ),
                   ),
@@ -377,7 +377,7 @@ class _UserScreenState extends State<UserScreen> with SingleTickerProviderStateM
                       onPressed: (){
                         Chat().openChat(uid, context, name,imageURL);
                       },
-                      child: Text('MESSAGE'),
+                      child: const Text('MESSAGE'),
                       style: flatButtonStyle1,
                     ),
                   ),
@@ -403,7 +403,7 @@ class _UserScreenState extends State<UserScreen> with SingleTickerProviderStateM
                           Connection().sendConnectionRequest(uid);
                         });
                       },
-                      child: Text('CONNECT'),
+                      child: const Text('CONNECT'),
                       style: flatButtonStyle1,
                     ),
                   ),
@@ -415,7 +415,7 @@ class _UserScreenState extends State<UserScreen> with SingleTickerProviderStateM
                       onPressed: (){
                         Chat().openChat(uid, context, name,imageURL);
                       },
-                      child: Text('MESSAGE'),
+                      child: const Text('MESSAGE'),
                       style: flatButtonStyle1,
                     ),
                   ),

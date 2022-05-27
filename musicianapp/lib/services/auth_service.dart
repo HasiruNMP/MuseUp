@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:musicianapp/common/globals.dart';
 import 'package:musicianapp/models/profile_model.dart';
 import 'package:musicianapp/models/user_model.dart';
-import 'package:provider/provider.dart';
 
 
 

@@ -1,20 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:expandable/expandable.dart';
-import 'package:flutter/cupertino.dart.';
 import 'package:musicianapp/common/common_widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:musicianapp/common/globals.dart';
 import 'package:musicianapp/models/post_model.dart';
-import 'package:musicianapp/screens/feed/createpost_screen.dart';
 import 'package:musicianapp/screens/feed/post_screen.dart';
-import 'package:musicianapp/screens/explore/explore_screen.dart';
-import 'package:musicianapp/screens/explore/videoplayer_screen.dart';
 import 'package:musicianapp/screens/feed/search_posts_screen.dart';
-import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
-import 'package:chewie/chewie.dart';
 
 //String str = 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using Content here content here, making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for lorem ipsum will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).';
 
@@ -30,13 +22,13 @@ class _FeedScreenState extends State<FeedScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Feed'),
+        title: const Text('Feed'),
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => SearchPostsScreen()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const SearchPostsScreen()));
             },
-            icon: Icon(Icons.search),
+            icon: const Icon(Icons.search),
           )
         ],
       ),
@@ -44,7 +36,7 @@ class _FeedScreenState extends State<FeedScreen> {
         onPressed: () {
           Navigator.pushNamed(context, 'add-post');
         },
-        child: Icon(Icons.post_add),
+        child: const Icon(Icons.post_add),
       ),
       body: FeedContent(
           FirebaseFirestore.instance.collection('posts').snapshots()),
@@ -53,9 +45,9 @@ class _FeedScreenState extends State<FeedScreen> {
 }
 
 class FeedContent extends StatelessWidget {
-  Stream<QuerySnapshot<Object?>>? _stream;
+  final Stream<QuerySnapshot<Object?>>? _stream;
 
-  FeedContent(this._stream, {Key? key}) : super(key: key);
+  const FeedContent(this._stream, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -63,11 +55,11 @@ class FeedContent extends StatelessWidget {
       stream: _stream,
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
-          return Text('Something went wrong');
+          return const Text('Something went wrong');
         }
 
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
+          return const Center(
             child: spinkit,
           );
         }
@@ -135,11 +127,11 @@ class _FeedListItemState extends State<FeedListItem> {
                         builder: (BuildContext context,
                             AsyncSnapshot<DocumentSnapshot> snapshot) {
                           if (snapshot.hasError) {
-                            return Text("Something went wrong");
+                            return const Text("Something went wrong");
                           }
 
                           if (snapshot.hasData && !snapshot.data!.exists) {
-                            return Text("Document does not exist");
+                            return const Text("Document does not exist");
                           }
 
                           if (snapshot.connectionState ==
@@ -157,7 +149,7 @@ class _FeedListItemState extends State<FeedListItem> {
                               ),
                               title: Text(
                                 userData['fName'] + ' ' + userData['lName'],
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -165,10 +157,10 @@ class _FeedListItemState extends State<FeedListItem> {
                             );
                           }
                           return ListTile(
-                            leading: CircleAvatar(
+                            leading: const CircleAvatar(
                               backgroundColor: Colors.green,
                             ),
-                            title: Text(''),
+                            title: const Text(''),
                             subtitle: Text(dateTime.toString()),
                           );
                         },
@@ -182,7 +174,7 @@ class _FeedListItemState extends State<FeedListItem> {
                     padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: IconButton(
                       onPressed: () {},
-                      icon: Icon(Icons.person_add_alt_1),
+                      icon: const Icon(Icons.person_add_alt_1),
                     ),
                   ),
                 ],
@@ -197,7 +189,7 @@ class _FeedListItemState extends State<FeedListItem> {
                     ),
                     (widget.postData['type'] == 'video')
                         ? PostVideoView(widget.postData['videoURL'])
-                        : SizedBox(),
+                        : const SizedBox(),
                   ],
                 ),
               ),
@@ -216,7 +208,7 @@ class _FeedListItemState extends State<FeedListItem> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(
+                                const Icon(
                                   Icons.favorite,
                                   color: Colors.red,
                                 ),
@@ -235,7 +227,7 @@ class _FeedListItemState extends State<FeedListItem> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(
+                                const Icon(
                                   Icons.favorite_border,
                                   color: Colors.black87,
                                 ),
@@ -262,7 +254,7 @@ class _FeedListItemState extends State<FeedListItem> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.comment,
                             color: Colors.black87,
                           ),
@@ -336,19 +328,19 @@ class _PostVideoViewState extends State<PostVideoView> {
                         });
                       },
                 child: _controller.value.isPlaying
-                    ? Icon(
+                    ? const Icon(
                         Icons.pause,
                         color: Colors.white,
                       )
-                    : Icon(
+                    : const Icon(
                         Icons.play_arrow,
                         color: Colors.white,
                       ),
                 style: ElevatedButton.styleFrom(
-                  shape: CircleBorder(),
-                  padding: EdgeInsets.all(12),
-                  primary: Color(0xFF303952), // <-- Button color
-                  onPrimary: Color(0xFF40407a), // <-- Splash color
+                  shape: const CircleBorder(),
+                  padding: const EdgeInsets.all(12),
+                  primary: const Color(0xFF303952), // <-- Button color
+                  onPrimary: const Color(0xFF40407a), // <-- Splash color
                 ),
               ),
             ),

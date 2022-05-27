@@ -2,11 +2,9 @@ import 'package:badges/badges.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:musicianapp/common/common_widgets.dart';
 import 'package:musicianapp/common/globals.dart';
 import 'package:musicianapp/models/chat_model.dart';
-import 'package:musicianapp/screens/connections/chat_screen.dart';
 import 'package:musicianapp/screens/connections/connections_screen.dart';
 
 class ConversationsScreen extends StatefulWidget {
@@ -27,14 +25,14 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
             MaterialPageRoute(builder: (context) => const ConnectionsView()),
           );
         },
-        child: FaIcon(FontAwesomeIcons.plus,color: Colors.white,size: 16,),
+        child: const FaIcon(FontAwesomeIcons.plus,color: Colors.white,size: 16,),
       ),
       appBar: AppBar(
-        title: Text('Messages'),
+        title: const Text('Messages'),
         actions: [
           IconButton(
             onPressed: (){},
-            icon: Icon(Icons.search),),
+            icon: const Icon(Icons.search),),
         ],
       ),
       body: SafeArea(
@@ -55,23 +53,23 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
                 ),
               ),
             ),*/
-            Container(
+            const SizedBox(
               height: 55,
               child: Padding(
-                padding: const EdgeInsets.only(left: 10),
+                padding: EdgeInsets.only(left: 10),
                 child: OnlineConnections(),
               ),
             ),
-            Divider(),
+            const Divider(),
             Expanded(
               child: StreamBuilder<QuerySnapshot>(
                 stream: FirebaseFirestore.instance.collection('conversations').where('participants',arrayContains: Globals.userID).orderBy("lastMessageTime",descending: true).snapshots(),
                 builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.hasError) {
-                    return Text('Something went wrong');
+                    return const Text('Something went wrong');
                   }
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: spinkit);
+                    return const Center(child: spinkit);
                   }
                   return ListView(
                     children: snapshot.data!.docs.map((DocumentSnapshot document) {
@@ -82,11 +80,11 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
                         builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
 
                           if (snapshot.hasError) {
-                            return Text("Something went wrong");
+                            return const Text("Something went wrong");
                           }
 
                           if (snapshot.hasData && !snapshot.data!.exists) {
-                            return Text("Document does not exist");
+                            return const Text("Document does not exist");
                           }
 
                           if (snapshot.connectionState == ConnectionState.done) {
@@ -114,21 +112,21 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
                                             backgroundColor: Colors.green,
                                             backgroundImage: NetworkImage(userData['imageURL']),
                                           ),
-                                          SizedBox(width: 5,),
+                                          const SizedBox(width: 5,),
                                           Expanded(
                                             child: Column(
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
                                                 Text(
                                                   userData['fName'],
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     fontSize: 18,
                                                     color: Colors.black87,
                                                   ),
                                                 ),
                                                 Text(
                                                   conversationData['lastMessage'],
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     color: Colors.black54,
                                                   ),
                                                 ),
@@ -139,7 +137,7 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
                                             padding: const EdgeInsets.symmetric(horizontal: 5.0),
                                             child: Text(
                                               '${date.hour}:${date.minute}',
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 color: Colors.black87,
                                               ),
                                             ),
@@ -152,7 +150,7 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
                               ),
                             );
                           }
-                          return Center(child: spinkit);
+                          return const Center(child: spinkit);
                         },
                       );
                     }).toList(),
@@ -181,11 +179,11 @@ class _OnlineConnectionsState extends State<OnlineConnections> {
       stream: FirebaseFirestore.instance.collection('users').where('isOnline',isEqualTo: true).snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
-          return Text('Something went wrong');
+          return const Text('Something went wrong');
         }
 
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: spinkit);
+          return const Center(child: spinkit);
         }
 
         return ListView(
@@ -218,7 +216,7 @@ class _OnlineConnectionsState extends State<OnlineConnections> {
                         padding: const EdgeInsets.fromLTRB(0, 4, 10, 0),
                         child: Badge(
                           badgeColor: Colors.green,
-                          badgeContent: Text(''),
+                          badgeContent: const Text(''),
                           child: Container(),
                         ),
                       ),

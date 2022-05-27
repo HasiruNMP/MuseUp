@@ -1,9 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:musicianapp/common/ux.dart';
-import 'package:musicianapp/models/profile_model.dart';
 import 'package:musicianapp/screens/account/authentication/forgotpassword_screen.dart';
 import 'package:musicianapp/services/auth_service.dart';
 import 'package:musicianapp/common/common_widgets.dart';
@@ -30,7 +28,7 @@ class _SignInScreenState extends State<SignInScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(''),
+        title: const Text(''),
       ),
       body: SafeArea(
         child: Padding(
@@ -46,7 +44,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   'Sign In',
                   textAlign: TextAlign.center,
                   style: GoogleFonts.lato(
-                    textStyle: TextStyle(
+                    textStyle: const TextStyle(
                       fontSize: 26,
                       fontWeight: FontWeight.bold,
                     ),
@@ -68,7 +66,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       }
                       return null;
                     },
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       label: Text("Email"),
                     ),
                   ),
@@ -83,7 +81,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       }
                       return null;
                     },
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       label: Text("Password"),
                     ),
                     obscureText: true,
@@ -123,7 +121,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                       if(intVal == 5){
                                         UX.showLongToast("wrong password");
                                       }
-                                      return Text("SIGN IN");
+                                      return const Text("SIGN IN");
                                     }
                                 )
                             ): const Text("SIGN IN"),
@@ -139,13 +137,13 @@ class _SignInScreenState extends State<SignInScreen> {
                           builder: (context) => const ForgotPasswordScreen()),
                     );
                   },
-                  child: Text('Forgot Password'),
+                  child: const Text('Forgot Password'),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 8),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
+                    children: const [
                       Expanded(
                         child: Divider(
                           color: Colors.black,
@@ -176,7 +174,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           borderWidth: 0.4,
                           borderStyle: BorderStyle.solid,
                           backgroundColor: Colors.transparent,
-                          child: FaIcon(FontAwesomeIcons.google),
+                          child: const FaIcon(FontAwesomeIcons.google),
                         ),
                       ),
                       Padding(
@@ -193,7 +191,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           borderWidth: 0.4,
                           borderStyle: BorderStyle.solid,
                           backgroundColor: Colors.transparent,
-                          child: FaIcon(FontAwesomeIcons.phone),
+                          child: const FaIcon(FontAwesomeIcons.phone),
                         ),
                       ),
                     ],
@@ -247,7 +245,7 @@ class _SignInWithPhoneState extends State<SignInWithPhone> {
           context: context,
           barrierDismissible: false,
           builder: (context) => AlertDialog(
-            title: Text("Enter SMS Code"),
+            title: const Text("Enter SMS Code"),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
@@ -258,7 +256,7 @@ class _SignInWithPhoneState extends State<SignInWithPhone> {
             ),
             actions: <Widget>[
               ElevatedButton(
-                child: Text("DONE"),
+                child: const Text("DONE"),
                 onPressed: () async {
                   PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: tecSMSCode.text);
                   //Profile().createUser(credential);
@@ -279,7 +277,7 @@ class _SignInWithPhoneState extends State<SignInWithPhone> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Sign In with Your Phone"),
+        title: const Text("Sign In with Your Phone"),
       ),
       body: SafeArea(
         child: ListView(
@@ -309,7 +307,7 @@ class _SignInWithPhoneState extends State<SignInWithPhone> {
                   onPressed: () {
                     signInWithPhone(tecPhoneNo.text);
                   },
-                  child: Text('Send Code'),
+                  child: const Text('Send Code'),
                 ),
               ),
             ),

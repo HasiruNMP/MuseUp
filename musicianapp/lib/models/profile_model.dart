@@ -103,13 +103,13 @@ class ProfileModel with ChangeNotifier {
     FirebaseFirestore.instance.collection('users').doc(Globals.userID).collection('connections')
         .get()
         .then((QuerySnapshot querySnapshot) {
-          querySnapshot.docs.forEach((doc) {
+          for (var doc in querySnapshot.docs) {
             print(doc["connectionUID"]);
             Globals.connectionsMap.putIfAbsent(doc["connectionUID"], () => doc["status"]);
             if(doc["status"]=='accepted'){
               Globals.connectionsList.add(doc["connectionUID"]);
             }
-        });
+        }
     });
     print(Globals.connectionsMap);
   }
@@ -118,10 +118,10 @@ class ProfileModel with ChangeNotifier {
     FirebaseFirestore.instance.collection('posts').where('likedByUIDs',arrayContains: Globals.userID)
       .get()
       .then((QuerySnapshot querySnapshot) {
-        querySnapshot.docs.forEach((doc) {
+        for (var doc in querySnapshot.docs) {
           print(doc["likedByUIDs"]);
           Globals.likedPosts.add(doc.id);
-        });
+        }
       });
     print(Globals.likedPosts);
   }

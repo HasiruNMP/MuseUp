@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:musicianapp/common/common_widgets.dart';
 import 'package:musicianapp/common/globals.dart';
 import 'package:musicianapp/screens/explore/profile_screen.dart';
@@ -22,11 +21,11 @@ class _ConnectionsViewState extends State<ConnectionsView> with AutomaticKeepAli
     super.build(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Connections'),
+        title: const Text('Connections'),
         actions: [
           IconButton(
             onPressed: (){},
-            icon: Icon(Icons.search),),
+            icon: const Icon(Icons.search),),
         ],
       ),
       body: SafeArea(
@@ -34,10 +33,10 @@ class _ConnectionsViewState extends State<ConnectionsView> with AutomaticKeepAli
           future: FirebaseFirestore.instance.collection('users').doc(Globals.userID).collection('connections').where('status',isEqualTo: 'accepted').get(),
           builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasError) {
-              return Text('Something went wrong');
+              return const Text('Something went wrong');
             }
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: spinkit);
+              return const Center(child: spinkit);
             }
             return ListView(
               children: snapshot.data!.docs.map((DocumentSnapshot document) {
@@ -47,11 +46,11 @@ class _ConnectionsViewState extends State<ConnectionsView> with AutomaticKeepAli
                   builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
 
                     if (snapshot.hasError) {
-                      return Text("Something went wrong");
+                      return const Text("Something went wrong");
                     }
 
                     if (snapshot.hasData && !snapshot.data!.exists) {
-                      return Text("Document does not exist");
+                      return const Text("Document does not exist");
                     }
 
                     if (snapshot.connectionState == ConnectionState.done) {
@@ -82,12 +81,12 @@ class _ConnectionsViewState extends State<ConnectionsView> with AutomaticKeepAli
                                             backgroundColor: Colors.green,
                                             backgroundImage: NetworkImage(userData['imageURL']),
                                           ),
-                                          SizedBox(width: 7,),
+                                          const SizedBox(width: 7,),
                                           Column(
                                             children: [
                                               Text(
                                                 '${userData['fName']} ${userData['lName']}',
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                   fontSize: 18,
                                                   color: Colors.black87,
                                                 ),
@@ -106,11 +105,11 @@ class _ConnectionsViewState extends State<ConnectionsView> with AutomaticKeepAli
                                     ),
                                     IconButton(
                                       onPressed: (){},
-                                      icon: FaIcon(FontAwesomeIcons.solidUser,color: Colors.black87,size: 20,),
+                                      icon: const FaIcon(FontAwesomeIcons.solidUser,color: Colors.black87,size: 20,),
                                     ),
                                     IconButton(
                                       onPressed: (){},
-                                      icon: FaIcon(FontAwesomeIcons.solidEnvelope,color: Colors.black87,size: 20,),
+                                      icon: const FaIcon(FontAwesomeIcons.solidEnvelope,color: Colors.black87,size: 20,),
                                     ),
                                   ],
                                 ),
@@ -121,7 +120,7 @@ class _ConnectionsViewState extends State<ConnectionsView> with AutomaticKeepAli
                       );
                     }
 
-                    return Center(child: spinkit);
+                    return const Center(child: spinkit);
                   },
                 );
               }).toList(),

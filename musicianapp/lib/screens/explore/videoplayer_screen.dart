@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'dart:io';
-import 'dart:typed_data';
 
 
 class VideoView extends StatefulWidget {
@@ -48,7 +47,7 @@ class _VideoViewState extends State<VideoView> {
                 _controller.play();
               });
             },
-            icon: _controller.value.isPlaying ? Icon(Icons.pause_outlined,size: 60,) : Icon(Icons.play_arrow_outlined,size: 60,),
+            icon: _controller.value.isPlaying ? const Icon(Icons.pause_outlined,size: 60,) : const Icon(Icons.play_arrow_outlined,size: 60,),
             color: Colors.white,
           ),
         ),

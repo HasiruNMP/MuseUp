@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:musicianapp/services/auth_service.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -14,11 +13,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Settings'),
+        title: const Text('Settings'),
       ),
       body: SafeArea(
         child: SettingsList(
-          lightTheme: SettingsThemeData(
+          lightTheme: const SettingsThemeData(
             settingsListBackground: Colors.white
           ),
           sections: [
@@ -30,8 +29,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     print(123);
                   },
                   initialValue: false,
-                  leading: Icon(Icons.format_paint),
-                  title: Text('Only my connections can message'),
+                  leading: const Icon(Icons.format_paint),
+                  title: const Text('Only my connections can message'),
                 ),
               ],
             ),
@@ -39,20 +38,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
               title: const Text('Account'),
               tiles: <SettingsTile>[
                 SettingsTile.navigation(
-                  leading: Icon(Icons.language),
-                  title: Text('Language'),
-                  value: Text('English'),
+                  leading: const Icon(Icons.language),
+                  title: const Text('Language'),
+                  value: const Text('English'),
                 ),
                 SettingsTile.switchTile(
                   onToggle: (value) {},
                   initialValue: true,
-                  leading: Icon(Icons.format_paint),
-                  title: Text('Enable custom theme'),
+                  leading: const Icon(Icons.format_paint),
+                  title: const Text('Enable custom theme'),
                 ),
                 SettingsTile(
-                  title: Text("Log Out"),
+                  title: const Text("Log Out"),
                   onPressed: signOut(),
-                  description: Text("log out of the application"),
+                  description: const Text("log out of the application"),
                 ),
               ],
             ),

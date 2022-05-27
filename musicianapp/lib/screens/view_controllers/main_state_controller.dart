@@ -9,7 +9,6 @@ import 'package:musicianapp/models/profile_model.dart';
 import 'package:musicianapp/models/user_model.dart';
 import 'package:musicianapp/screens/account/blocked_screen.dart';
 import 'package:musicianapp/screens/account/setprofile_screen.dart';
-import 'package:musicianapp/screens/account/authentication/signin_screen.dart';
 import 'package:musicianapp/screens/common/navigation_screen.dart';
 import 'package:musicianapp/screens/account/welcome_screen.dart';
 import 'package:musicianapp/services/auth_service.dart';
@@ -162,7 +161,7 @@ class _ProfileStateControllerState extends State<ProfileStateController> with Wi
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
   }
 
   @override
@@ -182,22 +181,22 @@ class _ProfileStateControllerState extends State<ProfileStateController> with Wi
       builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
 
         if (snapshot.hasError) {
-          return Text("Something went wrong");
+          return const Text("Something went wrong");
         }
 
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return LoadingScreen();
+          return const LoadingScreen();
         }
 
         if (snapshot.hasData && !snapshot.data!.exists) {
-          return LoadingScreen();
+          return const LoadingScreen();
         }
 
         Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
         if(data['profileState'] == 1){
-          return NavigationScreen();
+          return const NavigationScreen();
         }else if(data['profileState'] == 9){
-          return BlockedScreen();
+          return const BlockedScreen();
         }else{
           return SetProfileScreen(widget.userID);
         }
@@ -240,7 +239,7 @@ class ErrorScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Center(
+      child: const Center(
         child: Text('ERROR!!!'),
       ),
     );

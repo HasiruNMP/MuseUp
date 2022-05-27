@@ -12,7 +12,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('New Post'),
+        title: const Text('New Post'),
       ),
       body: SafeArea(
         child: Column(),

@@ -48,7 +48,7 @@ class _SetLocationMapScreenState extends State<SetLocationMapScreen> {
     }
     Position _position = await Geolocator.getCurrentPosition();
     setState(() {
-      _markers.add(Marker(markerId: MarkerId('mark'), position: LatLng(_position.latitude,_position.longitude)));
+      _markers.add(Marker(markerId: const MarkerId('mark'), position: LatLng(_position.latitude,_position.longitude)));
     });
     _googleMapController.animateCamera(CameraUpdate.newLatLngZoom(LatLng(_position.latitude,_position.longitude), 12));
 
@@ -64,7 +64,7 @@ class _SetLocationMapScreenState extends State<SetLocationMapScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Your Location"),
+        title: const Text("Your Location"),
       ),
       body: Column(
         children: [
@@ -78,7 +78,7 @@ class _SetLocationMapScreenState extends State<SetLocationMapScreen> {
                   myLocationButtonEnabled: true,
                   markers: Set<Marker>.of(_markers),
                   onTap: (LatLng latLng) {
-                    _markers.add(Marker(markerId: MarkerId('mark'), position: latLng));
+                    _markers.add(Marker(markerId: const MarkerId('mark'), position: latLng));
                     setState(() {
                       print(latLng);
                       _selectedLocation = LatLng(latLng.latitude, latLng.longitude);
@@ -91,7 +91,7 @@ class _SetLocationMapScreenState extends State<SetLocationMapScreen> {
             children: [
               Expanded(
                 child: Padding(
-                  padding: EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8.0),
                   child: ElevatedButton(
                     onPressed: (){
                       print(_selectedLocation.latitude);

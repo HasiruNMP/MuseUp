@@ -1,14 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:musicianapp/common/common_widgets.dart';
 import 'package:musicianapp/models/explore_model.dart';
-import 'package:musicianapp/screens/explore/profile_screen.dart';
-import 'package:musicianapp/screens/account/setprofile_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
-import 'package:flutter/services.dart';
 
 List<String> videoList=[];
 
@@ -60,7 +55,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                       ).toList(),
                     );
                   }else{
-                    return Center(child: Text('Select Filter Settings to Explore Musicians'));
+                    return const Center(child: Text('Select Filter Settings to Explore Musicians'));
                   }
                 },
               ),
@@ -74,24 +69,24 @@ class _ExploreScreenState extends State<ExploreScreen> {
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        child: Icon(Icons.close_rounded,color: Colors.white),
+                        child: const Icon(Icons.close_rounded,color: Colors.white),
                         style: ElevatedButton.styleFrom(
-                          shape: CircleBorder(),
-                          padding: EdgeInsets.all(12),
-                          primary: Color(0xFF303952), // <-- Button color
-                          onPrimary: Color(0xFF40407a), // <-- Splash color
+                          shape: const CircleBorder(),
+                          padding: const EdgeInsets.all(12),
+                          primary: const Color(0xFF303952), // <-- Button color
+                          onPrimary: const Color(0xFF40407a), // <-- Splash color
                         ),
                       ),
                       ElevatedButton(
                         onPressed: () {
                           showFilterView();
                         },
-                        child: FaIcon(FontAwesomeIcons.slidersH,color: Colors.white,size: 20,),
+                        child: const FaIcon(FontAwesomeIcons.slidersH,color: Colors.white,size: 20,),
                         style: ElevatedButton.styleFrom(
-                          shape: CircleBorder(),
-                          padding: EdgeInsets.all(12),
-                          primary: Color(0xFF303952), // <-- Button color
-                          onPrimary: Color(0xFF40407a), // <-- Splash color
+                          shape: const CircleBorder(),
+                          padding: const EdgeInsets.all(12),
+                          primary: const Color(0xFF303952), // <-- Button color
+                          onPrimary: const Color(0xFF40407a), // <-- Splash color
                         ),
                       ),
                     ],
@@ -108,13 +103,13 @@ class _ExploreScreenState extends State<ExploreScreen> {
   void showFilterView(){
     showModalBottomSheet<dynamic>(
       //isScrollControlled: true,
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(topLeft: Radius.circular(15.0),topRight: Radius.circular(15.0),),
       ),
       backgroundColor: Colors.white,
       context: context,
       builder: (BuildContext context) {
-        return FilterView();
+        return const FilterView();
       },
     );
   }
@@ -146,16 +141,16 @@ class _FilterViewState extends State<FilterView> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 1000,
       child: Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 5.0,horizontal: 12),
-                child: const Text('Filter',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 5.0,horizontal: 12),
+                child: Text('Filter',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
               ),
               IconButton(onPressed: (){Navigator.pop(context);}, icon: const Icon(Icons.close),),
             ],
@@ -174,7 +169,7 @@ class _FilterViewState extends State<FilterView> {
                       });
                     },
                   ),
-                  Text('By Role'),
+                  const Text('By Role'),
                 ],
               ),
               Row(
@@ -188,7 +183,7 @@ class _FilterViewState extends State<FilterView> {
                       });
                     },
                   ),
-                  Text('By Distance'),
+                  const Text('By Distance'),
                 ],
               ),
             ],
@@ -210,7 +205,7 @@ class _FilterViewState extends State<FilterView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Text('ROLE'),
+              const Text('ROLE'),
               Wrap(
                 spacing: 4,
                 children: List<Widget>.generate(roleList.length, (int index) {
@@ -234,7 +229,7 @@ class _FilterViewState extends State<FilterView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('GENRE'),
+              const Text('GENRE'),
               Wrap(
                 spacing: 4,
                 children: List<Widget>.generate(genreList.length, (int index) {
@@ -258,9 +253,9 @@ class _FilterViewState extends State<FilterView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('INSTRUMENT'),
+              const Text('INSTRUMENT'),
               Container(
-                child: roleChoice != 'Instrumentalist' ? Center(child: Text('Not Applicable'),) :
+                child: roleChoice != 'Instrumentalist' ? const Center(child: Text('Not Applicable'),) :
                 Wrap(
                   spacing: 4,
                   children: List<Widget>.generate(instrumentList.length, (int index) {
@@ -302,7 +297,7 @@ class _FilterViewState extends State<FilterView> {
   Widget filterContentDistance(){
     return ListView(
       children: [
-        SizedBox(height: 60,),
+        const SizedBox(height: 60,),
         Center(child: Text('${distance.round().toString()} km'),),
         Slider(
           value: distance,
@@ -316,7 +311,7 @@ class _FilterViewState extends State<FilterView> {
             });
           },
         ),
-        SizedBox(height: 20,),
+        const SizedBox(height: 20,),
         Center(
           child: Consumer<Explorer>(
               builder: (context, explorerModel, child) {
@@ -394,24 +389,24 @@ class _VideoAppState extends State<VideoApp> {
                         _controller.play();
                       });
                     },
-                    child: _controller.value.isPlaying ? Icon(Icons.pause,color: Colors.white,) : Icon(Icons.play_arrow,color: Colors.white,),
+                    child: _controller.value.isPlaying ? const Icon(Icons.pause,color: Colors.white,) : const Icon(Icons.play_arrow,color: Colors.white,),
                     style: ElevatedButton.styleFrom(
-                      shape: CircleBorder(),
-                      padding: EdgeInsets.all(12),
-                      primary: Color(0xFF303952), // <-- Button color
-                      onPrimary: Color(0xFF40407a), // <-- Splash color
+                      shape: const CircleBorder(),
+                      padding: const EdgeInsets.all(12),
+                      primary: const Color(0xFF303952), // <-- Button color
+                      onPrimary: const Color(0xFF40407a), // <-- Splash color
                     ),
                   ),
                   ElevatedButton(
                     onPressed: () {
                       showProfileView();
                     },
-                    child: Icon(Icons.person,color: Colors.white,),
+                    child: const Icon(Icons.person,color: Colors.white,),
                     style: ElevatedButton.styleFrom(
-                      shape: CircleBorder(),
-                      padding: EdgeInsets.all(12),
-                      primary: Color(0xFF303952), // <-- Button color
-                      onPrimary: Color(0xFF40407a), // <-- Splash color
+                      shape: const CircleBorder(),
+                      padding: const EdgeInsets.all(12),
+                      primary: const Color(0xFF303952), // <-- Button color
+                      onPrimary: const Color(0xFF40407a), // <-- Splash color
                     ),
                   ),
                 ],
@@ -468,8 +463,8 @@ class CircleButton extends StatelessWidget {
       },
       child: icon,
       style: ElevatedButton.styleFrom(
-        shape: CircleBorder(),
-        padding: EdgeInsets.all(20),
+        shape: const CircleBorder(),
+        padding: const EdgeInsets.all(20),
         primary: Colors.blue, // <-- Button color
         onPrimary: Colors.red, // <-- Splash color
       ),

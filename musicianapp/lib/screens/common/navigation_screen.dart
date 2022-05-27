@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter/material.dart';
 import 'package:musicianapp/common/globals.dart';
 import 'package:musicianapp/screens/feed/feed_screen.dart';
 import 'package:musicianapp/screens/common/home_screen.dart';
-import 'package:musicianapp/screens/connections/connections_screen.dart';
 import 'package:musicianapp/screens/connections/conversations_screen.dart';
-import 'package:musicianapp/screens/explore/explore_screen.dart';
-import 'package:musicianapp/screens/explore/profile_screen.dart';
 import 'package:musicianapp/screens/account/user_screen.dart';
-import 'package:musicianapp/screens/videos/myvideos_screen.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 class NavigationScreen extends StatefulWidget {
@@ -23,12 +18,12 @@ class _NavigationScreenState extends State<NavigationScreen> {
 
   var _currentIndex = 0;
   List<Widget> pages = [
-    HomeScreen(),
-    FeedScreen(),
-    ConversationsScreen(),
+    const HomeScreen(),
+    const FeedScreen(),
+    const ConversationsScreen(),
     UserScreen(Globals.userID),
   ];
-  Color _selectedColor = Color(0xFF2f3542);
+  final Color _selectedColor = const Color(0xFF2f3542);
 
   @override
   Widget build(BuildContext context) {
@@ -39,23 +34,23 @@ class _NavigationScreenState extends State<NavigationScreen> {
         onTap: (i) => setState(() => _currentIndex = i),
         items: [
           SalomonBottomBarItem(
-            icon: Icon(Icons.home_filled),
-            title: Text("Home"),
+            icon: const Icon(Icons.home_filled),
+            title: const Text("Home"),
             selectedColor: _selectedColor,
           ),
           SalomonBottomBarItem(
-            icon: Icon(Icons.feed),
-            title: Text("Feed"),
+            icon: const Icon(Icons.feed),
+            title: const Text("Feed"),
             selectedColor: _selectedColor,
           ),
           SalomonBottomBarItem(
-            icon: Icon(Icons.message_rounded),
-            title: Text("Messages"),
+            icon: const Icon(Icons.message_rounded),
+            title: const Text("Messages"),
             selectedColor: _selectedColor,
           ),
           SalomonBottomBarItem(
-            icon: Icon(Icons.person),
-            title: Text("Profile"),
+            icon: const Icon(Icons.person),
+            title: const Text("Profile"),
             selectedColor: _selectedColor,
           ),
         ],

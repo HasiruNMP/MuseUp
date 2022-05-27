@@ -1,14 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:musicianapp/common/common_widgets.dart';
-import 'package:musicianapp/screens/account/setprofile_screen.dart';
-import 'package:musicianapp/screens/account/uploadphoto_screen.dart';
-import 'package:musicianapp/screens/account/user_screen.dart';
 import 'package:musicianapp/screens/account/authentication/signin_screen.dart';
 import 'package:musicianapp/screens/account/authentication/signup_screen.dart';
-import 'package:musicianapp/screens/explore/profile_screen.dart';
-import 'package:musicianapp/screens/common/navigation_screen.dart';
-import 'package:musicianapp/services/auth_service.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
@@ -24,7 +18,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       body: SafeArea(
         child: ListView(
           children: [
-            Container(
+            SizedBox(
               height: MediaQuery.of(context).size.height,
               child: Column(
                 children: [
@@ -37,7 +31,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     child: Text(
                       'MuseUp',
                       style: GoogleFonts.lato(
-                        textStyle: TextStyle(
+                        textStyle: const TextStyle(
                           fontSize: 30,
                           fontWeight: FontWeight.bold,
                         ),
@@ -58,7 +52,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                           Text(
                             'Create Music Together',
                             style: GoogleFonts.lato(
-                              textStyle: TextStyle(
+                              textStyle: const TextStyle(
                                 fontSize: 26,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -67,7 +61,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                           Text(
                             'Join Our Community',
                             style: GoogleFonts.lato(
-                              textStyle: TextStyle(
+                              textStyle: const TextStyle(
                                 fontSize: 17,
                                 //fontWeight: FontWeight.bold,
                               ),
@@ -84,7 +78,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       child: Container(
                         child: Column(
                           children: [
-                            Container(
+                            SizedBox(
                               width: double.infinity,
                               child: TextButton(
                                 style: flatButtonStyle1,
@@ -94,10 +88,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                     MaterialPageRoute(builder: (context) => const SignInScreen()),
                                   );
                                 },
-                                child: Text('LOGIN'),
+                                child: const Text('LOGIN'),
                               ),
                             ),
-                            Container(
+                            SizedBox(
                               width: double.infinity,
                               child: TextButton(
                                 style: flatButtonStyle1,
@@ -107,7 +101,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                     MaterialPageRoute(builder: (context) => const SignUpScreen()),
                                   );
                                 },
-                                child: Text('CREATE ACCOUNT'),                      ),
+                                child: const Text('CREATE ACCOUNT'),                      ),
                             ),
                           ],
                         ),

@@ -26,7 +26,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Create New Post"),
+        title: const Text("Create New Post"),
       ),
       body: SafeArea(
         child: Padding(
@@ -60,13 +60,13 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                             height: 240,
                             color: Colors.indigo.shade50,
                             child: Center(
-                              child: vPath=='null' ? Text("Attach a Video +") : VideoView(file),
+                              child: vPath=='null' ? const Text("Attach a Video +") : VideoView(file),
                             ),
                           ),
                         ),
                       ),
                     ),
-                    SizedBox(height: 20,),
+                    const SizedBox(height: 20,),
                     TextField(
                       controller: tecKeywords,
                       decoration: const InputDecoration(
@@ -92,7 +92,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                             child: Consumer<int>(
                               builder: (context, intVal, child){
                                 if(intVal == 1){
-                                  return SizedBox(
+                                  return const SizedBox(
                                     width: 20,
                                     height: 20,
                                     child: CircularProgressIndicator(color: Colors.white,),
@@ -102,7 +102,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                   UX.showLongToast("Post Created Successfully!");
                                   //Navigator.pop(context);
                                 }
-                                return Text("POST");
+                                return const Text("POST");
                               }
                             )
                           ),

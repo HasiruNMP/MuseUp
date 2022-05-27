@@ -17,13 +17,13 @@ class FeedModel {
 
     if(filePath != 'null'){
       type = 'video';
-      File file = File(filePath!);
+      File file = File(filePath);
       final extension = p.extension(filePath);
       try {
         final ref = await FirebaseStorage.instance.ref('users/${Globals.userID}/videos/${Globals.userID}${DateTime.now()}.$extension').putFile(file);
         videoUrl = await ref.ref.getDownloadURL();
         print(videoUrl);
-      } on FirebaseException catch (e) {
+      } on FirebaseException {
         createPostVal.value = 4;
       }
     }
