@@ -1,28 +1,25 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:musicianapp/common/globals.dart';
+import 'package:musicianapp/globals/globals.dart';
 import 'package:musicianapp/models/profile_model.dart';
 import 'package:musicianapp/models/user_model.dart';
-import 'package:musicianapp/screens/account/blocked_screen.dart';
-import 'package:musicianapp/screens/account/setprofile_screen.dart';
-import 'package:musicianapp/screens/common/navigation_screen.dart';
-import 'package:musicianapp/screens/account/welcome_screen.dart';
+import 'package:musicianapp/screens/profile/welcome_screen.dart';
+import 'package:musicianapp/screens/view_controllers/profile_state_controller.dart';
 import 'package:musicianapp/services/auth_service.dart';
 import 'package:musicianapp/services/notifications_service.dart';
 import 'package:provider/provider.dart';
 
-class AuthStateController extends StatefulWidget {
-  const AuthStateController({Key? key}) : super(key: key);
+class MainStateController extends StatefulWidget {
+  const MainStateController({Key? key}) : super(key: key);
 
   @override
-  State<AuthStateController> createState() => _AuthStateControllerState();
+  State<MainStateController> createState() => _MainStateControllerState();
 }
 
-class _AuthStateControllerState extends State<AuthStateController> {
+class _MainStateControllerState extends State<MainStateController> {
 
   late AndroidNotificationChannel channel;
   late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
@@ -145,67 +142,6 @@ class _AuthStateControllerState extends State<AuthStateController> {
         return const LoadingScreen();
       }
     );
-  }
-}
-
-class ProfileStateController extends StatefulWidget {
-  final String userID;
-  const ProfileStateController(this.userID, {Key? key}) : super(key: key);
-
-  @override
-  State<ProfileStateController> createState() => _ProfileStateControllerState();
-}
-
-class _ProfileStateControllerState extends State<ProfileStateController> with WidgetsBindingObserver {
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addObserver(this);
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed){
-      ProfileModel().setOnlineStatus(true);
-    }else{
-      ProfileModel().setOnlineStatus(false);
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-
-    return StreamBuilder<DocumentSnapshot>(
-      stream: Globals.usersRef.doc(widget.userID).snapshots(),
-      builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-
-        if (snapshot.hasError) {
-          return const Text("Something went wrong");
-        }
-
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const LoadingScreen();
-        }
-
-        if (snapshot.hasData && !snapshot.data!.exists) {
-          return const LoadingScreen();
-        }
-
-        Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
-        if(data['profileState'] == 1){
-          return const NavigationScreen();
-        }else if(data['profileState'] == 9){
-          return const BlockedScreen();
-        }else{
-          return SetProfileScreen(widget.userID);
-        }
-      },
-    );
-  }
-  @override
-  void dispose() {
-    super.dispose();
   }
 }
 

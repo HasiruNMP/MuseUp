@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:musicianapp/common/globals.dart';
+import 'package:musicianapp/globals/globals.dart';
 import 'package:musicianapp/screens/connections/chat_screen.dart';
 
 class Chat {

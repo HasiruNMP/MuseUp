@@ -2,7 +2,7 @@ import 'package:circle_button/circle_button.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:musicianapp/common/common_widgets.dart';
+import 'package:musicianapp/screens/common/common_widgets.dart';
 import 'package:musicianapp/services/auth_service.dart';
 
 class SignUpScreen extends StatefulWidget {

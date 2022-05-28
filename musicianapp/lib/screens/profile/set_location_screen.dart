@@ -5,7 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:musicianapp/models/profile_model.dart';
-import 'package:musicianapp/screens/account/uploadphoto_screen.dart';
+import 'package:musicianapp/screens/profile/upload_photo_screen.dart';
 
 class SetLocationScreen extends StatefulWidget {
   const SetLocationScreen({Key? key}) : super(key: key);
@@ -47,13 +47,11 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
                     padding: EdgeInsets.all(8.0),
                     child: Text('Determining Your Location',textAlign: TextAlign.center,),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Container(
-                      child: const SpinKitRipple(
-                        color: Colors.black38,
-                        size: 100.0,
-                      ),
+                  const Padding(
+                    padding: EdgeInsets.all(15.0),
+                    child: SpinKitRipple(
+                      color: Colors.black38,
+                      size: 100.0,
                     ),
                   ),
                   Container(
@@ -146,12 +144,12 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
 
   Future<void> getCurrentLocation() async {
     Position position = await _determinePosition();
-    List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
+    List<Placemark> placeMarks = await placemarkFromCoordinates(position.latitude, position.longitude);
     currentLocation = LatLng(position.latitude, position.longitude);
     setState(() {
-      selectedLocationName = placemarks[0].country! + " " + placemarks[0].subAdministrativeArea!;
-      tecCountry.text = placemarks[0].country!;
-      tecCity.text = placemarks[0].subAdministrativeArea!;
+      selectedLocationName = placeMarks[0].country! + " " + placeMarks[0].subAdministrativeArea!;
+      tecCountry.text = placeMarks[0].country!;
+      tecCity.text = placeMarks[0].subAdministrativeArea!;
     });
   }
 
@@ -194,6 +192,8 @@ class _SetLocationScreenState extends State<SetLocationScreen> {
 }
 
 class MapSample extends StatefulWidget {
+  const MapSample({Key? key}) : super(key: key);
+
   @override
   State<MapSample> createState() => MapSampleState();
 }

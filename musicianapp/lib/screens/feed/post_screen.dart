@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/cupertino.dart.';
 import 'package:flutter/material.dart';
-import 'package:musicianapp/common/globals.dart';
+import 'package:musicianapp/globals/globals.dart';
 
 import '../explore/explore_screen.dart';
 

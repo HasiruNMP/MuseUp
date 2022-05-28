@@ -1,0 +1,944 @@
+@startuml
+left to right direction
+set namespaceSeparator ::
+
+class "musicianapp::globals::globals.dart::Globals" {
+  {static} +String userID
+  {static} +CollectionReference<Object?> usersRef
+  {static} +List<String> connectionsList
+  {static} +Map<String, String> connectionsMap
+  {static} +List<String> likedPosts
+}
+
+"musicianapp::globals::globals.dart::Globals" o-- "cloud_firestore::cloud_firestore.dart::CollectionReference<Object>"
+
+class "musicianapp::main.dart::MuseUpApp" {
+  +Widget build()
+  +Map<String, Widget Function(BuildContext)> routes()
+  +ThemeData themeData()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "musicianapp::main.dart::MuseUpApp"
+
+class "musicianapp::models::chat_model.dart::Chat" {
+  +String makeConversationID()
+  +void openChat()
+  +Future<void> initializeChat()
+}
+
+class "musicianapp::models::connection_model.dart::Connection" {
+  +String makeConnectionID()
+  +Future<void> sendConnectionRequest()
+  +Future<void> responseToConnectionRequest()
+}
+
+class "musicianapp::models::explore_model.dart::Explorer" {
+  +List<String> filterSettings
+  +Geoflutterfire geo
+  +List<String> videoList
+  +List<String> nearbyList
+  {static} +bool initialized
+  +void searchUsersByMusic()
+  +void searchUsersByDistance()
+  +void getNearbyList()
+  +void writeGeoData()
+}
+
+"musicianapp::models::explore_model.dart::Explorer" o-- "geoflutterfire::src::geoflutterfire.dart::Geoflutterfire"
+"flutter::src::foundation::change_notifier.dart::ChangeNotifier" <|-- "musicianapp::models::explore_model.dart::Explorer"
+
+class "musicianapp::models::media_model.dart::MediaModel" {
+  +ValueNotifier<int> uploadNotifier
+  +Future<void> uploadVideo()
+}
+
+"musicianapp::models::media_model.dart::MediaModel" o-- "flutter::src::foundation::change_notifier.dart::ValueNotifier<int>"
+
+class "musicianapp::models::post_model.dart::FeedModel" {
+  +ValueNotifier<int> createPostVal
+  +Future<void> createPost()
+}
+
+"musicianapp::models::post_model.dart::FeedModel" o-- "flutter::src::foundation::change_notifier.dart::ValueNotifier<int>"
+
+class "musicianapp::models::post_model.dart::PostModel" {
+  +Future<void> likePost()
+  +Future<void> unLikePost()
+}
+
+"flutter::src::foundation::change_notifier.dart::ChangeNotifier" <|-- "musicianapp::models::post_model.dart::PostModel"
+
+class "musicianapp::models::profile_model.dart::ProfileModel" {
+  {static} +List<dynamic> genderList
+  {static} +List<dynamic> roleList
+  {static} +List<dynamic> genreList
+  {static} +List<dynamic> instrumentList
+  {static} +String gender
+  +DateTime selectedDate
+  +bool success
+  +Future<void> createUser()
+  +Future<void> addPersonalInfo()
+  +Future<void> addRoleInfo()
+  +Future<void> addBio()
+  +Future<void> addLocation()
+  +Future<void> setProfileState()
+  +Future<void> addVideoURL()
+  +Future<void> addImageURL()
+  +Future<void> setOnlineStatus()
+  +Future<void> getConnectionsList()
+  +Future<void> getLikedPostsList()
+}
+
+"flutter::src::foundation::change_notifier.dart::ChangeNotifier" <|-- "musicianapp::models::profile_model.dart::ProfileModel"
+
+class "musicianapp::models::user_model.dart::CurrentUser" {
+  +String userID
+}
+
+class "musicianapp::screens::authentication::forgot_password_screen.dart::ForgotPasswordScreen" {
+  +State<ForgotPasswordScreen> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "musicianapp::screens::authentication::forgot_password_screen.dart::ForgotPasswordScreen"
+
+class "musicianapp::screens::authentication::forgot_password_screen.dart::_ForgotPasswordScreenState" {
+  +TextEditingController tecEmail
+  +Widget build()
+}
+
+"musicianapp::screens::authentication::forgot_password_screen.dart::_ForgotPasswordScreenState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::State" <|-- "musicianapp::screens::authentication::forgot_password_screen.dart::_ForgotPasswordScreenState"
+
+class "musicianapp::screens::authentication::sign_in_screen.dart::SignInScreen" {
+  +_SignInScreenState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "musicianapp::screens::authentication::sign_in_screen.dart::SignInScreen"
+
+class "musicianapp::screens::authentication::sign_in_screen.dart::_SignInScreenState" {
+  -TextEditingController _tecEmail
+  -TextEditingController _tecPW
+  -GlobalKey<FormState> _formKey
+  +bool submitted
+  +Widget build()
+}
+
+"musicianapp::screens::authentication::sign_in_screen.dart::_SignInScreenState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"musicianapp::screens::authentication::sign_in_screen.dart::_SignInScreenState" o-- "flutter::src::widgets::framework.dart::GlobalKey<FormState>"
+"flutter::src::widgets::framework.dart::State" <|-- "musicianapp::screens::authentication::sign_in_screen.dart::_SignInScreenState"
+
+class "musicianapp::screens::authentication::sign_in_screen.dart::SignInWithPhone" {
+  +State<SignInWithPhone> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "musicianapp::screens::authentication::sign_in_screen.dart::SignInWithPhone"
+
+class "musicianapp::screens::authentication::sign_in_screen.dart::_SignInWithPhoneState" {
+  +FirebaseAuth auth
+  +TextEditingController tecPhoneNo
+  +TextEditingController tecSMSCode
+  +void initState()
+  +Future<void> signInWithPhone()
+  +Widget build()
+}
+
+"musicianapp::screens::authentication::sign_in_screen.dart::_SignInWithPhoneState" o-- "firebase_auth::firebase_auth.dart::FirebaseAuth"
+"musicianapp::screens::authentication::sign_in_screen.dart::_SignInWithPhoneState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::State" <|-- "musicianapp::screens::authentication::sign_in_screen.dart::_SignInWithPhoneState"
+
+class "musicianapp::screens::authentication::sign_up_screen.dart::SignUpScreen" {
+  +_SignUpScreenState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "musicianapp::screens::authentication::sign_up_screen.dart::SignUpScreen"
+
+class "musicianapp::screens::authentication::sign_up_screen.dart::_SignUpScreenState" {
+  +TextEditingController tecEmail
+  +TextEditingController tecPW
+  +TextEditingController tecRePW
+  +Widget build()
+}
+
+"musicianapp::screens::authentication::sign_up_screen.dart::_SignUpScreenState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::State" <|-- "musicianapp::screens::authentication::sign_up_screen.dart::_SignUpScreenState"
+
+class "musicianapp::screens::common::common_widgets.dart::MUTextField1" {
+  +TextEditingController controller
+  +String label
+  +Widget build()
+}
+
+"musicianapp::screens::common::common_widgets.dart::MUTextField1" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "musicianapp::screens::common::common_widgets.dart::MUTextField1"
+
+class "musicianapp::screens::common::ux.dart::UX" {
+  {static} +Future<void> showSnackBar()
+  {static} +Future<void> showLongToast()
+}
+
+class "musicianapp::screens::connections::chat_screen.dart::ChatScreen" {
+  +String conversationID
+  +String connectionUID
+  +String imageURL
+  +String connectionName
+  +_ChatScreenState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "musicianapp::screens::connections::chat_screen.dart::ChatScreen"
+
+class "musicianapp::screens::connections::chat_screen.dart::_ChatScreenState" {
+  +TextEditingController messageTEC
+  +bool isSenderMe
+  +Widget build()
+  +Stream<QuerySnapshot<Map<String, dynamic>>> messagesStream()
+  +Future<void> uploadMessage()
+  +Future<void> updateLastMessage()
+}
+
+"musicianapp::screens::connections::chat_screen.dart::_ChatScreenState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::State" <|-- "musicianapp::screens::connections::chat_screen.dart::_ChatScreenState"
+
+class "musicianapp::screens::connections::connections_screen.dart::ConnectionsView" {
+  +_ConnectionsViewState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "musicianapp::screens::connections::connections_screen.dart::ConnectionsView"
+
+class "musicianapp::screens::connections::connections_screen.dart::_ConnectionsViewState" {
+  +bool wantKeepAlive
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "musicianapp::screens::connections::connections_screen.dart::_ConnectionsViewState"
+"flutter::src::widgets::automatic_keep_alive.dart::AutomaticKeepAliveClientMixin" <|-- "musicianapp::screens::connections::connections_screen.dart::_ConnectionsViewState"
+
+class "musicianapp::screens::connections::conversations_screen.dart::ConversationsScreen" {
+  +_ConversationsScreenState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "musicianapp::screens::connections::conversations_screen.dart::ConversationsScreen"
+
+class "musicianapp::screens::connections::conversations_screen.dart::_ConversationsScreenState" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "musicianapp::screens::connections::conversations_screen.dart::_ConversationsScreenState"
+
+class "musicianapp::screens::connections::conversations_screen.dart::OnlineConnections" {
+  +State<OnlineConnections> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "musicianapp::screens::connections::conversations_screen.dart::OnlineConnections"
+
+class "musicianapp::screens::connections::conversations_screen.dart::_OnlineConnectionsState" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "musicianapp::screens::connections::conversations_screen.dart::_OnlineConnectionsState"
+
+class "musicianapp::screens::explore::explore_screen.dart::ExploreScreen" {
+  +_ExploreScreenState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "musicianapp::screens::explore::explore_screen.dart::ExploreScreen"
+
+class "musicianapp::screens::explore::explore_screen.dart::_ExploreScreenState" {
+  +void initState()
+  +Widget build()
+  +void showFilterView()
+  +void updateSearch()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "musicianapp::screens::explore::explore_screen.dart::_ExploreScreenState"
+
+class "musicianapp::screens::explore::explore_screen.dart::FilterView" {
+  +_FilterViewState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "musicianapp::screens::explore::explore_screen.dart::FilterView"
+
+class "musicianapp::screens::explore::explore_screen.dart::_FilterViewState" {
+  -filterType _type
+  +List<dynamic> roleList
+  +List<String> genreList
+  +List<dynamic> instrumentList
+  +String roleChoice
+  +String genreChoice
+  +String instrumentChoice
+  +double distance
+  +Widget build()
+  +Widget filterContentRole()
+  +Widget filterContentDistance()
+}
+
+"musicianapp::screens::explore::explore_screen.dart::_FilterViewState" o-- "musicianapp::screens::explore::explore_screen.dart::filterType"
+"flutter::src::widgets::framework.dart::State" <|-- "musicianapp::screens::explore::explore_screen.dart::_FilterViewState"
+
+class "musicianapp::screens::explore::explore_screen.dart::VideoApp" {
+  +String link
+  +_VideoAppState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "musicianapp::screens::explore::explore_screen.dart::VideoApp"
+
+class "musicianapp::screens::explore::explore_screen.dart::_VideoAppState" {
+  -VideoPlayerController _controller
+  +void initState()
+  +Widget build()
+  +void play()
+  +void showProfileView()
+  +void dispose()
+}
+
+"musicianapp::screens::explore::explore_screen.dart::_VideoAppState" o-- "video_player::video_player.dart::VideoPlayerController"
+"flutter::src::widgets::framework.dart::State" <|-- "musicianapp::screens::explore::explore_screen.dart::_VideoAppState"
+
+class "musicianapp::screens::explore::explore_screen.dart::CircleButton" {
+  +Function function
+  +Icon icon
+  +Widget build()
+}
+
+"musicianapp::screens::explore::explore_screen.dart::CircleButton" o-- "flutter::src::widgets::icon.dart::Icon"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "musicianapp::screens::explore::explore_screen.dart::CircleButton"
+
+class "musicianapp::screens::explore::explore_screen.dart::filterType" {
+  +int index
+  {static} +List<filterType> values
+  {static} +filterType byDistance
+  {static} +filterType byRole
+}
+
+"musicianapp::screens::explore::explore_screen.dart::filterType" o-- "musicianapp::screens::explore::explore_screen.dart::filterType"
+"dart::core::Enum" <|-- "musicianapp::screens::explore::explore_screen.dart::filterType"
+
+class "musicianapp::screens::explore::profile_screen.dart::ProfileScreen" {
+  +String userID
+  +_ProfileScreenState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "musicianapp::screens::explore::profile_screen.dart::ProfileScreen"
+
+class "musicianapp::screens::explore::profile_screen.dart::_ProfileScreenState" {
+  +Map<String, dynamic> profileData
+  +CollectionReference<Object?> users
+  +String profileType
+  -TabController _controller
+  +void initState()
+  +Widget build()
+  +Widget profileInfo()
+  -Widget _profileButtons()
+}
+
+"musicianapp::screens::explore::profile_screen.dart::_ProfileScreenState" o-- "cloud_firestore::cloud_firestore.dart::CollectionReference<Object>"
+"musicianapp::screens::explore::profile_screen.dart::_ProfileScreenState" o-- "flutter::src::material::tab_controller.dart::TabController"
+"flutter::src::widgets::framework.dart::State" <|-- "musicianapp::screens::explore::profile_screen.dart::_ProfileScreenState"
+"flutter::src::widgets::ticker_provider.dart::SingleTickerProviderStateMixin" <|-- "musicianapp::screens::explore::profile_screen.dart::_ProfileScreenState"
+
+class "musicianapp::screens::explore::report_user_screen.dart::ReportUser" {
+  +State<ReportUser> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "musicianapp::screens::explore::report_user_screen.dart::ReportUser"
+
+class "musicianapp::screens::explore::report_user_screen.dart::_ReportUserState" {
+  +String reportSubject
+  +Widget build()
+  +Widget dropDownSubject()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "musicianapp::screens::explore::report_user_screen.dart::_ReportUserState"
+
+class "musicianapp::screens::explore::video_player_screen.dart::VideoView" {
+  +File file
+  +_VideoViewState createState()
+}
+
+"musicianapp::screens::explore::video_player_screen.dart::VideoView" o-- "dart::io::File"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "musicianapp::screens::explore::video_player_screen.dart::VideoView"
+
+class "musicianapp::screens::explore::video_player_screen.dart::_VideoViewState" {
+  -VideoPlayerController _controller
+  +void initState()
+  +Widget build()
+  +void dispose()
+}
+
+"musicianapp::screens::explore::video_player_screen.dart::_VideoViewState" o-- "video_player::video_player.dart::VideoPlayerController"
+"flutter::src::widgets::framework.dart::State" <|-- "musicianapp::screens::explore::video_player_screen.dart::_VideoViewState"
+
+class "musicianapp::screens::feed::create_post_screen.dart::CreatePostScreen" {
+  +State<CreatePostScreen> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "musicianapp::screens::feed::create_post_screen.dart::CreatePostScreen"
+
+class "musicianapp::screens::feed::create_post_screen.dart::_CreatePostScreenState" {
+  +TextEditingController tecText
+  +TextEditingController tecKeywords
+  +File file
+  +String vPath
+  +Widget build()
+  +Future<dynamic> selectFile()
+}
+
+"musicianapp::screens::feed::create_post_screen.dart::_CreatePostScreenState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"musicianapp::screens::feed::create_post_screen.dart::_CreatePostScreenState" o-- "dart::io::File"
+"flutter::src::widgets::framework.dart::State" <|-- "musicianapp::screens::feed::create_post_screen.dart::_CreatePostScreenState"
+
+class "musicianapp::screens::feed::feed_screen.dart::FeedScreen" {
+  +State<FeedScreen> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "musicianapp::screens::feed::feed_screen.dart::FeedScreen"
+
+class "musicianapp::screens::feed::feed_screen.dart::_FeedScreenState" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "musicianapp::screens::feed::feed_screen.dart::_FeedScreenState"
+
+class "musicianapp::screens::feed::feed_screen.dart::FeedContent" {
+  -Stream<QuerySnapshot<Object?>>? _stream
+  +Widget build()
+}
+
+"musicianapp::screens::feed::feed_screen.dart::FeedContent" o-- "dart::async::Stream<QuerySnapshot<Object>>"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "musicianapp::screens::feed::feed_screen.dart::FeedContent"
+
+class "musicianapp::screens::feed::feed_screen.dart::FeedListItem" {
+  +String postId
+  +Map<String, dynamic> postData
+  +State<FeedListItem> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "musicianapp::screens::feed::feed_screen.dart::FeedListItem"
+
+class "musicianapp::screens::feed::feed_screen.dart::_FeedListItemState" {
+  +String name
+  +Timestamp timestamp
+  +DateTime dateTime
+  +String dateTimeStr
+  +Map<String, dynamic> userData
+  +int likesCount
+  +bool liked
+  +void initState()
+  +Widget build()
+}
+
+"musicianapp::screens::feed::feed_screen.dart::_FeedListItemState" o-- "cloud_firestore_platform_interface::src::timestamp.dart::Timestamp"
+"flutter::src::widgets::framework.dart::State" <|-- "musicianapp::screens::feed::feed_screen.dart::_FeedListItemState"
+
+class "musicianapp::screens::feed::feed_screen.dart::PostVideoView" {
+  +String link
+  +_PostVideoViewState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "musicianapp::screens::feed::feed_screen.dart::PostVideoView"
+
+class "musicianapp::screens::feed::feed_screen.dart::_PostVideoViewState" {
+  -VideoPlayerController _controller
+  +void initState()
+  +Widget build()
+  +void play()
+  +void showProfileView()
+  +void dispose()
+}
+
+"musicianapp::screens::feed::feed_screen.dart::_PostVideoViewState" o-- "video_player::video_player.dart::VideoPlayerController"
+"flutter::src::widgets::framework.dart::State" <|-- "musicianapp::screens::feed::feed_screen.dart::_PostVideoViewState"
+
+class "musicianapp::screens::feed::post_screen.dart::PostScreen" {
+  +String postID
+  +String time
+  +String authorID
+  +String name
+  +String imageURL
+  +int commentsCount
+  +State<PostScreen> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "musicianapp::screens::feed::post_screen.dart::PostScreen"
+
+class "musicianapp::screens::feed::post_screen.dart::_PostScreenState" {
+  +TextEditingController tecComment
+  +void initState()
+  +Widget build()
+  +Future<void> addComment()
+}
+
+"musicianapp::screens::feed::post_screen.dart::_PostScreenState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::State" <|-- "musicianapp::screens::feed::post_screen.dart::_PostScreenState"
+
+class "musicianapp::screens::feed::search_posts_screen.dart::SearchPostsScreen" {
+  +State<SearchPostsScreen> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "musicianapp::screens::feed::search_posts_screen.dart::SearchPostsScreen"
+
+class "musicianapp::screens::feed::search_posts_screen.dart::_SearchPostsScreenState" {
+  +bool submitted
+  +TextEditingController tecKeywords
+  +Widget build()
+}
+
+"musicianapp::screens::feed::search_posts_screen.dart::_SearchPostsScreenState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::State" <|-- "musicianapp::screens::feed::search_posts_screen.dart::_SearchPostsScreenState"
+
+class "musicianapp::screens::home::home_screen.dart::HomeScreen" {
+  +State<HomeScreen> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "musicianapp::screens::home::home_screen.dart::HomeScreen"
+
+class "musicianapp::screens::home::home_screen.dart::_HomeScreenState" {
+  +Widget build()
+  +Future<void> refresh()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "musicianapp::screens::home::home_screen.dart::_HomeScreenState"
+
+class "musicianapp::screens::home::home_screen.dart::NearbyListView" {
+  +State<NearbyListView> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "musicianapp::screens::home::home_screen.dart::NearbyListView"
+
+class "musicianapp::screens::home::home_screen.dart::_NearbyListViewState" {
+  +void initState()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "musicianapp::screens::home::home_screen.dart::_NearbyListViewState"
+
+class "musicianapp::screens::home::navigation_screen.dart::NavigationScreen" {
+  +_NavigationScreenState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "musicianapp::screens::home::navigation_screen.dart::NavigationScreen"
+
+class "musicianapp::screens::home::navigation_screen.dart::_NavigationScreenState" {
+  -int _currentIndex
+  +List<Widget> pages
+  -Color _selectedColor
+  +Widget build()
+}
+
+"musicianapp::screens::home::navigation_screen.dart::_NavigationScreenState" o-- "dart::ui::Color"
+"flutter::src::widgets::framework.dart::State" <|-- "musicianapp::screens::home::navigation_screen.dart::_NavigationScreenState"
+
+class "musicianapp::screens::home::notifications_screen.dart::NotificationsScreen" {
+  +State<NotificationsScreen> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "musicianapp::screens::home::notifications_screen.dart::NotificationsScreen"
+
+class "musicianapp::screens::home::notifications_screen.dart::_NotificationsScreenState" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "musicianapp::screens::home::notifications_screen.dart::_NotificationsScreenState"
+
+class "musicianapp::screens::home::notifications_screen.dart::GetUserName" {
+  +String documentId
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "musicianapp::screens::home::notifications_screen.dart::GetUserName"
+
+class "musicianapp::screens::home::permission_screen.dart::PermissionScreen" {
+  +State<PermissionScreen> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "musicianapp::screens::home::permission_screen.dart::PermissionScreen"
+
+class "musicianapp::screens::home::permission_screen.dart::_PermissionScreenState" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "musicianapp::screens::home::permission_screen.dart::_PermissionScreenState"
+
+class "musicianapp::screens::media::media_screen.dart::MediaScreen" {
+  +State<MediaScreen> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "musicianapp::screens::media::media_screen.dart::MediaScreen"
+
+class "musicianapp::screens::media::media_screen.dart::_MediaScreenState" {
+  +Widget build()
+  +void uploadVideo()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "musicianapp::screens::media::media_screen.dart::_MediaScreenState"
+
+class "musicianapp::screens::media::media_screen.dart::MediaContent" {
+  +State<MediaContent> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "musicianapp::screens::media::media_screen.dart::MediaContent"
+
+class "musicianapp::screens::media::media_screen.dart::_MediaContentState" {
+  +Stream<QuerySnapshot<Object?>> mediaList
+  +Widget build()
+}
+
+"musicianapp::screens::media::media_screen.dart::_MediaContentState" o-- "dart::async::Stream<QuerySnapshot<Object>>"
+"flutter::src::widgets::framework.dart::State" <|-- "musicianapp::screens::media::media_screen.dart::_MediaContentState"
+
+class "musicianapp::screens::profile::blocked_screen.dart::BlockedScreen" {
+  +State<BlockedScreen> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "musicianapp::screens::profile::blocked_screen.dart::BlockedScreen"
+
+class "musicianapp::screens::profile::blocked_screen.dart::_BlockedScreenState" {
+  +int i
+  +void count()
+  +void initState()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "musicianapp::screens::profile::blocked_screen.dart::_BlockedScreenState"
+
+class "musicianapp::screens::profile::image_crop_screen.dart::ImageCropScreen" {
+  +State<ImageCropScreen> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "musicianapp::screens::profile::image_crop_screen.dart::ImageCropScreen"
+
+class "musicianapp::screens::profile::image_crop_screen.dart::_ImageCropScreenState" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "musicianapp::screens::profile::image_crop_screen.dart::_ImageCropScreenState"
+
+class "musicianapp::screens::profile::set_location_map_screen.dart::SetLocationMapScreen" {
+  +State<SetLocationMapScreen> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "musicianapp::screens::profile::set_location_map_screen.dart::SetLocationMapScreen"
+
+class "musicianapp::screens::profile::set_location_map_screen.dart::_SetLocationMapScreenState" {
+  -GoogleMapController _googleMapController
+  {static} -CameraPosition _initialPosition
+  -LatLng _selectedLocation
+  -Set<Marker> _markers
+  {static} -Marker _marker
+  -void _onMapCreated()
+  -Future<void> _determinePosition()
+  +void initState()
+  +Widget build()
+  +void dispose()
+}
+
+"musicianapp::screens::profile::set_location_map_screen.dart::_SetLocationMapScreenState" o-- "google_maps_flutter::google_maps_flutter.dart::GoogleMapController"
+"musicianapp::screens::profile::set_location_map_screen.dart::_SetLocationMapScreenState" o-- "google_maps_flutter_platform_interface::src::types::camera.dart::CameraPosition"
+"musicianapp::screens::profile::set_location_map_screen.dart::_SetLocationMapScreenState" o-- "google_maps_flutter_platform_interface::src::types::location.dart::LatLng"
+"musicianapp::screens::profile::set_location_map_screen.dart::_SetLocationMapScreenState" o-- "google_maps_flutter_platform_interface::src::types::marker.dart::Marker"
+"flutter::src::widgets::framework.dart::State" <|-- "musicianapp::screens::profile::set_location_map_screen.dart::_SetLocationMapScreenState"
+
+class "musicianapp::screens::profile::set_location_screen.dart::SetLocationScreen" {
+  +State<SetLocationScreen> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "musicianapp::screens::profile::set_location_screen.dart::SetLocationScreen"
+
+class "musicianapp::screens::profile::set_location_screen.dart::_SetLocationScreenState" {
+  +double selectedLocation
+  +String selectedLocationName
+  +String country
+  +String city
+  +LatLng currentLocation
+  +TextEditingController tecCountry
+  +TextEditingController tecCity
+  +void initState()
+  +Widget build()
+  -Future<void> _navigateToMap()
+  +Future<void> getCurrentLocation()
+  -Future<Position> _determinePosition()
+}
+
+"musicianapp::screens::profile::set_location_screen.dart::_SetLocationScreenState" o-- "google_maps_flutter_platform_interface::src::types::location.dart::LatLng"
+"musicianapp::screens::profile::set_location_screen.dart::_SetLocationScreenState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::State" <|-- "musicianapp::screens::profile::set_location_screen.dart::_SetLocationScreenState"
+
+class "musicianapp::screens::profile::set_location_screen.dart::MapSample" {
+  +State<MapSample> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "musicianapp::screens::profile::set_location_screen.dart::MapSample"
+
+class "musicianapp::screens::profile::set_location_screen.dart::MapSampleState" {
+  -Completer<GoogleMapController> _controller
+  {static} -CameraPosition _kGooglePlex
+  {static} -CameraPosition _kLake
+  +Widget build()
+  +Future<void> getCurrentLocation()
+}
+
+"musicianapp::screens::profile::set_location_screen.dart::MapSampleState" o-- "dart::async::Completer<GoogleMapController>"
+"musicianapp::screens::profile::set_location_screen.dart::MapSampleState" o-- "google_maps_flutter_platform_interface::src::types::camera.dart::CameraPosition"
+"flutter::src::widgets::framework.dart::State" <|-- "musicianapp::screens::profile::set_location_screen.dart::MapSampleState"
+
+class "musicianapp::screens::profile::set_profile_screen.dart::SetProfileScreen" {
+  +String userID
+  +_SetProfileScreenState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "musicianapp::screens::profile::set_profile_screen.dart::SetProfileScreen"
+
+class "musicianapp::screens::profile::set_profile_screen.dart::_SetProfileScreenState" {
+  +TextEditingController tecFirstName
+  +TextEditingController tecLastName
+  +String selectedGender
+  +DateTime selectedDOB
+  +bool isDateSelected
+  -GlobalKey<FormState> _formKey
+  +ValueNotifier<bool> loading
+  +Widget build()
+  -Future<void> _selectDate()
+}
+
+"musicianapp::screens::profile::set_profile_screen.dart::_SetProfileScreenState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"musicianapp::screens::profile::set_profile_screen.dart::_SetProfileScreenState" o-- "flutter::src::widgets::framework.dart::GlobalKey<FormState>"
+"musicianapp::screens::profile::set_profile_screen.dart::_SetProfileScreenState" o-- "flutter::src::foundation::change_notifier.dart::ValueNotifier<bool>"
+"flutter::src::widgets::framework.dart::State" <|-- "musicianapp::screens::profile::set_profile_screen.dart::_SetProfileScreenState"
+
+class "musicianapp::screens::profile::set_profile_screen.dart::EnterRoleInfo" {
+  +String userID
+  +State<EnterRoleInfo> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "musicianapp::screens::profile::set_profile_screen.dart::EnterRoleInfo"
+
+class "musicianapp::screens::profile::set_profile_screen.dart::_EnterRoleInfoState" {
+  +String mainRole
+  +String selectedInstrument
+  +List<String> selectedGenres
+  +List<bool> selectedRoleList
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "musicianapp::screens::profile::set_profile_screen.dart::_EnterRoleInfoState"
+
+class "musicianapp::screens::profile::set_profile_screen.dart::EnterBio" {
+  +State<EnterBio> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "musicianapp::screens::profile::set_profile_screen.dart::EnterBio"
+
+class "musicianapp::screens::profile::set_profile_screen.dart::_EnterBioState" {
+  +TextEditingController tecBio
+  +Widget build()
+}
+
+"musicianapp::screens::profile::set_profile_screen.dart::_EnterBioState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::State" <|-- "musicianapp::screens::profile::set_profile_screen.dart::_EnterBioState"
+
+class "musicianapp::screens::profile::upload_photo_screen.dart::UploadPhotoScreen" {
+  +State<UploadPhotoScreen> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "musicianapp::screens::profile::upload_photo_screen.dart::UploadPhotoScreen"
+
+class "musicianapp::screens::profile::upload_photo_screen.dart::_UploadPhotoScreenState" {
+  +String imagePath
+  +File file
+  +bool imageSelected
+  +Widget build()
+  +Future<dynamic> selectFile()
+  +Future<File> compressImage()
+  +Future<void> uploadImage()
+}
+
+"musicianapp::screens::profile::upload_photo_screen.dart::_UploadPhotoScreenState" o-- "dart::io::File"
+"flutter::src::widgets::framework.dart::State" <|-- "musicianapp::screens::profile::upload_photo_screen.dart::_UploadPhotoScreenState"
+
+class "musicianapp::screens::profile::upload_photo_screen.dart::CropImageScreen" {
+  +State<CropImageScreen> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "musicianapp::screens::profile::upload_photo_screen.dart::CropImageScreen"
+
+class "musicianapp::screens::profile::upload_photo_screen.dart::_CropImageScreenState" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "musicianapp::screens::profile::upload_photo_screen.dart::_CropImageScreenState"
+
+class "musicianapp::screens::profile::upload_video_screen.dart::UploadVideoScreen" {
+  +bool atSignup
+  +_UploadVideoScreenState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "musicianapp::screens::profile::upload_video_screen.dart::UploadVideoScreen"
+
+class "musicianapp::screens::profile::upload_video_screen.dart::_UploadVideoScreenState" {
+  +File file
+  +String vPath
+  -Subscription _subscription
+  +bool submitted
+  +bool isAudioFxChecked
+  +void initState()
+  +Widget build()
+  +Future<dynamic> selectFile()
+  +void dispose()
+}
+
+"musicianapp::screens::profile::upload_video_screen.dart::_UploadVideoScreenState" o-- "dart::io::File"
+"musicianapp::screens::profile::upload_video_screen.dart::_UploadVideoScreenState" o-- "video_compress::src::progress_callback::subscription.dart::Subscription"
+"flutter::src::widgets::framework.dart::State" <|-- "musicianapp::screens::profile::upload_video_screen.dart::_UploadVideoScreenState"
+
+class "musicianapp::screens::profile::user_screen.dart::UserScreen" {
+  +String userID
+  +_UserScreenState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "musicianapp::screens::profile::user_screen.dart::UserScreen"
+
+class "musicianapp::screens::profile::user_screen.dart::_UserScreenState" {
+  +Map<String, dynamic> profileData
+  +CollectionReference<Object?> users
+  +String profileType
+  -TabController _controller
+  +void initState()
+  +Widget build()
+  +Widget profileInfo()
+  -Widget _profileButtons()
+  +void getProfileData()
+}
+
+"musicianapp::screens::profile::user_screen.dart::_UserScreenState" o-- "cloud_firestore::cloud_firestore.dart::CollectionReference<Object>"
+"musicianapp::screens::profile::user_screen.dart::_UserScreenState" o-- "flutter::src::material::tab_controller.dart::TabController"
+"flutter::src::widgets::framework.dart::State" <|-- "musicianapp::screens::profile::user_screen.dart::_UserScreenState"
+"flutter::src::widgets::ticker_provider.dart::SingleTickerProviderStateMixin" <|-- "musicianapp::screens::profile::user_screen.dart::_UserScreenState"
+
+class "musicianapp::screens::profile::welcome_screen.dart::WelcomeScreen" {
+  +_WelcomeScreenState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "musicianapp::screens::profile::welcome_screen.dart::WelcomeScreen"
+
+class "musicianapp::screens::profile::welcome_screen.dart::_WelcomeScreenState" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "musicianapp::screens::profile::welcome_screen.dart::_WelcomeScreenState"
+
+class "musicianapp::screens::settings::settings_screen.dart::SettingsScreen" {
+  +State<SettingsScreen> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "musicianapp::screens::settings::settings_screen.dart::SettingsScreen"
+
+class "musicianapp::screens::settings::settings_screen.dart::_SettingsScreenState" {
+  +Widget build()
+  -Future<void> _signOutAlertDialog()
+  +dynamic signOut()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "musicianapp::screens::settings::settings_screen.dart::_SettingsScreenState"
+
+class "musicianapp::screens::view_controllers::main_state_controller.dart::MainStateController" {
+  +State<MainStateController> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "musicianapp::screens::view_controllers::main_state_controller.dart::MainStateController"
+
+class "musicianapp::screens::view_controllers::main_state_controller.dart::_MainStateControllerState" {
+  +AndroidNotificationChannel channel
+  +FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin
+  +void requestPermission()
+  +void listenFCM()
+  +void loadFCM()
+  +void initState()
+  +Future<void> preLoadData()
+  +Widget build()
+}
+
+"musicianapp::screens::view_controllers::main_state_controller.dart::_MainStateControllerState" o-- "flutter_local_notifications::src::platform_specifics::android::notification_channel.dart::AndroidNotificationChannel"
+"musicianapp::screens::view_controllers::main_state_controller.dart::_MainStateControllerState" o-- "flutter_local_notifications::src::flutter_local_notifications_plugin.dart::FlutterLocalNotificationsPlugin"
+"flutter::src::widgets::framework.dart::State" <|-- "musicianapp::screens::view_controllers::main_state_controller.dart::_MainStateControllerState"
+
+class "musicianapp::screens::view_controllers::main_state_controller.dart::LoadingScreen" {
+  +State<LoadingScreen> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "musicianapp::screens::view_controllers::main_state_controller.dart::LoadingScreen"
+
+class "musicianapp::screens::view_controllers::main_state_controller.dart::_LoadingScreenState" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "musicianapp::screens::view_controllers::main_state_controller.dart::_LoadingScreenState"
+
+class "musicianapp::screens::view_controllers::main_state_controller.dart::ErrorScreen" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "musicianapp::screens::view_controllers::main_state_controller.dart::ErrorScreen"
+
+class "musicianapp::screens::view_controllers::profile_state_controller.dart::ProfileStateController" {
+  +String userID
+  +State<ProfileStateController> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "musicianapp::screens::view_controllers::profile_state_controller.dart::ProfileStateController"
+
+class "musicianapp::screens::view_controllers::profile_state_controller.dart::_ProfileStateControllerState" {
+  +void initState()
+  +void didChangeAppLifecycleState()
+  +Widget build()
+  +void dispose()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "musicianapp::screens::view_controllers::profile_state_controller.dart::_ProfileStateControllerState"
+"flutter::src::widgets::binding.dart::WidgetsBindingObserver" <|-- "musicianapp::screens::view_controllers::profile_state_controller.dart::_ProfileStateControllerState"
+
+class "musicianapp::services::auth_service.dart::AuthService" {
+  -FirebaseAuth _auth
+  +int authState
+  +ValueNotifier<int> signInNotifier
+  +Stream<CurrentUser> onAuthStateChanged
+  +Future<void> signInWithPhone()
+  +Future<void> signInWithGoogle()
+  +void signInWithEmail()
+  +void registerWithEmail()
+  +void resetPassword()
+  +void signOut()
+}
+
+"musicianapp::services::auth_service.dart::AuthService" o-- "firebase_auth::firebase_auth.dart::FirebaseAuth"
+"musicianapp::services::auth_service.dart::AuthService" o-- "flutter::src::foundation::change_notifier.dart::ValueNotifier<int>"
+"musicianapp::services::auth_service.dart::AuthService" o-- "dart::async::Stream<CurrentUser>"
+
+class "musicianapp::services::firebase_options.dart::DefaultFirebaseOptions" {
+  {static} +FirebaseOptions web
+  {static} +FirebaseOptions android
+  {static} +FirebaseOptions ios
+  {static} +FirebaseOptions currentPlatform
+}
+
+"musicianapp::services::firebase_options.dart::DefaultFirebaseOptions" o-- "firebase_core_platform_interface::firebase_core_platform_interface.dart::FirebaseOptions"
+
+class "musicianapp::services::notifications_service.dart::Notifications" {
+  {static} +String fcmAPIKey
+  {static} +String fcmToken
+  {static} +FirebaseFirestore db
+  {static} +Future<void> getFCMToken()
+  {static} +Future<void> listenToFCMToken()
+  {static} +Future<void> sendTokenToFirestore()
+  {static} +Future<String> getTokenOfUser()
+  {static} +Future<void> sendNotificationToUser()
+}
+
+"musicianapp::services::notifications_service.dart::Notifications" o-- "cloud_firestore::cloud_firestore.dart::FirebaseFirestore"
+
+class "musicianapp::services::storage_service.dart::StorageService" {
+  {static} +FirebaseStorage instance
+}
+
+"musicianapp::services::storage_service.dart::StorageService" o-- "firebase_storage::firebase_storage.dart::FirebaseStorage"
+
+
+@enduml

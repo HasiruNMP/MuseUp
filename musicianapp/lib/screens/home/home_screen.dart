@@ -2,13 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:musicianapp/common/common_widgets.dart';
+import 'package:musicianapp/screens/common/common_widgets.dart';
 import 'package:musicianapp/screens/connections/connections_screen.dart';
-import 'package:musicianapp/screens/connections/notifications_screen.dart';
+import 'package:musicianapp/screens/home/notifications_screen.dart';
 import 'package:musicianapp/screens/explore/explore_screen.dart';
 import 'package:musicianapp/screens/explore/profile_screen.dart';
-import 'package:musicianapp/screens/videos/myvideos_screen.dart';
 import 'package:badges/badges.dart';
+import 'package:musicianapp/screens/media/media_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -75,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const MyVideosScreen()),
+                  MaterialPageRoute(builder: (context) => const MediaScreen()),
                 );
               },
             ),

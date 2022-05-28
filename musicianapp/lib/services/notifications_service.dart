@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:musicianapp/common/globals.dart';
+import 'package:musicianapp/globals/globals.dart';
 import 'package:http/http.dart' as http;
 
 class Notifications {

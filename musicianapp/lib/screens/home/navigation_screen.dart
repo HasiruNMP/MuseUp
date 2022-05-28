@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'package:musicianapp/common/globals.dart';
+import 'package:musicianapp/globals/globals.dart';
 import 'package:musicianapp/screens/feed/feed_screen.dart';
-import 'package:musicianapp/screens/common/home_screen.dart';
+import 'package:musicianapp/screens/home/home_screen.dart';
 import 'package:musicianapp/screens/connections/conversations_screen.dart';
-import 'package:musicianapp/screens/account/user_screen.dart';
+import 'package:musicianapp/screens/profile/user_screen.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 class NavigationScreen extends StatefulWidget {

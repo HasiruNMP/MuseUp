@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:musicianapp/common/common_widgets.dart';
+import 'package:musicianapp/screens/common/common_widgets.dart';
 import 'package:musicianapp/models/explore_model.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';

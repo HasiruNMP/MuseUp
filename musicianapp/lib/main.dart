@@ -3,15 +3,15 @@ import 'package:musicianapp/models/explore_model.dart';
 import 'package:musicianapp/models/media_model.dart';
 import 'package:musicianapp/models/post_model.dart';
 import 'package:musicianapp/models/profile_model.dart';
-import 'package:musicianapp/screens/account/authentication/signin_screen.dart';
-import 'package:musicianapp/screens/account/setlocationmap_screen.dart';
-import 'package:musicianapp/screens/account/uploadphoto_screen.dart';
+import 'package:musicianapp/screens/authentication/sign_in_screen.dart';
+import 'package:musicianapp/screens/profile/set_location_map_screen.dart';
+import 'package:musicianapp/screens/profile/upload_photo_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:musicianapp/screens/view_controllers/main_state_controller.dart';
-import 'package:musicianapp/screens/account/setprofile_screen.dart';
-import 'package:musicianapp/screens/account/welcome_screen.dart';
-import 'package:musicianapp/screens/feed/createpost_screen.dart';
-import 'package:musicianapp/screens/videos/myvideos_screen.dart';
+import 'package:musicianapp/screens/profile/set_profile_screen.dart';
+import 'package:musicianapp/screens/profile/welcome_screen.dart';
+import 'package:musicianapp/screens/feed/create_post_screen.dart';
+import 'package:musicianapp/screens/media/media_screen.dart';
 import 'package:musicianapp/services/auth_service.dart';
 import 'package:provider/provider.dart';
 import 'services/firebase_options.dart';
@@ -57,12 +57,12 @@ class MuseUpApp extends StatelessWidget {
 
   Map<String, WidgetBuilder> routes() {
     return {
-      '/': (context) => const AuthStateController(),
+      '/': (context) => const MainStateController(),
       'test': (context) => const SetProfileScreen(''),
       'test2': (context) => const WelcomeScreen(),
       'image': (context) => const UploadPhotoScreen(),
       'add-post': (context) => const CreatePostScreen(),
-      'media': (context) => const MyVideosScreen(),
+      'media': (context) => const MediaScreen(),
       //'upload-video': (context) => UploadVideoScreen(),
       'sign-in-phone': (context) => const SignInWithPhone(),
       'set-location-map': (context) => const SetLocationMapScreen(),

@@ -4,7 +4,7 @@ import 'package:path/path.dart' as p;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:musicianapp/common/globals.dart';
+import 'package:musicianapp/globals/globals.dart';
 
 class FeedModel {
   ValueNotifier<int> createPostVal = ValueNotifier(0);
@@ -20,7 +20,7 @@ class FeedModel {
       File file = File(filePath);
       final extension = p.extension(filePath);
       try {
-        final ref = await FirebaseStorage.instance.ref('users/${Globals.userID}/videos/${Globals.userID}${DateTime.now()}.$extension').putFile(file);
+        final ref = await FirebaseStorage.instance.ref('users/${Globals.userID}/media/${Globals.userID}${DateTime.now()}.$extension').putFile(file);
         videoUrl = await ref.ref.getDownloadURL();
         print(videoUrl);
       } on FirebaseException {

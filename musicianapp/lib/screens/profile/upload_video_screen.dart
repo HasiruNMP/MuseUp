@@ -1,9 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:musicianapp/common/ux.dart';
+import 'package:musicianapp/screens/common/ux.dart';
 import 'package:musicianapp/models/media_model.dart';
-import 'package:musicianapp/screens/explore/videoplayer_screen.dart';
+import 'package:musicianapp/screens/explore/video_player_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:video_compress/video_compress.dart';
 
@@ -27,7 +27,7 @@ class _UploadVideoScreenState extends State<UploadVideoScreen> {
   @override
   void initState() {
     _subscription = VideoCompress.compressProgress$.subscribe((progress) {
-      debugPrint('progress: $progress');
+      //debugPrint('progress: $progress');
     });
     super.initState();
   }

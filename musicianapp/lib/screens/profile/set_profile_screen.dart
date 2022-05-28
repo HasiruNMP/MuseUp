@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:musicianapp/models/profile_model.dart';
-import 'package:musicianapp/screens/account/setlocation_screen.dart';
+import 'package:musicianapp/screens/profile/set_location_screen.dart';
 import 'package:provider/provider.dart';
 //import 'package:toast/toast.dart';
 

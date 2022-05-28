@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:musicianapp/common/ux.dart';
+import 'package:musicianapp/screens/common/ux.dart';
 import 'package:musicianapp/models/post_model.dart';
-import 'package:musicianapp/screens/explore/videoplayer_screen.dart';
+import 'package:musicianapp/screens/explore/video_player_screen.dart';
 import 'package:provider/provider.dart';
 
 class CreatePostScreen extends StatefulWidget {

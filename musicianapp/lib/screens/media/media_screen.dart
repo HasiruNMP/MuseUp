@@ -1,21 +1,21 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:musicianapp/screens/account/uploadvideo_screen.dart';
+import 'package:musicianapp/screens/profile/upload_video_screen.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import '../explore/videoplayer_screen.dart';
+import '../explore/video_player_screen.dart';
 
-class MyVideosScreen extends StatefulWidget {
-  const MyVideosScreen({Key? key}) : super(key: key);
+class MediaScreen extends StatefulWidget {
+  const MediaScreen({Key? key}) : super(key: key);
 
   @override
-  State<MyVideosScreen> createState() => _MyVideosScreenState();
+  State<MediaScreen> createState() => _MediaScreenState();
 }
 
-class _MyVideosScreenState extends State<MyVideosScreen> {
+class _MediaScreenState extends State<MediaScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

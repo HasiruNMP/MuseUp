@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
-import 'package:musicianapp/common/globals.dart';
+import 'package:musicianapp/globals/globals.dart';
 import 'package:musicianapp/services/storage_service.dart';
 import 'package:path/path.dart' as path;
 
@@ -14,7 +14,7 @@ class MediaModel {
     File file = File(filePath!);
     final extension = path.extension(filePath);
     try {
-      final ref = await StorageService.instance.ref('users/${Globals.userID}/videos/${Globals.userID}${DateTime.now()}.$extension').putFile(file);
+      final ref = await StorageService.instance.ref('users/${Globals.userID}/media/${Globals.userID}${DateTime.now()}.$extension').putFile(file);
       final url = await ref.ref.getDownloadURL();
       uploadNotifier.value = 2;
       print(url);

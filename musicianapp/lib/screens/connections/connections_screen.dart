@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:musicianapp/common/common_widgets.dart';
-import 'package:musicianapp/common/globals.dart';
+import 'package:musicianapp/screens/common/common_widgets.dart';
+import 'package:musicianapp/globals/globals.dart';
 import 'package:musicianapp/screens/explore/profile_screen.dart';
 
 class ConnectionsView extends StatefulWidget {

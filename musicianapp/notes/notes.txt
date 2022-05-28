@@ -1,1 +1,0 @@
-settings - show gender, show age, change location

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:musicianapp/common/common_widgets.dart';
-import 'package:musicianapp/screens/account/authentication/signin_screen.dart';
-import 'package:musicianapp/screens/account/authentication/signup_screen.dart';
+import 'package:musicianapp/screens/common/common_widgets.dart';
+import 'package:musicianapp/screens/authentication/sign_in_screen.dart';
+import 'package:musicianapp/screens/authentication/sign_up_screen.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({Key? key}) : super(key: key);

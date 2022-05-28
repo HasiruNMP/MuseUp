@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:musicianapp/common/common_widgets.dart';
+import 'package:musicianapp/screens/common/common_widgets.dart';
 import 'package:intl/intl.dart';
-import 'package:musicianapp/common/globals.dart';
+import 'package:musicianapp/globals/globals.dart';
 import 'package:musicianapp/models/post_model.dart';
 import 'package:musicianapp/screens/feed/post_screen.dart';
 import 'package:musicianapp/screens/feed/search_posts_screen.dart';
