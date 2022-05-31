@@ -1,5 +1,6 @@
 import 'package:adminweb/screens/feedbacks_screen.dart';
 import 'package:adminweb/screens/reports_screen.dart';
+import 'package:adminweb/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -94,6 +95,38 @@ class _NavigationScreenState extends State<NavigationScreen> {
                                   const Icon(Icons.report_rounded),
                                   Text(
                                     'REPORTS',
+                                    style: GoogleFonts.lato(
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: SizedBox(),
+                    ),
+                    AspectRatio(
+                      aspectRatio: 3/2,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: InkWell(
+                          onTap: (){
+                            AuthService().signOut();
+                          },
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(15),
+                            child: Container(
+                              color: _selectedPage==1? Colors.indigo.shade200 : Colors.indigo.shade100,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Icon(Icons.report_rounded),
+                                  Text(
+                                    'LOGOUT',
                                     style: GoogleFonts.lato(
                                       fontSize: 18,
                                     ),

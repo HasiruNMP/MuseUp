@@ -76,6 +76,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
           flex: 5,
           child: _selectedDoc != 'none'? ProfileScreen(_selectedDocUID) : const Center(child: Text('Select A Report'),),
         ),
+        const VerticalDivider(),
       ],
     );
   }

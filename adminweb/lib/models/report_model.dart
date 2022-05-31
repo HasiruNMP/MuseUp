@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Reports {
 
   static Stream<QuerySnapshot<Map<String, dynamic>>> reportsStream() {
-    return DatabaseService.db.collection('reports').snapshots();
+    return DatabaseService.db.collection('reports').orderBy('time',descending: true).snapshots();
   }
 
   static Future<DocumentSnapshot<Map<String, dynamic>>> getReportDetailsFuture(String reportID) {
@@ -12,7 +12,7 @@ class Reports {
   }
 
   static Stream<QuerySnapshot<Map<String, dynamic>>> getFeedbacksStream() {
-    return DatabaseService.db.collection('feedback').snapshots();
+    return DatabaseService.db.collection('feedback').orderBy('time',descending: true).snapshots();
   }
 
   static Future<DocumentSnapshot<Map<String, dynamic>>> getFeedBackDetailsFuture(String docID) {

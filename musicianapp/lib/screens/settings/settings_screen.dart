@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musicianapp/screens/settings/feedback_screen.dart';
 import 'package:musicianapp/services/auth_service.dart';
 import 'package:settings_ui/settings_ui.dart';
 
@@ -29,6 +30,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   _signOutAlertDialog();
                 },
                 child: Text('SIGN OUT'),
+              ),
+            ),
+            ListTile(
+                title: Text('Feedback',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.indigo),)
+            ),
+            ListTile(
+              title: Text('Let us know what you think'),
+              subtitle: ElevatedButton(
+                onPressed: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AddFeedbackScreen()),
+                  );
+                },
+                child: Text('Send Feedback'),
               ),
             ),
           ],
