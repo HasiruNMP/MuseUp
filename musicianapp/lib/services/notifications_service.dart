@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:musicianapp/globals/globals.dart';
 import 'package:http/http.dart' as http;
+import 'package:musicianapp/services/database_service.dart';
 
 class Notifications {
 
@@ -30,7 +31,7 @@ class Notifications {
   }
 
   static Future<void> sendTokenToFirestore() async {
-    return FirebaseFirestore.instance.collection('users').doc(Globals.userID).update({
+    return DatabaseService.userRef.update({
       'fcmToken': fcmToken,
     }).then((value) {
       print("token added to firebase");
@@ -63,7 +64,7 @@ class Notifications {
     };
     var request = http.Request('POST', Uri.parse('https://fcm.googleapis.com/fcm/send'));
     request.body = json.encode({
-      "to": userFcmToken,
+      "to": "e01n8MPNSSGwiPxQXnh0ib:APA91bFn_XHw3gpQ64D8zl01Qe3U14kq7IaTuKDoUFB9tNF4XErSv3xYIkcNmyE-M4aEKuAKd6rSHBGxC9XCShL218X_28hsF7N5IpEADx1aACG-Gstu6VEdBSAkOOJLIpUP-N0-NUck",
       "notification": {
         "title": title,
         "body": body,

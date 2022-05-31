@@ -6,6 +6,7 @@ import 'package:musicianapp/screens/home/navigation_screen.dart';
 import 'package:musicianapp/screens/profile/blocked_screen.dart';
 import 'package:musicianapp/screens/profile/set_profile_screen.dart';
 import 'package:musicianapp/screens/view_controllers/main_state_controller.dart';
+import 'package:musicianapp/services/database_service.dart';
 
 
 class ProfileStateController extends StatefulWidget {
@@ -37,7 +38,7 @@ class _ProfileStateControllerState extends State<ProfileStateController> with Wi
   Widget build(BuildContext context) {
 
     return StreamBuilder<DocumentSnapshot>(
-      stream: Globals.usersRef.doc(widget.userID).snapshots(),
+      stream: DatabaseService.userColRef.doc(widget.userID).snapshots(),
       builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
 
         if (snapshot.hasError) {

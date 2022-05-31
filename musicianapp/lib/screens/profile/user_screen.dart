@@ -7,12 +7,13 @@ import 'package:musicianapp/models/connection_model.dart';
 import 'package:musicianapp/screens/feed/feed_screen.dart';
 import 'package:musicianapp/screens/settings/settings_screen.dart';
 import 'package:musicianapp/screens/media/media_screen.dart';
+import 'package:musicianapp/services/database_service.dart';
 
 class UserScreen extends StatefulWidget {
 
-  String userID;
+  final String userID;
 
-  UserScreen(this.userID, {Key? key}) : super(key: key);
+  const UserScreen(this.userID, {Key? key}) : super(key: key);
 
   @override
   _UserScreenState createState() => _UserScreenState();
@@ -163,7 +164,7 @@ class _UserScreenState extends State<UserScreen> with SingleTickerProviderStateM
                           children: [
                             profileInfo(data),
                             FeedContent(FirebaseFirestore.instance.collection('posts').where('authorUID',isEqualTo: Globals.userID).snapshots()),
-                            const MediaContent(),
+                            //const MediaContent(),
                           ],
                         ),
                       ),
@@ -314,7 +315,7 @@ class _UserScreenState extends State<UserScreen> with SingleTickerProviderStateM
                     child: TextButton(
                       onPressed: (){
                         setState(() {
-                          Connection().responseToConnectionRequest(uid, 'accepted');
+                          ConnectionsModel().responseToConnectionRequest(uid, 'accepted');
                         });
                       },
                       child: const Text('ACCEPT'),
@@ -328,7 +329,7 @@ class _UserScreenState extends State<UserScreen> with SingleTickerProviderStateM
                     child: TextButton(
                       onPressed: (){
                         setState(() {
-                          Connection().responseToConnectionRequest(uid, 'none');
+                          ConnectionsModel().responseToConnectionRequest(uid, 'none');
                         });
                       },
                       child: const Text('IGNORE'),
@@ -400,7 +401,7 @@ class _UserScreenState extends State<UserScreen> with SingleTickerProviderStateM
                     child: TextButton(
                       onPressed: (){
                         setState(() {
-                          Connection().sendConnectionRequest(uid);
+                          //ConnectionsModel().sendConnectionRequest(uid);
                         });
                       },
                       child: const Text('CONNECT'),
@@ -429,13 +430,10 @@ class _UserScreenState extends State<UserScreen> with SingleTickerProviderStateM
   }
 
   void getProfileData(String userID){
-    FirebaseFirestore.instance.collection('users').doc(userID).get().then((DocumentSnapshot documentSnapshot) {
+    DatabaseService.userColRef.doc(userID).get().then((DocumentSnapshot documentSnapshot) {
       if (documentSnapshot.exists) {
         profileData = documentSnapshot.data()! as Map<String, dynamic>;
       }
     });
   }
-
-
-
 }

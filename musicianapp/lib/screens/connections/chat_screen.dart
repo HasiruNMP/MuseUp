@@ -22,6 +22,11 @@ class _ChatScreenState extends State<ChatScreen> {
 
   final messageTEC = TextEditingController();
   late bool isSenderMe;
+  final ScrollController _controller = ScrollController();
+
+  void _scrollDown() {
+    _controller.jumpTo(_controller.position.maxScrollExtent);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,6 +70,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   }
 
                   return ListView(
+                    controller: _controller,
                     children: snapshot.data!.docs.map((DocumentSnapshot document) {
                       Map<String, dynamic> messageData = document.data()! as Map<String, dynamic>;
                       messageData['sender'] == Globals.userID ? isSenderMe = true : isSenderMe = false;
@@ -106,14 +112,13 @@ class _ChatScreenState extends State<ChatScreen> {
                 },
               ),
             ),
-            SizedBox(
-              height: 50,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   IconButton(onPressed: (){}, icon: const Icon(Icons.add_circle),),
-                  SizedBox(
-                    width: 270,
+                  Expanded(
                     child: TextField (
                       controller: messageTEC,
                       decoration: const InputDecoration(
@@ -127,6 +132,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       if(messageTEC.text.isNotEmpty){
                         uploadMessage(widget.conversationID,messageTEC.text);
                         messageTEC.clear();
+                        _scrollDown();
                       }
                     },
                     icon: const Icon(Icons.send),

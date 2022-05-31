@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musicianapp/services/auth_service.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -16,57 +17,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
         title: const Text('Settings'),
       ),
       body: SafeArea(
-        child: SettingsList(
-          lightTheme: const SettingsThemeData(
-            settingsListBackground: Colors.white
-          ),
-          sections: [
-            SettingsSection(
-              title: const Text('Profile'),
-              tiles: <SettingsTile>[
-                SettingsTile.switchTile(
-                  onToggle: (value) {
-                    print(123);
-                  },
-                  initialValue: false,
-                  leading: const Icon(Icons.format_paint),
-                  title: const Text('Only my connections can message'),
-                ),
-              ],
+        child: ListView(
+          children: [
+            ListTile(
+              title: Text('Account',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.indigo),)
             ),
-            SettingsSection(
-              title: const Text('Account'),
-              tiles: <SettingsTile>[
-                SettingsTile.navigation(
-                  leading: const Icon(Icons.language),
-                  title: const Text('Language'),
-                  value: const Text('English'),
-                ),
-                SettingsTile.switchTile(
-                  onToggle: (value) {},
-                  initialValue: true,
-                  leading: const Icon(Icons.format_paint),
-                  title: const Text('Enable custom theme'),
-                ),
-                SettingsTile(
-                  title: const Text("Log Out"),
-                  onPressed: signOut(),
-                  description: const Text("log out of the application"),
-                ),
-              ],
+            ListTile(
+              title: Text('Sign Out'),
+              subtitle: ElevatedButton(
+                onPressed: (){
+                  _signOutAlertDialog();
+                },
+                child: Text('SIGN OUT'),
+              ),
             ),
           ],
         ),
-        /*child: ListView(
-          children: [
-            ElevatedButton(
-              onPressed: (){
-                AuthService().signOut();
-              },
-              child: Text('LOGOUT'),
-            ),
-          ],
-        ),*/
       ),
     );
   }
@@ -77,18 +43,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('AlertDialog Title'),
+          title: const Text('Confirm'),
           content: SingleChildScrollView(
             child: ListBody(
               children: const <Widget>[
-                Text('This is a demo alert dialog.'),
-                Text('Would you like to approve of this message?'),
+                Text('Are you sure you want to sign out?'),
               ],
             ),
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text('Approve'),
+              child: const Text('YES'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
+                AuthService().signOut();
+              },
+            ),
+            TextButton(
+              child: const Text('NO'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -97,10 +70,5 @@ class _SettingsScreenState extends State<SettingsScreen> {
         );
       },
     );
-  }
-
-  dynamic signOut(){
-    _signOutAlertDialog();
-    //AuthService().signOut();
   }
 }

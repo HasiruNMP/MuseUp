@@ -19,6 +19,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   final tecText = TextEditingController();
   final tecKeywords = TextEditingController();
 
+  bool sub = false;
+
   late File file;
   String vPath = 'null';
 
@@ -85,6 +87,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                       builder: (context, feedModel, child){
                         return ElevatedButton(
                           onPressed: (){
+                            sub = true;
                             feedModel.createPost(tecText.text, tecKeywords.text, vPath);
                           },
                           child: ValueListenableProvider<int>.value(
@@ -98,9 +101,10 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                     child: CircularProgressIndicator(color: Colors.white,),
                                   );
                                 }
-                                if(intVal == 2){
+                                if(sub == true && intVal == 2){
                                   UX.showLongToast("Post Created Successfully!");
-                                  //Navigator.pop(context);
+                                  sub = false;
+                                  Navigator.pop(context);
                                 }
                                 return const Text("POST");
                               }

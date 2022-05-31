@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:musicianapp/models/profile_model.dart';
 import 'package:musicianapp/screens/common/common_widgets.dart';
 import 'package:musicianapp/globals/globals.dart';
 import 'package:musicianapp/models/chat_model.dart';
 import 'package:musicianapp/models/connection_model.dart';
 import 'package:musicianapp/screens/feed/feed_screen.dart';
 import 'package:musicianapp/screens/media/media_screen.dart';
+import 'package:musicianapp/screens/reports/reports_screen.dart';
 import 'package:musicianapp/screens/settings/settings_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -29,14 +31,16 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
   @override
   void initState() {
     _controller = TabController(length: 3, vsync: this);
+    ProfileModel().getConnectionsList();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Your Profile'),
+        title: (widget.userID == Globals.userID)? Text("Your Profile") : SizedBox(),
         actions: [
+          (widget.userID == Globals.userID)?
           IconButton(
             onPressed: (){
               Navigator.push(
@@ -44,7 +48,27 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                 MaterialPageRoute(builder: (context) => const SettingsScreen()),
               );
             },
-            icon: const Icon(Icons.settings),),
+            icon: const Icon(Icons.settings),):
+          PopupMenuButton(
+            // add icon, by default "3 dot" icon
+            // icon: Icon(Icons.book)
+              itemBuilder: (context){
+                return [
+                  PopupMenuItem<int>(
+                    value: 0,
+                    child: Text("Report This Account"),
+                  ),
+                ];
+              },
+              onSelected:(value){
+                if(value == 0){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AddReportScreen(userID: widget.userID,)),
+                  );
+                }
+              }
+          ),
         ],
       ),
       body: SafeArea(
@@ -126,7 +150,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                                             ),
                                           ],
                                         ),
-                                        _profileButtons(profileType, widget.userID, data['city'] + data['country'], data['imageURL'])
+                                        _profileButtons(profileType, widget.userID, data['fName'], data['imageURL'])
                                       ],
                                     ),
                                   ),
@@ -155,8 +179,8 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                         controller: _controller,
                         children: [
                           profileInfo(data),
-                          FeedContent(FirebaseFirestore.instance.collection('posts').where('authorUID',isEqualTo: Globals.userID).snapshots()),
-                          const MediaContent(),
+                          FeedContent(FirebaseFirestore.instance.collection('posts').where('authorUID',isEqualTo: widget.userID).snapshots()),
+                          MediaContent(userID: widget.userID,),
                         ],
                       ),
                     ),
@@ -178,7 +202,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
       padding: const EdgeInsets.all(8.0),
       child: ListView(
         children: [
-          const Padding(
+          /*const Padding(
             padding: EdgeInsets.all(5.0),
             child: Divider(),
           ),
@@ -200,7 +224,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                 ),
               ),
             ),
-          ),
+          ),*/
           const Padding(
             padding: EdgeInsets.all(5.0),
             child: Divider(),
@@ -268,31 +292,57 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
   }
 
   Widget _profileButtons(String profileType, String uid, String name, String imageURL){
-    if(profileType == 'accepted'){
+    if((widget.userID == Globals.userID)){
       return Container(
         child: Row(
           children: [
-            const Expanded(
+            Expanded(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 3.0),
-                child: IconButton(
+                child: TextButton(
                   onPressed: null,
-                  icon: Icon(Icons.person_add_alt_1),
-                  //child: Text('CONNECTED'),
-                  //style: flatButtonWithIconStyle1,
+                  child: const Text('CONNECTED'),
+                  style: flatButtonWithIconStyle1,
                 ),
               ),
             ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 3.0),
-                child: IconButton(
+                child: TextButton(
+                  onPressed: null,
+                  child: const Text('MESSAGE'),
+                  style: flatButtonWithIconStyle1,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+    if(profileType == 'accepted'){
+      return Container(
+        child: Row(
+          children: [
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 3.0),
+                child: TextButton(
+                  onPressed: null,
+                  child: const Text('CONNECTED'),
+                  style: flatButtonWithIconStyle1,
+                ),
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                child: TextButton(
                   onPressed: (){
                     Chat().openChat(uid, context, name,imageURL);
                   },
-                  icon: const Icon(Icons.add),
-                  //child: Text('MESSAGE'),
-                  //style: flatButtonWithIconStyle1,
+                  child: const Text('MESSAGE'),
+                  style: flatButtonWithIconStyle1,
                 ),
               ),
             ),
@@ -304,7 +354,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
       return Container(
         child: Column(
           children: [
-            Text('$name has asked to connect with you'),
+            Text('$name wants to connect with you'),
             Row(
               children: [
                 Expanded(
@@ -313,7 +363,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                     child: TextButton(
                       onPressed: (){
                         setState(() {
-                          Connection().responseToConnectionRequest(uid, 'accepted');
+                          ConnectionsModel().responseToConnectionRequest(uid, 'accepted');
                         });
                       },
                       child: const Text('ACCEPT'),
@@ -327,22 +377,10 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                     child: TextButton(
                       onPressed: (){
                         setState(() {
-                          Connection().responseToConnectionRequest(uid, 'none');
+                          ConnectionsModel().responseToConnectionRequest(uid, 'none');
                         });
                       },
                       child: const Text('IGNORE'),
-                      style: flatButtonWithIconStyle1,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 3.0),
-                    child: TextButton(
-                      onPressed: (){
-                        Chat().openChat(uid, context, name,imageURL);
-                      },
-                      child: const Text('MESSAGE'),
                       style: flatButtonWithIconStyle1,
                     ),
                   ),
@@ -389,37 +427,33 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
     }
     else{
       return Container(
-        child: Column(
+        child: Row(
           children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 3.0),
-                    child: TextButton(
-                      onPressed: (){
-                        setState(() {
-                          Connection().sendConnectionRequest(uid);
-                        });
-                      },
-                      child: const Icon(Icons.person_add_alt_1),
-                      style: flatButtonWithIconStyle1,
-                    ),
-                  ),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 3.0),
+                child: TextButton(
+                  onPressed: (){
+                    setState((){
+                      ConnectionsModel().sendConnectionRequest(uid,name);
+                    });
+                  },
+                  child: const Text('CONNECT'),
+                  style: flatButtonWithIconStyle1,
                 ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 3.0),
-                    child: TextButton(
-                      onPressed: (){
-                        Chat().openChat(uid, context, name,imageURL);
-                      },
-                      child: const Icon(Icons.chat),
-                      style: flatButtonWithIconStyle1,
-                    ),
-                  ),
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                child: TextButton(
+                  onPressed: (){
+                    Chat().openChat(uid, context, name,imageURL);
+                  },
+                  child: const Text('MESSAGE'),
+                  style: flatButtonWithIconStyle1,
                 ),
-              ],
+              ),
             ),
           ],
         ),
@@ -429,7 +463,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
 
 /*
   void getProfileData(String userID){
-    FirebaseFirestore.instance.collection('users').doc(userID).get().then((DocumentSnapshot documentSnapshot) {
+    DatabaseService.userRef.doc(userID).get().then((DocumentSnapshot documentSnapshot) {
       if (documentSnapshot.exists) {
         profileData = documentSnapshot.data()! as Map<String, dynamic>;
       }

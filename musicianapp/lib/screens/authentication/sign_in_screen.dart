@@ -167,7 +167,9 @@ class _SignInScreenState extends State<SignInScreen> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: CircleButton(
-                          onTap: () => {AuthService().signInWithGoogle()},
+                          onTap: () {
+                            AuthService().signInWithGoogle(context);
+                          },
                           tooltip: 'Sign In with Google',
                           width: 40.0,
                           height: 40.0,

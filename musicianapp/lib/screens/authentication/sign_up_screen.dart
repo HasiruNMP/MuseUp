@@ -17,6 +17,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final tecEmail = TextEditingController();
   final tecPW = TextEditingController();
   final tecRePW = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -26,105 +27,155 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
-        child: ListView(
-          children: [
-            SizedBox(
-              height: MediaQuery.of(context).size.height/15,
-            ),
-            Text(
-              'Create an Account',
-              textAlign: TextAlign.center,
-              style: GoogleFonts.lato(
-                textStyle: const TextStyle(
-                  fontSize: 26,
-                  fontWeight: FontWeight.bold,
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height/15,
+              ),
+              Text(
+                'Create an Account',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.lato(
+                  textStyle: const TextStyle(
+                    fontSize: 26,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height/4,
-              child: Container(
-                child: Image.asset('assets/img/welcome-image.png'),
+              SizedBox(
+                height: MediaQuery.of(context).size.height/4,
+                child: Container(
+                  child: Image.asset('assets/img/welcome-image.png'),
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: MUTextField1(controller: tecEmail,label: 'Email',),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: MUTextField1(controller: tecPW,label: 'Password',),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: MUTextField1(controller: tecRePW,label: 'Retype Password',),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextButton(
-                onPressed: (){
-                  AuthService().registerWithEmail(tecEmail.text,tecPW.text);
-                },
-                child: const Text('SIGN UP'),
-                style: flatButtonStyle1,
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: TextFormField(
+                  controller: tecEmail,
+                  decoration: InputDecoration(
+                    label: Text('Email'),
+                    prefixIcon: Icon(Icons.email_outlined)
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your email address';
+                    }
+                    return null;
+                  },
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 0,horizontal: 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: const [
-                  Expanded(
-                    child: Divider(
-                      color: Colors.black,
-                    ),
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: TextFormField(
+                  controller: tecPW,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                      label: Text('Password'),
+                      prefixIcon: Icon(Icons.password_outlined),
                   ),
-                  Text('OR'),
-                  Expanded(
-                    child: Divider(
-                      color: Colors.black,
-                    ),
-                  ),
-                ],
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a password';
+                    }
+                    if (value != tecRePW.text){
+                      return "Passwords don't match";
+                    }
+                    return null;
+                  },
+                ),
+
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: CircleButton(
-                      onTap: () => {},
-                      tooltip: 'Sign In with Google',
-                      width: 40.0,
-                      height: 40.0,
-                      borderColor: Colors.black,
-                      borderWidth: 0.4,
-                      borderStyle: BorderStyle.solid,
-                      backgroundColor: Colors.transparent,
-                      child: const FaIcon(FontAwesomeIcons.google),
-                    ),
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: TextFormField(
+                  controller: tecRePW,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                      label: Text('Retype Password'),
+                      prefixIcon: Icon(Icons.password)
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: CircleButton(
-                      onTap: () => {},
-                      tooltip: 'Sign In with Phone',
-                      width: 40.0,
-                      height: 40.0,
-                      borderColor: Colors.black,
-                      borderWidth: 0.4,
-                      borderStyle: BorderStyle.solid,
-                      backgroundColor: Colors.transparent,
-                      child: const FaIcon(FontAwesomeIcons.phone),
-                    ),
-                  ),
-                ],
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please retype your password';
+                    }
+                    if (value != tecPW.text){
+                      return "Passwords don't match";
+                    }
+                    return null;
+                  },
+                ),
               ),
-            ),
-          ],
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextButton(
+                  onPressed: (){
+                    if (_formKey.currentState!.validate()) {
+                      AuthService().registerWithEmail(tecEmail.text,tecPW.text);
+                    }
+                  },
+                  child: const Text('SIGN UP'),
+                  style: flatButtonStyle1,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 0,horizontal: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: const [
+                    Expanded(
+                      child: Divider(
+                        color: Colors.black,
+                      ),
+                    ),
+                    Text('OR'),
+                    Expanded(
+                      child: Divider(
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: CircleButton(
+                        onTap: () => {},
+                        tooltip: 'Sign In with Google',
+                        width: 40.0,
+                        height: 40.0,
+                        borderColor: Colors.black,
+                        borderWidth: 0.4,
+                        borderStyle: BorderStyle.solid,
+                        backgroundColor: Colors.transparent,
+                        child: const FaIcon(FontAwesomeIcons.google),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: CircleButton(
+                        onTap: () => {},
+                        tooltip: 'Sign In with Phone',
+                        width: 40.0,
+                        height: 40.0,
+                        borderColor: Colors.black,
+                        borderWidth: 0.4,
+                        borderStyle: BorderStyle.solid,
+                        backgroundColor: Colors.transparent,
+                        child: const FaIcon(FontAwesomeIcons.phone),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

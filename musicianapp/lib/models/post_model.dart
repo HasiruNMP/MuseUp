@@ -35,6 +35,8 @@ class FeedModel {
       'time': DateTime.now(),
       'videoURL': videoUrl,
       'keywords': keywords.split(','),
+      'likesCount': 0,
+      'commentsCount': 0,
     }).then((value) {
       print("Post Liked");
       createPostVal.value = 2;
@@ -43,31 +45,32 @@ class FeedModel {
       createPostVal.value = 3;
     });
   }
-
 }
 
 class PostModel with ChangeNotifier {
 
   Future<void> likePost(String postID) async {
     var one = FirebaseFirestore.instance.collection('posts').doc(postID).update({
-      'likedByUIDs': FieldValue.arrayUnion([Globals.userID])
+      'likedByUIDs': FieldValue.arrayUnion([Globals.userID]),
+      'likesCount' : FieldValue.increment(1),
     }).then((value) {
       print("Post Liked");
       Globals.likedPosts.add(postID);
 
     }).catchError((error) => print("Failed to add user: $error"));
-    notifyListeners();
+    //notifyListeners();
   }
 
   Future<void> unLikePost(String postID) async {
     var one = FirebaseFirestore.instance.collection('posts').doc(postID).update({
-      'likedByUIDs': FieldValue.arrayRemove([Globals.userID])
+      'likedByUIDs': FieldValue.arrayRemove([Globals.userID]),
+      'likesCount' : FieldValue.increment(-1),
     }).then((value) {
       print("Post UnLiked");
       Globals.likedPosts.remove(postID);
 
     }).catchError((error) => print("Failed to add user: $error"));
-    notifyListeners();
+    //notifyListeners();
   }
 
 }

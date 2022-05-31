@@ -3,7 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/cupertino.dart.';
 import 'package:flutter/material.dart';
 import 'package:musicianapp/globals/globals.dart';
-
+import 'package:musicianapp/screens/explore/profile_screen.dart';
+import 'package:musicianapp/screens/feed/feed_screen.dart';
+import 'package:musicianapp/services/database_service.dart';
 import '../explore/explore_screen.dart';
 
 class PostScreen extends StatefulWidget {
@@ -38,121 +40,131 @@ class _PostScreenState extends State<PostScreen> {
       ),
       body: Column(
         children: [
-          FutureBuilder<DocumentSnapshot>(
-            future: FirebaseFirestore.instance.collection('posts').doc(widget.postID).get(),
-            builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot>snapshot) {
-              if (snapshot.hasError) {
-                return const Text("Something went wrong");
-              }
+          Expanded(
+            child: ListView(
+              children: [
+                FutureBuilder<DocumentSnapshot>(
+                  future: FirebaseFirestore.instance.collection('posts').doc(widget.postID).get(),
+                  builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot>snapshot) {
+                    if (snapshot.hasError) {
+                      return const Text("Something went wrong");
+                    }
 
-              if (snapshot.hasData && !snapshot.data!.exists) {
-                return const Text("Document does not exist");
-              }
+                    if (snapshot.hasData && !snapshot.data!.exists) {
+                      return const Text("Document does not exist");
+                    }
 
-              if (snapshot.connectionState == ConnectionState.done) {
-                Map<String, dynamic> postData = snapshot.data!.data() as Map<String, dynamic>;
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      Map<String, dynamic> postData = snapshot.data!.data() as Map<String, dynamic>;
 
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: Container(
-                      //height: 300,
-                      color: Colors.indigo.shade50,
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                child: InkWell(
-                                  child: FutureBuilder<DocumentSnapshot>(
-                                    future: FirebaseFirestore.instance.collection('users').doc(postData['authorUID']).get(),
-                                    builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot>snapshot) {
-                                      if (snapshot.hasError) {
-                                        return const Text("Something went wrong");
-                                      }
-
-                                      if (snapshot.hasData && !snapshot.data!.exists) {
-                                        return const Text("Document does not exist");
-                                      }
-
-                                      if (snapshot.connectionState == ConnectionState.done) {
-                                        Map<String, dynamic> userData = snapshot.data!.data() as Map<String, dynamic>;
-
-                                        //String name = userData['fName'];
-                                        //imageURL = userData['imageURL'];
-
-                                        return ListTile(
-                                          leading: CircleAvatar(
-                                            backgroundColor: Colors.green,
-                                            backgroundImage: NetworkImage(userData['imageURL']),
-                                          ),
-                                          title: Text(
-                                            userData['fName']+' '+userData['lName'],
-                                            style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          subtitle: Text(widget.time),
-                                        );
-                                      }
-                                      return ListTile(
-                                        leading: const CircleAvatar(
-                                          backgroundColor: Colors.green,
-                                        ),
-                                        title: const Text(''),
-                                        subtitle: Text(widget.time),
-                                      );
-                                    },
-                                  ),
-                                  onTap: () {
-                                    print('asd');
-                                  },
-                                ),
-                              ),
-                              Padding(
-                                padding:
-                                const EdgeInsets.symmetric(horizontal: 8),
-                                child: IconButton(
-                                  onPressed: () {},
-                                  icon: const Icon(Icons.person_add_alt_1),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Container(
+                            //height: 300,
+                            color: Colors.indigo.shade50,
                             child: Column(
                               children: [
-                                Text(
-                                  postData['text'],
-                                  textAlign: TextAlign.justify,
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: InkWell(
+                                        child: FutureBuilder<DocumentSnapshot>(
+                                          future: DatabaseService.userColRef.doc(postData['authorUID']).get(),
+                                          builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot>snapshot) {
+                                            if (snapshot.hasError) {
+                                              return const Text("Something went wrong");
+                                            }
+
+                                            if (snapshot.hasData && !snapshot.data!.exists) {
+                                              return const Text("Document does not exist");
+                                            }
+
+                                            if (snapshot.connectionState == ConnectionState.done) {
+                                              Map<String, dynamic> userData = snapshot.data!.data() as Map<String, dynamic>;
+
+                                              //String name = userData['fName'];
+                                              //imageURL = userData['imageURL'];
+
+                                              return ListTile(
+                                                leading: CircleAvatar(
+                                                  backgroundColor: Colors.green,
+                                                  backgroundImage: NetworkImage(userData['imageURL']),
+                                                ),
+                                                title: Text(
+                                                  userData['fName']+' '+userData['lName'],
+                                                  style: const TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                subtitle: Text(widget.time),
+                                              );
+                                            }
+                                            return ListTile(
+                                              leading: const CircleAvatar(
+                                                backgroundColor: Colors.green,
+                                              ),
+                                              title: const Text(''),
+                                              subtitle: Text(widget.time),
+                                            );
+                                          },
+                                        ),
+                                        onTap: () {
+                                          Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen(postData['authorUID'])));
+                                        },
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                (postData['type']=='video')? VideoApp(postData['videoURL']) : const SizedBox(),
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        postData['text'],
+                                        textAlign: TextAlign.justify,
+                                      ),
+                                      (postData['type']=='video')? PostVideoView(postData['videoURL']) : const SizedBox(),
+                                    ],
+                                  ),
+                                ),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: (Globals.likedPosts.contains(widget.postID))? TextButton(
+                                        onPressed: () {},
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            const Icon(Icons.favorite,color: Colors.redAccent,),
+                                            Text(postData['likesCount'].toString())
+                                          ],
+                                        ),
+                                      ):TextButton(
+                                        onPressed: () {},
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            const Icon(Icons.favorite_border,color: Colors.black87,),
+                                            Text(postData['likesCount'].toString())
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                )
                               ],
                             ),
                           ),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: (Globals.likedPosts.contains(widget.postID))? TextButton(
-                                  onPressed: () {},
-                                  child: const Icon(Icons.favorite,color: Colors.redAccent,),
-                                ):TextButton(
-                                  onPressed: () {},
-                                  child: const Icon(Icons.favorite_border,color: Colors.black87,),
-                                ),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              }
-              return const Text('Loading');
-            },
+                        ),
+                      );
+                    }
+                    return const Text('Loading');
+                  },
+                ),
+              ],
+            ),
           ),
           const Divider(),
           Expanded(
@@ -172,7 +184,7 @@ class _PostScreenState extends State<PostScreen> {
                     Map<String, dynamic> commentData = document.data()! as Map<String, dynamic>;
 
                     return FutureBuilder<DocumentSnapshot>(
-                      future: FirebaseFirestore.instance.collection('users').doc(commentData['UID']).get(),
+                      future: DatabaseService.userColRef.doc(commentData['UID']).get(),
                       builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot>snapshot) {
                         if (snapshot.hasError) {
                           return const Text("Something went wrong");
@@ -191,7 +203,7 @@ class _PostScreenState extends State<PostScreen> {
                           return ListTile(
                             leading: CircleAvatar(
                               backgroundColor: Colors.green,
-                              backgroundImage: NetworkImage(userData['imageURL']),
+                              backgroundImage: NetworkImage(userData['imageURL'],),
                             ),
                             title: Text(
                               userData['fName']+' '+userData['lName'],
@@ -199,7 +211,9 @@ class _PostScreenState extends State<PostScreen> {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            subtitle: Text(commentData['text']),
+                            subtitle: Text(commentData['text'],style: const TextStyle(
+                              color: Colors.black
+                            ),),
                           );
                         }
                         return ListTile(
@@ -230,6 +244,7 @@ class _PostScreenState extends State<PostScreen> {
                   child: const Text('Send'),
                   onPressed: (){
                     addComment(widget.postID, tecComment.text);
+                    tecComment.clear();
                   },
                 )
               ],
@@ -239,11 +254,16 @@ class _PostScreenState extends State<PostScreen> {
       ),
     );
   }
-  Future<void> addComment(String postID,String text) {
-    return FirebaseFirestore.instance.collection('posts').doc(postID).collection('comments').add({
+  Future<void> addComment(String postID,String text) async {
+    FirebaseFirestore.instance.collection('posts').doc(postID).collection('comments').add({
       'text': text,
       'UID': Globals.userID,
       'time': DateTime.now(),
+    })
+        .then((value) => print("Comment Added"))
+        .catchError((error) => print("Failed to add comment: $error"));
+    FirebaseFirestore.instance.collection('posts').doc(postID).update({
+      'commentsCount': FieldValue.increment(1),
     })
         .then((value) => print("Comment Added"))
         .catchError((error) => print("Failed to add comment: $error"));

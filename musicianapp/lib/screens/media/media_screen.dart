@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:musicianapp/globals/globals.dart';
 import 'package:musicianapp/screens/profile/upload_video_screen.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +29,7 @@ class _MediaScreenState extends State<MediaScreen> {
           uploadVideo();
         },
       ),
-      body: const MediaContent(),
+      body: MediaContent(userID: Globals.userID,),
     );
   }
 
@@ -56,7 +57,10 @@ class _MediaScreenState extends State<MediaScreen> {
 }
 
 class MediaContent extends StatefulWidget {
+
+  final String userID;
   const MediaContent({
+    required this.userID,
     Key? key,
   }) : super(key: key);
 
@@ -68,72 +72,79 @@ class _MediaContentState extends State<MediaContent> {
 
   //final db = FirebaseFirestore.instance;
 
-  final Stream<QuerySnapshot> mediaList = FirebaseFirestore.instance
-      .collection("media")
-      .where("userID", isEqualTo: "123")
-      .snapshots();
+  //final Stream<QuerySnapshot> mediaList = FirebaseFirestore.instance.collection("media").where("userID", isEqualTo: widget.userID).snapshots();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: (){
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const UploadVideoScreen(atSignup: false)),
-          );
-        },
-        child: const Icon(Icons.add),
-      ),
       body: Container(
-        child: StreamBuilder<QuerySnapshot>(
-          stream: mediaList,
-          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (snapshot.hasError) {
-              return const Text('Something went wrong');
-            }
+        child: Stack(
+          children: [
+            StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance.collection("media").where("userID", isEqualTo: widget.userID).snapshots(),
+              builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.hasError) {
+                  return const Text('Something went wrong');
+                }
 
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator(),);
-            }
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator(),);
+                }
 
-            return Wrap(
-              children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                Map<String, dynamic> mediaItemData = document.data()! as Map<String, dynamic>;
-                return SizedBox(
-                  width: MediaQuery.of(context).size.width/3,
-                  child: InkWell(
-                    onTap: (){
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => VideoView(mediaItemData['url'])),
-                      );
-                    },
-                    child: AspectRatio(
-                      aspectRatio: 1,
-                      child: Stack(
-                        children: [
-                          FittedBox(
-                            fit: BoxFit.fill,
-                            child: Image.network('https://picsum.photos/200'),
+                return Wrap(
+                  children: snapshot.data!.docs.map((DocumentSnapshot document) {
+                    Map<String, dynamic> mediaItemData = document.data()! as Map<String, dynamic>;
+                    return SizedBox(
+                      width: MediaQuery.of(context).size.width/3,
+                      child: InkWell(
+                        onTap: (){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => VideoView(mediaItemData['url'])),
+                          );
+                        },
+                        child: AspectRatio(
+                          aspectRatio: 1,
+                          child: Stack(
+                            children: [
+                              FittedBox(
+                                fit: BoxFit.fill,
+                                child: Image.network('https://picsum.photos/200'),
+                              ),
+                              Container(
+                                alignment: Alignment.center,
+                                child: IconButton(
+                                  onPressed: (){},
+                                  icon: const Icon(Icons.play_arrow_rounded),
+                                  iconSize: 65,
+                                  color: Colors.black87.withOpacity(0.5),
+                                ),
+                              ),
+                            ],
                           ),
-                          Container(
-                            alignment: Alignment.center,
-                            child: IconButton(
-                              onPressed: (){},
-                              icon: const Icon(Icons.play_arrow_rounded),
-                              iconSize: 65,
-                              color: Colors.black87.withOpacity(0.5),
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
+                    );
+                  }).toList(),
                 );
-              }).toList(),
-            );
-          },
+              },
+            ),
+            (widget.userID == Globals.userID)? Container(
+              alignment: Alignment.bottomRight,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: FloatingActionButton(
+                  onPressed: (){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const UploadVideoScreen(atSignup: false)),
+                    );
+                  },
+                  child: const Icon(Icons.add),
+                ),
+              ),
+            ): SizedBox()
+          ],
         ),
       ),
     );

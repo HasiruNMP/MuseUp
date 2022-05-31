@@ -9,6 +9,7 @@ import 'package:musicianapp/screens/explore/explore_screen.dart';
 import 'package:musicianapp/screens/explore/profile_screen.dart';
 import 'package:badges/badges.dart';
 import 'package:musicianapp/screens/media/media_screen.dart';
+import 'package:musicianapp/services/database_service.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -46,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             icon: Badge(
               badgeContent: const Text(
-                '2',
+                '1',
                 style: TextStyle(color: Colors.white),
               ),
               elevation: 0,
@@ -60,11 +61,11 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             const DrawerHeader(
               decoration: BoxDecoration(
-                color: Colors.blue,
+                color: Colors.indigo,
               ),
               child: Text('Menu'),
             ),
-            ListTile(
+/*            ListTile(
               title: const Text('My Profile'),
               onTap: () {
 
@@ -84,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
               onTap: () {
 
               },
-            ),
+            ),*/
           ],
         ),
       ),
@@ -220,7 +221,7 @@ class _NearbyListViewState extends State<NearbyListView> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance.collection('users').where('profileState',isEqualTo: 1).snapshots(),
+      stream: DatabaseService.userColRef.where('profileState',isEqualTo: 1).snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
           return const Text('Something went wrong');

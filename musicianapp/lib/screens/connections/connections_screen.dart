@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:musicianapp/models/connection_model.dart';
 import 'package:musicianapp/screens/common/common_widgets.dart';
 import 'package:musicianapp/globals/globals.dart';
 import 'package:musicianapp/screens/explore/profile_screen.dart';
+import 'package:musicianapp/services/database_service.dart';
 
 class ConnectionsView extends StatefulWidget {
   const ConnectionsView({Key? key}) : super(key: key);
@@ -30,7 +32,7 @@ class _ConnectionsViewState extends State<ConnectionsView> with AutomaticKeepAli
       ),
       body: SafeArea(
         child: FutureBuilder<QuerySnapshot>(
-          future: FirebaseFirestore.instance.collection('users').doc(Globals.userID).collection('connections').where('status',isEqualTo: 'accepted').get(),
+          future: ConnectionsModel.getConnections(),
           builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasError) {
               return const Text('Something went wrong');
@@ -42,7 +44,7 @@ class _ConnectionsViewState extends State<ConnectionsView> with AutomaticKeepAli
               children: snapshot.data!.docs.map((DocumentSnapshot document) {
                 Map<String, dynamic> connectionData = document.data()! as Map<String, dynamic>;
                 return FutureBuilder<DocumentSnapshot>(
-                  future: FirebaseFirestore.instance.collection('users').doc(connectionData['connectionUID']).get(),
+                  future: DatabaseService.userColRef.doc(connectionData['connectionUID']).get(),
                   builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
 
                     if (snapshot.hasError) {

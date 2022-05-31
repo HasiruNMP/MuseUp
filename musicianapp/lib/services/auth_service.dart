@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:musicianapp/globals/globals.dart';
 import 'package:musicianapp/models/profile_model.dart';
 import 'package:musicianapp/models/user_model.dart';
+import 'package:musicianapp/screens/common/ux.dart';
 
 
 
@@ -42,7 +43,7 @@ class AuthService {
   }
 
 
-  Future<void> signInWithGoogle() async {
+  Future<void> signInWithGoogle(BuildContext context) async {
     // Trigger the authentication flow
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
@@ -57,6 +58,9 @@ class AuthService {
 
     // Once signed in, return the UserCredential
     UserCredential user = await FirebaseAuth.instance.signInWithCredential(credential);
+    UX.showLongToast('Signed In using ${user.user?.email}');
+    Navigator.pop(context);
+    //ProfileModel().createUser(user);
   }
 
   void signInWithEmail(String email, String password) async{
@@ -97,10 +101,16 @@ class AuthService {
     }
   }
 
+
+  ValueNotifier<int> resetNotifier = ValueNotifier(0);
+
   void resetPassword(String email) async {
+    resetNotifier.value = 1;
     try {
       await _auth.sendPasswordResetEmail(email: email);
+      UX.showLongToast('Email Sent!');
     } on FirebaseAuthException catch (e) {
+      resetNotifier.value = 2;
       print(e.code);
       print(e.message);
     }

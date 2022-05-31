@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:musicianapp/screens/common/common_widgets.dart';
 import 'package:musicianapp/globals/globals.dart';
 import 'package:musicianapp/screens/explore/profile_screen.dart';
+import 'package:musicianapp/services/database_service.dart';
 
 class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({Key? key}) : super(key: key);
@@ -30,7 +31,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       ),
       body: SafeArea(
         child: StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance.collection('users').doc(Globals.userID).collection('notifications').snapshots(),
+          stream: DatabaseService.userRef.collection('notifications').orderBy('time',descending: true).snapshots(),
           builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasError) {
               return const Text('Something went wrong');
@@ -44,7 +45,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
               children: snapshot.data!.docs.map((DocumentSnapshot document) {
                 Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
                 return FutureBuilder<DocumentSnapshot>(
-                  future: FirebaseFirestore.instance.collection('users').doc(data['from']).get(),
+                  future: DatabaseService.userColRef.doc(data['from']).get(),
                   builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
 
                     if (snapshot.hasError) {

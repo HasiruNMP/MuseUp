@@ -6,6 +6,7 @@ import 'package:musicianapp/globals/globals.dart';
 import 'package:musicianapp/models/post_model.dart';
 import 'package:musicianapp/screens/feed/post_screen.dart';
 import 'package:musicianapp/screens/feed/search_posts_screen.dart';
+import 'package:musicianapp/services/database_service.dart';
 import 'package:video_player/video_player.dart';
 
 //String str = 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using Content here content here, making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for lorem ipsum will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).';
@@ -38,8 +39,7 @@ class _FeedScreenState extends State<FeedScreen> {
         },
         child: const Icon(Icons.post_add),
       ),
-      body: FeedContent(
-          FirebaseFirestore.instance.collection('posts').snapshots()),
+      body: FeedContent(DatabaseService.postsRef.snapshots()),
     );
   }
 }
@@ -170,22 +170,24 @@ class _FeedListItemState extends State<FeedListItem> {
                       },
                     ),
                   ),
-                  Padding(
+                  /*Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: IconButton(
                       onPressed: () {},
-                      icon: const Icon(Icons.person_add_alt_1),
+                      icon: const Icon(Icons.message_outlined),
                     ),
-                  ),
+                  ),*/
                 ],
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
                 child: Column(
                   children: [
-                    Text(
-                      widget.postData['text'],
-                      textAlign: TextAlign.justify,
+                    Container(
+                      child: Text(
+                        widget.postData['text'],
+                        textAlign: TextAlign.justify,
+                      ),
                     ),
                     (widget.postData['type'] == 'video')
                         ? PostVideoView(widget.postData['videoURL'])
@@ -339,8 +341,8 @@ class _PostVideoViewState extends State<PostVideoView> {
                 style: ElevatedButton.styleFrom(
                   shape: const CircleBorder(),
                   padding: const EdgeInsets.all(12),
-                  primary: const Color(0xFF303952), // <-- Button color
-                  onPrimary: const Color(0xFF40407a), // <-- Splash color
+                  primary: const Color(0xFF303952).withOpacity(0.3),
+                  onPrimary: const Color(0xFF40407a).withOpacity(0.3),
                 ),
               ),
             ),

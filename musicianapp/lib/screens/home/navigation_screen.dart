@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:musicianapp/globals/globals.dart';
+import 'package:musicianapp/screens/explore/profile_screen.dart';
 import 'package:musicianapp/screens/feed/feed_screen.dart';
 import 'package:musicianapp/screens/home/home_screen.dart';
 import 'package:musicianapp/screens/connections/conversations_screen.dart';
@@ -21,7 +22,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
     const HomeScreen(),
     const FeedScreen(),
     const ConversationsScreen(),
-    UserScreen(Globals.userID),
+    ProfileScreen(Globals.userID)
   ];
   final Color _selectedColor = const Color(0xFF2f3542);
 

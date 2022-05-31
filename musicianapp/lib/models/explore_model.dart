@@ -1,23 +1,26 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
+import 'package:musicianapp/services/database_service.dart';
 
 class Explorer with ChangeNotifier{
 
   List<String> filterSettings = [];
   final geo = Geoflutterfire();
   List<String> videoList = [];
+  List<String> userIdList = [];
   List<String> nearbyList = [];
   static bool initialized = false;
 
- void searchUsersByMusic(String role, String instrument, List<String> genres) {
-   print('ZZZZZZZZZZZZZZZZZMMMMMMMMMMMMMMMMMAAAAAAAAAAAAAAAA');
+ void searchUsersByMusic(List selections) {
     videoList.clear();
-    FirebaseFirestore.instance.collection('users').where('genres',arrayContainsAny: genres)
+    userIdList.clear();
+    DatabaseService.userColRef.where('genres',arrayContainsAny: selections)
         .get()
         .then((QuerySnapshot querySnapshot) {
           for (var doc in querySnapshot.docs) {
             videoList.add(doc['videoURL']);
+            userIdList.add(doc.id);
             print(doc["fName"]);
           }
           initialized = true;
@@ -28,6 +31,7 @@ class Explorer with ChangeNotifier{
 
   void searchUsersByDistance(double radius){
     videoList.clear();
+    userIdList.clear();
     GeoFirePoint center = geo.point(latitude: 7.242016, longitude: 80.857134);
     String field = 'location';
     var collectionReference = FirebaseFirestore.instance.collection('users');
@@ -36,6 +40,7 @@ class Explorer with ChangeNotifier{
       for (var document in documentList) {
         print(document['videoURL']);
         videoList.add(document['videoURL']);
+        userIdList.add(document.id);
       }
       initialized = true;
       notifyListeners();

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:musicianapp/models/profile_model.dart';
 import 'package:musicianapp/screens/common/common_widgets.dart';
 import 'package:musicianapp/models/explore_model.dart';
+import 'package:musicianapp/screens/explore/profile_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 
@@ -45,17 +47,37 @@ class _ExploreScreenState extends State<ExploreScreen> {
               Consumer<Explorer>(
                 builder: (context, explorerModel, child) {
                   if(Explorer.initialized == true){
-                    return PageView(
-                      controller: controller,
-                      scrollDirection: Axis.vertical,
-                      allowImplicitScrolling: true,
-                      children: List<Widget>.generate(explorerModel.videoList.length, (int index) {
-                        return VideoApp(explorerModel.videoList[index]);
-                      },
-                      ).toList(),
-                    );
+                    if(explorerModel.videoList.isEmpty){
+                      return Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.exposure_zero,size: 40,),
+                            Text('No Search Results'),
+                          ],
+                        ),
+                      );
+                    }else{
+                      return PageView(
+                        controller: controller,
+                        scrollDirection: Axis.vertical,
+                        allowImplicitScrolling: true,
+                        children: List<Widget>.generate(explorerModel.videoList.length, (int index) {
+                          return VideoApp(explorerModel.videoList[index],explorerModel.userIdList[index]);
+                        },
+                        ).toList(),
+                      );
+                    }
                   }else{
-                    return const Center(child: Text('Select Filter Settings to Explore Musicians'));
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.search,size: 60,),
+                          Text('Select Filter Settings to Explore Musicians'),
+                        ],
+                      ),
+                    );
                   }
                 },
               ),
@@ -131,13 +153,14 @@ class FilterView extends StatefulWidget {
 class _FilterViewState extends State<FilterView> {
 
   filterType _type = filterType.byRole;
-  List roleList = ['Any Role','Composer','Instrumentalist','Vocalist', 'Producer'];
-  List<String> genreList = ['Any Genre','Pop','Classical','Rock', 'Jazz'];
-  List instrumentList = ['Any Instrument','Guitar','Piano','Drums', 'Violin','Harp','Cello','Trumpet','Viola','Bass Guitar','Percussion','Flute'];
-  String roleChoice = 'Any Role';
-  String genreChoice = 'Any Genre';
-  String instrumentChoice = 'Any Instrument';
+  List roleList = ProfileModel.roleList;
+  List genreList = ProfileModel.genreList;
+  List instrumentList = ProfileModel.instrumentList;
+  //String roleChoice = 'Any Role';
+  //String genreChoice = 'Any Genre';
+  //String instrumentChoice = 'Any Instrument';
   double distance = 50;
+  List<String> selectionList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -211,10 +234,14 @@ class _FilterViewState extends State<FilterView> {
                 children: List<Widget>.generate(roleList.length, (int index) {
                   return ChoiceChip(
                     label: Text(roleList[index]),
-                    selected: roleChoice == roleList[index],
+                    selected: selectionList.contains(roleList[index]),
                     onSelected: (bool selected) {
                       setState(() {
-                        roleChoice = selected ? roleList[index] : null;
+                        if(selected){
+                          selectionList.add(roleList[index]);
+                        }else{
+                          selectionList.remove(roleList[index]);
+                        }
                       });
                     },
                   );
@@ -235,10 +262,15 @@ class _FilterViewState extends State<FilterView> {
                 children: List<Widget>.generate(genreList.length, (int index) {
                   return ChoiceChip(
                     label: Text(genreList[index]),
-                    selected: genreChoice == genreList[index],
+                    selected: selectionList.contains(genreList[index]),
                     onSelected: (bool selected) {
                       setState(() {
-                        genreChoice = (selected ? genreList[index] : null)!;
+                        //genreChoice = (selected ? genreList[index] : null)!;
+                        if(selected){
+                          selectionList.add(genreList[index]);
+                        }else{
+                          selectionList.remove(genreList[index]);
+                        }
                       });
                     },
                   );
@@ -255,16 +287,20 @@ class _FilterViewState extends State<FilterView> {
             children: [
               const Text('INSTRUMENT'),
               Container(
-                child: roleChoice != 'Instrumentalist' ? const Center(child: Text('Not Applicable'),) :
-                Wrap(
+                child: Wrap(
                   spacing: 4,
                   children: List<Widget>.generate(instrumentList.length, (int index) {
                     return ChoiceChip(
                       label: Text(instrumentList[index]),
-                      selected: instrumentChoice == instrumentList[index],
+                      selected: selectionList.contains(instrumentList[index]),
                       onSelected: (bool selected) {
                         setState(() {
-                          instrumentChoice = selected ? instrumentList[index] : null;
+                          //instrumentChoice = selected ? instrumentList[index] : null;
+                          if(selected){
+                            selectionList.add(instrumentList[index]);
+                          }else{
+                            selectionList.remove(instrumentList[index]);
+                          }
                         });
                       },
                     );
@@ -280,7 +316,7 @@ class _FilterViewState extends State<FilterView> {
             builder: (context, explorerModel, child) {
               return ElevatedButton(
                 onPressed: (){
-                  explorerModel.searchUsersByMusic(roleChoice,instrumentChoice,genreList);
+                  explorerModel.searchUsersByMusic(selectionList);
                   Navigator.pop(context);
                   //videoList = explorerModel.videoList;
                 },
@@ -335,7 +371,8 @@ class _FilterViewState extends State<FilterView> {
 
 class VideoApp extends StatefulWidget {
   String link;
-  VideoApp(this.link, {Key? key}) : super(key: key);
+  String userId;
+  VideoApp(this.link, this.userId, {Key? key}) : super(key: key);
 
   @override
   _VideoAppState createState() => _VideoAppState();
@@ -399,7 +436,10 @@ class _VideoAppState extends State<VideoApp> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      showProfileView();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ProfileScreen(widget.userId)),
+                      );
                     },
                     child: const Icon(Icons.person,color: Colors.white,),
                     style: ElevatedButton.styleFrom(

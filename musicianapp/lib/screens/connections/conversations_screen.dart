@@ -6,6 +6,7 @@ import 'package:musicianapp/screens/common/common_widgets.dart';
 import 'package:musicianapp/globals/globals.dart';
 import 'package:musicianapp/models/chat_model.dart';
 import 'package:musicianapp/screens/connections/connections_screen.dart';
+import 'package:musicianapp/services/database_service.dart';
 
 class ConversationsScreen extends StatefulWidget {
   const ConversationsScreen({Key? key}) : super(key: key);
@@ -76,7 +77,7 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
                       Map<String, dynamic> conversationData = document.data()! as Map<String, dynamic>;
                       String otherUser = conversationData['participants'][0] == Globals.userID? conversationData['participants'][1] : conversationData['participants'][0];
                       return FutureBuilder<DocumentSnapshot>(
-                        future: FirebaseFirestore.instance.collection('users').doc(otherUser).get(),
+                        future: DatabaseService.userColRef.doc(otherUser).get(),
                         builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
 
                           if (snapshot.hasError) {
@@ -90,8 +91,8 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
                           if (snapshot.connectionState == ConnectionState.done) {
                             Map<String, dynamic> userData = snapshot.data!.data() as Map<String, dynamic>;
 
-                            Timestamp time = conversationData['lastMessageTime'];
-                            var date = DateTime.fromMillisecondsSinceEpoch(time.millisecondsSinceEpoch);
+                            //Timestamp time = conversationData['lastMessageTime'];
+                            //var date = DateTime.fromMillisecondsSinceEpoch(time.millisecondsSinceEpoch);
 
                             return Padding(
                               padding: const EdgeInsets.only(bottom: 3),
@@ -136,7 +137,8 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
                                           Padding(
                                             padding: const EdgeInsets.symmetric(horizontal: 5.0),
                                             child: Text(
-                                              '${date.hour}:${date.minute}',
+                                              //'${date.hour}:${date.minute}',
+                                              '',
                                               style: const TextStyle(
                                                 color: Colors.black87,
                                               ),
@@ -176,7 +178,7 @@ class _OnlineConnectionsState extends State<OnlineConnections> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance.collection('users').where('isOnline',isEqualTo: true).snapshots(),
+      stream: DatabaseService.userColRef.where('isOnline',isEqualTo: true).snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
           return const Text('Something went wrong');
