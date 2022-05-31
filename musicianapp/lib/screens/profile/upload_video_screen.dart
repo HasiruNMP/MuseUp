@@ -90,7 +90,13 @@ class _UploadVideoScreenState extends State<UploadVideoScreen> {
                           return ElevatedButton(
                             onPressed: (){
                               submitted = true;
-                              mediaModel.uploadVideo(vPath);
+                              if(isAudioFxChecked){
+                                mediaModel.uploadVideoWithFX(vPath);
+                                Navigator.pop(context);
+                                UX.showLongToast('Your video will be available shortly');
+                              }else{
+                                mediaModel.uploadVideo(vPath,context);
+                              }
                             },
                             child: ValueListenableProvider<int>.value(
                                 value: mediaModel.uploadNotifier,
@@ -105,7 +111,7 @@ class _UploadVideoScreenState extends State<UploadVideoScreen> {
                                       }
                                       if(intVal == 2){
                                         //submitted = false;
-                                        UX.showLongToast("Post Created Successfully!");
+                                        UX.showLongToast("Uploaded Successfully!");
                                         if(1<1){
                                           //Navigator.of(context).popUntil(ModalRoute.withName('/'));
                                         }else{
