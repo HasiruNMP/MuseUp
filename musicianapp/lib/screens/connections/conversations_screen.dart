@@ -200,7 +200,7 @@ class _OnlineConnectionsState extends State<OnlineConnections> {
                     borderRadius: BorderRadius.circular(50.0),
                     child: InkWell(
                       onTap: (){
-
+                        Chat().openChat(document.id, context, data['fName'],data['imageURL']);
                       },
                       child: AspectRatio(
                         aspectRatio: 1,

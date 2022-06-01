@@ -5,6 +5,7 @@ import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:musicianapp/globals/globals.dart';
 import 'package:musicianapp/screens/common/ux.dart';
+import 'package:musicianapp/services/auth_service.dart';
 import 'package:musicianapp/services/database_service.dart';
 
 class ProfileModel with ChangeNotifier {
@@ -17,15 +18,33 @@ class ProfileModel with ChangeNotifier {
   DateTime selectedDate = DateTime.now();
   bool success = false;
 
-
   Future<void> createUser(UserCredential userCredential) {
-    return DatabaseService.db.doc(userCredential.user!.uid).set(
+    return DatabaseService.userColRef.doc(userCredential.user!.uid).set(
       {
         'email': userCredential.user!.email,
         'profileState':0,
         'fcmToken':'0',
+        'registeredDate': DateTime.now(),
       },
     ).then((value) => print("User Added")).catchError((error) => print("Failed to add user: $error"));
+  }
+
+  Future<void> createUserWithPhone(String uid, String phone) async {
+
+    String? uid = await AuthService().getCurrentUserId();
+
+    if(uid != null){
+      DatabaseService.userColRef.doc(uid).set(
+        {
+          'email': '',
+          'phone': phone,
+          'profileState':0,
+          'fcmToken':'0',
+          'registeredDate': DateTime.now(),
+        },
+      ).then((value) => print("User Added")).catchError((error) => print("Failed to add user: $error"));
+    }
+
   }
 
   Future<void> addPersonalInfo(String fName, String lName, DateTime dob, String gender) async {
@@ -37,7 +56,7 @@ class ProfileModel with ChangeNotifier {
     }).then((value) {
       print("User Added");
       success = true;
-      UX.showLongToast('done');
+      UX.showLongToast('Added');
     }).catchError((error) {
       print("Failed to add user: $error");
       success = false;
@@ -88,6 +107,7 @@ class ProfileModel with ChangeNotifier {
   Future<void> addImageURL(String url) {
     return DatabaseService.userColRef.doc(Globals.userID).update({
       'imageURL': url,
+      'profileState': 1
     }).then((value) => print("User Added")).catchError((error) => print("Failed to add user: $error"));
   }
 

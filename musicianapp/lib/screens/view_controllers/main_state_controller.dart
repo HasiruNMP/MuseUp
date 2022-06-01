@@ -156,6 +156,11 @@ class _LoadingScreenState extends State<LoadingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        actions: [
+          IconButton(onPressed: (){AuthService().signOut();}, icon: Icon(Icons.exit_to_app))
+        ],
+      ),
         body: Container(
           child: Center(
             child: SpinKitSpinningLines(

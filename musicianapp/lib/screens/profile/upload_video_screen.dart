@@ -92,10 +92,20 @@ class _UploadVideoScreenState extends State<UploadVideoScreen> {
                               submitted = true;
                               if(isAudioFxChecked){
                                 mediaModel.uploadVideoWithFX(vPath);
-                                Navigator.pop(context);
+                                if((widget.atSignup)){
+                                  Navigator.popUntil(context, ModalRoute.withName('/'));
+                                }else{
+                                  Navigator.pop(context);
+                                }
                                 UX.showLongToast('Your video will be available shortly');
                               }else{
-                                mediaModel.uploadVideo(vPath,context);
+                                mediaModel.uploadVideo(vPath);
+                                if((widget.atSignup)){
+                                  Navigator.popUntil(context, ModalRoute.withName('/'));
+                                }else{
+                                  Navigator.pop(context);
+                                }
+                                UX.showLongToast('Your video will be available shortly');
                               }
                             },
                             child: ValueListenableProvider<int>.value(

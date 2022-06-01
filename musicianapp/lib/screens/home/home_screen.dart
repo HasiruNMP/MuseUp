@@ -98,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  'Discover',
+                  'New',
                   style: GoogleFonts.lato(
                     textStyle: const TextStyle(fontSize: 20,fontWeight: FontWeight.bold),
                   ),
@@ -107,7 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const SizedBox(
               height: 210,
-              child: NearbyListView(),
+              child: NewComersListView(),
             ),
             Container(
               alignment: Alignment.centerLeft,
@@ -222,6 +222,88 @@ class _NearbyListViewState extends State<NearbyListView> {
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
       stream: DatabaseService.userColRef.where('profileState',isEqualTo: 1).snapshots(),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.hasError) {
+          return const Text('Something went wrong');
+        }
+
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: spinkit);
+        }
+
+        return ListView(
+          scrollDirection: Axis.horizontal,
+          children: snapshot.data!.docs.map((DocumentSnapshot document) {
+            Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+            return Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8.0),
+                child: Container(
+                  color: Colors.deepPurple.shade50,
+                  width: 150,
+                  child: InkWell(
+                    onTap: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ProfileScreen(document.id),),
+                      );
+                    },
+                    child: Column(
+                      children: [
+                        AspectRatio(
+                          aspectRatio: 1,
+                          child: FittedBox(
+                            fit: BoxFit.fill,
+                            child: Image.network(data['imageURL']),
+                          ),
+                        ),
+                        Text(
+                          '${data['fName']} ${data['lName']}',
+                          style: GoogleFonts.lato(
+                            textStyle: const TextStyle(fontSize: 16,fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Text(
+                          data['role'],
+                          style: GoogleFonts.lato(
+                            textStyle: const TextStyle(fontSize: 14,fontWeight: FontWeight.w400),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            );
+          }).toList(),
+        );
+      },
+    );
+  }
+}
+
+
+class NewComersListView extends StatefulWidget {
+  const NewComersListView({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<NewComersListView> createState() => _NewComersListViewState();
+}
+
+class _NewComersListViewState extends State<NewComersListView> {
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<QuerySnapshot>(
+      stream: DatabaseService.userColRef.where('profileState',isEqualTo: 1).orderBy('registeredDate',descending: true).snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
           return const Text('Something went wrong');

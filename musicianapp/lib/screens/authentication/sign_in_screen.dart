@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:musicianapp/models/profile_model.dart';
 import 'package:musicianapp/screens/common/ux.dart';
 import 'package:musicianapp/services/auth_service.dart';
 import 'package:musicianapp/screens/common/common_widgets.dart';
@@ -115,12 +116,13 @@ class _SignInScreenState extends State<SignInScreen> {
                                       }
                                       if(intVal == 3){
                                         UX.showLongToast("Logged In Successfully as ${_tecEmail.text}");
+                                        Navigator.pop(context);
                                       }
                                       if(intVal == 4){
-                                        UX.showLongToast("No user found with that email!");
+                                        //UX.showLongToast("No user found with that email!");
                                       }
                                       if(intVal == 5){
-                                        UX.showLongToast("wrong password");
+                                        //UX.showLongToast("wrong password");
                                       }
                                       return const Text("SIGN IN");
                                     }
@@ -227,6 +229,8 @@ class _SignInWithPhoneState extends State<SignInWithPhone> {
     tecPhoneNo.text = '+94';
   }
 
+  int prg = 0;
+
   Future<void> signInWithPhone(String phone) async {
     await FirebaseAuth.instance.verifyPhoneNumber(
       phoneNumber: phone,
@@ -259,11 +263,18 @@ class _SignInWithPhoneState extends State<SignInWithPhone> {
             ),
             actions: <Widget>[
               ElevatedButton(
-                child: const Text("DONE"),
+                child: (prg == 2)? Center(child: CircularProgressIndicator(),): Text("DONE"),
                 onPressed: () async {
+
+                  setState((){
+                    prg = 2;
+                  });
+
                   PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: tecSMSCode.text);
-                  //Profile().createUser(credential);
                   await auth.signInWithCredential(credential);
+                  ProfileModel().createUserWithPhone(credential.providerId,tecPhoneNo.text);
+                  Navigator.pop(context);
+                  Navigator.pop(context);
                 },
               )
             ],
@@ -308,9 +319,14 @@ class _SignInWithPhoneState extends State<SignInWithPhone> {
               child: ListTile(
                 title: ElevatedButton(
                   onPressed: () {
+
+                    setState((){
+                      prg = 1;
+                    });
+
                     signInWithPhone(tecPhoneNo.text);
                   },
-                  child: const Text('Send Code'),
+                  child: (prg == 1)? Center(child: SizedBox(child: CircularProgressIndicator(color: Colors.white,),width: 20,height: 20,)): Text("SEND CODE"),
                 ),
               ),
             ),

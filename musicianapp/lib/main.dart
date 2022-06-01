@@ -4,6 +4,7 @@ import 'package:musicianapp/models/media_model.dart';
 import 'package:musicianapp/models/post_model.dart';
 import 'package:musicianapp/models/profile_model.dart';
 import 'package:musicianapp/screens/authentication/sign_in_screen.dart';
+import 'package:musicianapp/screens/home/home_screen.dart';
 import 'package:musicianapp/screens/profile/set_location_map_screen.dart';
 import 'package:musicianapp/screens/profile/upload_photo_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -59,6 +60,7 @@ class MuseUpApp extends StatelessWidget {
     return {
       '/': (context) => const MainStateController(),
       'test': (context) => const SetProfileScreen(''),
+      'home': (context) => const HomeScreen(),
       'test2': (context) => const WelcomeScreen(),
       'image': (context) => const UploadPhotoScreen(),
       'add-post': (context) => const CreatePostScreen(),

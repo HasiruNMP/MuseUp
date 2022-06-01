@@ -14,7 +14,7 @@ class MediaModel {
 
   ValueNotifier<int> uploadNotifier = ValueNotifier(0);
 
-  Future<void> uploadVideo(String? filePath,BuildContext context) async {
+  Future<void> uploadVideo(String? filePath) async {
     uploadNotifier.value = 1;
     File file = File(filePath!);
     final extension = path.extension(filePath);
@@ -23,8 +23,6 @@ class MediaModel {
       final url = await ref.ref.getDownloadURL();
       addURL(url);
       uploadNotifier.value = 2;
-      Navigator.pop(context);
-      UX.showLongToast('Your video will be available shortly');
       print(url);
     } on FirebaseException catch (e) {
       print(e);

@@ -108,7 +108,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
                 textColor: Colors.black,
               ),
               ListTile(
-                title: const Text('REPORTED BY',style: TextStyle(fontWeight: FontWeight.bold),),
+                title: const Text('REPORTED ABOUT',style: TextStyle(fontWeight: FontWeight.bold),),
                 subtitle: Text(data['reporteeName'],style: const TextStyle(fontSize: 16),),
                 textColor: Colors.black,
               ),

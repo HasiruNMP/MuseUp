@@ -7,6 +7,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:musicianapp/models/profile_model.dart';
 import 'package:musicianapp/screens/profile/upload_photo_screen.dart';
 
+import '../../services/auth_service.dart';
+
 class SetLocationScreen extends StatefulWidget {
   const SetLocationScreen({Key? key}) : super(key: key);
 

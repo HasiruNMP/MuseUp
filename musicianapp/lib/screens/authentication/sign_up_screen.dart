@@ -146,7 +146,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: CircleButton(
-                        onTap: () => {},
+                        onTap: () => {
+                        AuthService().signInWithGoogle(context)
+                        },
                         tooltip: 'Sign In with Google',
                         width: 40.0,
                         height: 40.0,
@@ -160,7 +162,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: CircleButton(
-                        onTap: () => {},
+                        onTap: () => {
+                          Navigator.pushReplacementNamed(
+                              context, 'sign-in-phone')
+                        },
                         tooltip: 'Sign In with Phone',
                         width: 40.0,
                         height: 40.0,

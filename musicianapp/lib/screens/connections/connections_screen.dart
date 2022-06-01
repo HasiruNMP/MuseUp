@@ -7,6 +7,8 @@ import 'package:musicianapp/globals/globals.dart';
 import 'package:musicianapp/screens/explore/profile_screen.dart';
 import 'package:musicianapp/services/database_service.dart';
 
+import '../../models/chat_model.dart';
+
 class ConnectionsView extends StatefulWidget {
   const ConnectionsView({Key? key}) : super(key: key);
 
@@ -106,11 +108,18 @@ class _ConnectionsViewState extends State<ConnectionsView> with AutomaticKeepAli
                                       ),
                                     ),
                                     IconButton(
-                                      onPressed: (){},
+                                      onPressed: (){
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(builder: (context) => ProfileScreen(snapshot.data!.id)),
+                                        );
+                                      },
                                       icon: const FaIcon(FontAwesomeIcons.solidUser,color: Colors.black87,size: 20,),
                                     ),
                                     IconButton(
-                                      onPressed: (){},
+                                      onPressed: (){
+                                        Chat().openChat(connectionData['connectionUID'], context, userData['fName'],userData['imageURL']);
+                                      },
                                       icon: const FaIcon(FontAwesomeIcons.solidEnvelope,color: Colors.black87,size: 20,),
                                     ),
                                   ],

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:musicianapp/models/profile_model.dart';
 import 'package:musicianapp/screens/profile/set_location_screen.dart';
 import 'package:provider/provider.dart';
+
+import '../../services/auth_service.dart';
 //import 'package:toast/toast.dart';
 
 /*class GetStartedScreen extends StatefulWidget {
@@ -58,6 +60,9 @@ class _SetProfileScreenState extends State<SetProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Enter Your Details'),
+        actions: [
+          IconButton(onPressed: (){AuthService().signOut();}, icon: Icon(Icons.exit_to_app))
+        ],
       ),
       body: SafeArea(
         child: Form(

@@ -14,6 +14,13 @@ class AuthService {
   //String userID = 'No User';
   int authState = 0;
 
+  Future<String?> getCurrentUserId() async {
+    String? uid;
+    final User? user = _auth.currentUser;
+    uid = user?.uid;
+    return uid;
+  }
+
   Stream<CurrentUser> get onAuthStateChanged => _auth.authStateChanges().map((User? user) => CurrentUser(user!.uid));
 
   /*void listenToAuthStateChanges(){
@@ -75,8 +82,10 @@ class AuthService {
       if (e.code == 'user-not-found') {
         signInNotifier.value = 4;
         print('No user found for that email.');
+        UX.showLongToast("No user found with that email!");
       } else if (e.code == 'wrong-password') {
         signInNotifier.value = 5;
+        UX.showLongToast("wrong password");
         print('Wrong password provided for that user.');
       }
     }
