@@ -1,2 +1,2 @@
-# FYP
- Final Year Project [PRC303SL] - Professional/Social Network for Musicians
+# Final Year Project - MuseUp
+ Professional/Social Networking Mobile App for Musicians
